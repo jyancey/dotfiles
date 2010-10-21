@@ -1,0 +1,64 @@
+#! /bin/bash
+#------------------------------------------------------------------------------
+# bashrc_keychain - Dotfiles.
+#
+# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+#
+# August 2000 John Yancey <john.yancey@acm.org>
+#
+# $Id: bashrc_keychain,v 1.13 2010/03/01 21:00:20 john Exp $
+#------------------------------------------------------------------------------
+#
+# Start up a keychain agent to avoid crazy password challenge all the time
+#
+# Set a default keychain
+KEYCHAIN=/usr/bin/keychain
+HOSTNAME=`uname -n`
+id | egrep -e "(joyancey|john)" > /dev/null 
+if [ $? -eq 0 ]; then
+    export HOSTNAME_SHORT=`hostname | sed -e 's/\.cisco\.com//'`
+    if [ "$OS_SYS" == "SunOS" ]; then
+        if [ ! -x "/usr/cisco/bin/keychain" ]; then
+            echo "Unable to find keychain!"
+            return
+        else
+            KEYCHAIN=/usr/cisco/bin/keychain
+        fi
+    fi
+    if [ "$OS_SYS" == "Linux" ]; then
+        echo "Looking for keychain..."
+        if [ ! -x "/usr/bin/keychain" ]; then
+            echo "Unable to find keychain!"
+            return
+        else
+            KEYCHAIN=/usr/bin/keychain
+        fi
+    fi
+    if [ "$OS_SYS" == "Darwin" ]; then
+        if [ ! -x "/usr/bin/keychain" ]; then
+            echo "Unable to find keychain!"
+            return
+        else
+            KEYCHAIN=/usr/bin/keychain
+       fi
+    fi
+
+    # If the file $HOME/.nokeychain exists, don't run keychain
+    if [ -e $HOME/.nokeychain ]; then
+        echo "Skipping keychain"
+        return
+    fi
+
+    # The 'keychainHOSTS' variable is a list of hostnames we really
+    # want to run keychain agent on. The " _" is a placeholder to ensure 
+    # there is no empty variable.
+    keychainHOSTS=" _" 
+    echo "$keychainHOSTS" | grep `echo $HOSTNAME_SHORT` > /dev/null
+
+    # If we didn't run a new agent above, AND our host is a keychainHOST, 
+    # run it:
+    if [ $?  = "0" ] && [ $keychainON = "0" ]; then
+        $KEYCHAIN -q $HOME/.ssh/id_rsa > /dev/null
+        . $HOME/.ssh-agent-${HOSTNAME}
+    fi
+fi

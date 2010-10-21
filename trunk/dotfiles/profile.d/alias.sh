@@ -1,0 +1,90 @@
+#! /bin/bash
+#------------------------------------------------------------------------------
+# alias.sh - Dotfiles.
+#
+# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+#
+# August 2000 John Yancey <john.yancey@acm.org>
+#
+# $Id: alias.sh,v 1.10 2010/04/09 20:40:31 john Exp $
+#------------------------------------------------------------------------------
+#
+# Set up some simple to use aliases for things.
+#
+if [ "$OS_SYS" == "Linux" ]; then
+    alias ls='ls --color=auto'
+    alias vi='vim'
+fi
+if [ "$OS_SYS" == "SunOS" ]; then
+    if [ "$OS_REL" == "5.11" ]; then
+        if [ -x /usr/gnu/bin/ls ]; then
+            alias ls='/usr/gnu/bin/ls --color=auto'
+        elif [ -x /jds/cbe/bin/ls ]; then
+            alias ls='/jds/cbe/bin/ls --color=auto'
+        fi
+    fi
+fi
+if [ "$OS_SYS" == "Darwin" ]; then
+    if [ -x /sw/bin/gls ]; then
+        alias ls='/sw/bin/gls --color=auto'
+    else
+        alias ls='ls -G'
+    fi
+    if [ -x /sw/bin/svn ]; then
+        alias svn=/sw/bin/svn
+    fi
+fi
+if [ "$OS_SYS" == "FreeBSD" ]; then
+    if [ -x /usr/local/bin/gls ]; then
+        alias ls='/usr/local/bin/gls --color=auto'
+    else
+        alias ls='ls -G'
+    fi
+fi
+if [ -f /auto/surf-tp/tools/ant/apache-ant-1.7.1/bin/ant ]; then
+    alias ant='/auto/surf-tp/tools/ant/apache-ant-1.7.1/bin/ant ${1:+"$@"}'
+fi
+if [ -f /auto/surf-tp/configs/iwe/tools/apache-maven-2.2.1/bin/mvn ]; then
+    alias mvn='/auto/surf-tp/configs/iwe/tools/apache-maven-2.2.1/bin/mvn ${1:+"$@"}'
+fi
+if [ -f /opt/rational/clearcase/bin/cleartool ]; then
+    alias ct=/opt/rational/clearcase/bin/cleartool
+fi
+if [ -f /usr/ucb/ps ]; then 
+    alias bsdps=/usr/ucb/ps
+fi
+alias h='fc -l' 2>/dev/null
+alias j='jobs -l' 2>/dev/null
+alias l='ls -F' 2>/dev/null
+alias l.='ls -dh .*' 2>/dev/null
+alias lf='ls -lFAh' 2>/dev/null
+alias ll='ls -lFh' 2>/dev/null
+alias lls='ls -lR | $HOME/bin/fullpath.rb' 2>/dev/null
+alias g='egrep -i ${1:+"$@"}' 2>/dev/null
+alias gh='history | g ${1:+"$@"}' 2>/dev/null
+alias cl=clear 2>/dev/null
+alias cws='cd /ws/joyancey-sjc'
+alias rrm='rm -fr ${1:+"$@"}'
+alias java16=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Commands/java
+alias java15=/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Commands/java
+alias java14=/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Commands/java
+#
+# Easy SSH shortcuts.
+#
+alias fedora='ssh john@sjc-joyancey-8717'
+alias centos='ssh john@sjc-joyancey-87110'
+alias ubuntu='ssh john@sjc-joyancey-87111'
+alias sjclnx='ssh joyancey@sjc-joyancey-lnx'
+alias iwesbx='ssh joyancey@iwe-sandbox5'
+#
+# Different Environment setups
+#
+alias iosenv='. $HOME/.files/build_env/iosenv.sh'
+alias iosund='. $HOME/.files/build_env/iosund.sh'
+alias novaenv='. $HOME/.files/build_env/novaenv.sh'
+alias novaund='. $HOME/.files/build_env/novaund.sh'
+alias novaadm='. $HOME/.files/build_env/novaadm.sh'
+alias jdsenv='. $HOME/.files/build_env/jdsenv.sh'
+alias iweenv='. $HOME/.files/build_env/iweenv.sh'
+alias iweund='. $HOME/.files/build_env/iweund.sh'
+alias gnustep='. $HOME/.files/build_env/gnustep.sh'

@@ -1,0 +1,63 @@
+#! /bin/bash
+#------------------------------------------------------------------------------
+# bash_profile - Dotfiles bash login profile file.
+#
+# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+#
+# August 2000 John Yancey <john.yancey@acm.org>
+#
+# $Id: bash_profile,v 1.6 2010/03/05 20:53:11 john Exp $
+#------------------------------------------------------------------------------
+#
+# Running as a login shell! We have already picked up the path setting 
+# from /etc/profile, now get the global aliases and functions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
+# Start up key chain server
+if [ ! -f $HOME/.nokeychain ]; then
+    . $HOME/.files/bashrc_keychain
+fi
+
+# Export out all the system information
+export OS_SYS=`uname -s`
+export OS_REL=`uname -r`
+export OS_PLATFORM=`uname -p`
+# Figure out which Linux distrabution we are on
+if [ $OS_SYS == "Linux" ]; then
+    OS_DIST=`/usr/bin/lsb_release -d | sed -e 's/Description:.//'`
+    export OS_DIST
+fi
+export EDITOR=vi
+export PAGER=less
+
+if [ "$PS1" ]; then
+    if [ "x`tput kbs`" != "x" ]; then # We can't do this with "dumb" terminal
+      stty erase `tput kbs`
+    fi
+    case $TERM in
+      xterm*)
+          PROMPT_COMMAND='echo -ne "\033]0;${LOGNAME}@${HOSTNAME}: ${PWD}\007"'
+          if [ "$TERM" = "xterm-color" ]; then
+              export TERM=xterm
+          fi
+      ;;
+      *)
+      ;;
+    esac
+    if [ -e $HOME/.files/bashrc_prompt ]; then
+        . $HOME/.files/bashrc_prompt
+    else
+        export PS1="[\u@\h \W]\\$ "
+    fi
+fi
+
+# Now for all the tricky stuff
+for i in $HOME/.files/profile.d/*.sh ; do
+  if [ -r "$i" ]; then
+    . $i
+  fi
+done
+
+umask 022

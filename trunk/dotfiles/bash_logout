@@ -1,0 +1,13 @@
+#! /bin/bash
+#------------------------------------------------------------------------------
+# bash_logout - Dotfiles bash logout file.
+#
+# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+#
+# August 2000 John Yancey <john.yancey@acm.org>
+#
+# $Id: bash_logout,v 1.4 2010/03/01 17:22:32 john Exp $
+#------------------------------------------------------------------------------
+#
+#cvs update
+clear

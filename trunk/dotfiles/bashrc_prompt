@@ -1,0 +1,45 @@
+#! /bin/bash
+#------------------------------------------------------------------------------
+# bashrc_prompt - Dotfiles bash login prompt file.
+#
+# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+#
+# August 2000 John Yancey <john.yancey@acm.org>
+#
+# $Id: bashrc_prompt,v 1.2 2010/03/06 19:10:29 john Exp $
+#------------------------------------------------------------------------------
+#
+# Define ANSI color sequences
+NO="\[\033[0m\]"         # Normal
+WH="\[\033[0;37;40m\]"   # White
+MA="\[\033[0;35;40m\]"   # Magenta
+BB="\[\033[1;34;40m\]"   # Bright Blue
+BW="\[\033[1;37;40m\]"   # Bright White
+BM="\[\033[1;35;40m\]"   # Bright Magenta
+
+# Find out if we are root
+if [ $UID -eq 0 ] ; then
+   # The '#' character serves as an extra reminder that I am root
+   SYM='#'
+else
+   SYM='-'
+fi
+
+# Define the actual prompt, which will look some thing like:
+# --[login@hostname]--
+# --{~}--
+# --(0)->$
+#
+#P1="$MA$SYM$BM-$BB[$WH\u$MA@$WH\h$BB]$BM-$MA$SYM$NO\n"
+#P2="$MA$SYM$BM-$BB{$BW\w$BB}$BM-$MA$SYM$NO\n"
+#P3="$MA$SYM$BM-$BB($BW\$?$BB)$BM-$MA>$NO\$ "
+#
+# Define the actual prompt, which will look some thing like:
+# --[login@hostname]-- --{~}--
+# -->$
+#
+P1="$MA$SYM$BM-$BB[$WH\u$MA@$WH\h$BB]$BM-$MA$SYM$NO "
+P2="$MA$SYM$BM-$BB{$BW\W$BB}$BM-$MA$SYM$NO\n"
+P3="$MA$SYM$BM-$BB>$NO\$ "
+export PS1="$P1$P2$P3"
+

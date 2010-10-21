@@ -1,0 +1,50 @@
+#! /bin/bash
+#------------------------------------------------------------------------------
+# bashrc - Dotfiles bashrc file.
+#
+# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+#
+# August 2000 John Yancey <john.yancey@acm.org>
+#
+# $Id:$
+#------------------------------------------------------------------------------
+#
+# 
+if [ -f /etc/bashrc ]; then
+  . /etc/bashrc
+fi
+
+export OS_SYS=`uname -s`
+export OS_REL=`uname -r`
+
+if [ "$PS1" ]; then
+  export PS1="[\u@\h \W]\\$ "
+fi
+
+#
+# Now for all the tricky stuff
+#
+for i in $HOME/.files/profile.d/*.sh ; do
+  if [ -r "$i" ]; then
+    . $i
+  fi
+done
+ 
+
+XAPPLRESDIR=/usr/dt/lib/app-defaults:/usr/openwin/app-defaults:
+XAPPLRESDIR=$XAPPLRESDIR:/usr/local/lib/app-defaults:$HOME/.app-defaults
+OPENWINHOME=/usr/openwin
+
+if [ "$OS_SYS" == "Linux" ]; then
+  EDITOR=vim
+  VISUAL=vim
+else
+  EDITOR=vi
+  VISUAL=vi
+fi
+
+PAGER=less
+LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib:$HOME/lib
+
+export XAPPLRESDIR XAPPLRESDIR OPENWINHOME EDITOR VISUAL PAGER LD_LIBRARY_PATH
+

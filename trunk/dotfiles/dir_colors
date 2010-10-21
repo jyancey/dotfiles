@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: dir_colors,v 1.1 2010/03/05 20:56:23 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # COLOR needs one of these arguments: 'tty' colorizes output to ttys, but not

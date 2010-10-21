@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: manpath.sh,v 1.2 2009/11/26 00:06:36 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # Functions to help manage manpaths.  Second argument is the name of the

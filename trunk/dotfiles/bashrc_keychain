@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: bashrc_keychain,v 1.13 2010/03/01 21:00:20 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # Start up a keychain agent to avoid crazy password challenge all the time

@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: bash_profile,v 1.6 2010/03/05 20:53:11 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # Running as a login shell! We have already picked up the path setting 

@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: java.sh,v 1.7 2010/03/13 19:38:23 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # Let's export the JAVA_HOME once we find it.

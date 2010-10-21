@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: ecs.sh,v 1.3 2009/11/26 00:06:36 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # Add strange Engenieering Computer Systems stuff here

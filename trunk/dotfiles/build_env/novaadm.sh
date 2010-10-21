@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: novaadm.sh,v 1.2 2009/11/26 00:06:35 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # Build environment setup to build Nova.

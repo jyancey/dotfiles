@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: iweund.sh,v 1.1 2010/04/09 20:36:43 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # Clean up IWE build environment.

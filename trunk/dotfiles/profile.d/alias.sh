@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: alias.sh,v 1.10 2010/04/09 20:40:31 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # Set up some simple to use aliases for things.
@@ -49,6 +49,9 @@ if [ -f /auto/surf-tp/configs/iwe/tools/apache-maven-2.2.1/bin/mvn ]; then
 fi
 if [ -f /usr/cisco/packages/git/current/libexec/git-core/git-svn ]; then
     alias git-svn='/usr/cisco/packages/git/current/libexec/git-core/git-svn ${1:+"$@"}'
+fi
+if [ -f /usr/local/bin/git-svn ]; then
+    alias git-svn='/usr/local/bin/git-svn ${1:+"$@"}'
 fi
 if [ -f /opt/rational/clearcase/bin/cleartool ]; then
     alias ct=/opt/rational/clearcase/bin/cleartool

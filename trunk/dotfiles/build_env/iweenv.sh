@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: iweenv.sh,v 1.4 2010/04/09 20:36:43 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # Build environment setup to build IWE.

@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: z.sh,v 1.8 2009/12/04 21:14:37 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # maintains a jump-list of the directories you actually use

@@ -6,7 +6,7 @@
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: gnustep.sh,v 1.4 2009/11/26 00:06:35 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # Build environment setup to build GNUStep programs.

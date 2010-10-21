@@ -53,6 +53,11 @@ fi
 if [ -f /usr/local/bin/git-svn ]; then
     alias git-svn='/usr/local/bin/git-svn ${1:+"$@"}'
 fi
+if [ -f /usr/cisco/bin/vim ]; then
+    alias vim=/usr/cisco/bin/vim
+    alias vi=/usr/cisco/bin/vim
+    alias edit=/usr/cisco/bin/vim
+fi
 if [ -f /opt/rational/clearcase/bin/cleartool ]; then
     alias ct=/opt/rational/clearcase/bin/cleartool
 fi

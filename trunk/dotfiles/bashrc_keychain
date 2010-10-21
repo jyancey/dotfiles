@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # bashrc_keychain - Dotfiles.
 #
-# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2010 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -35,11 +35,11 @@ if [ $? -eq 0 ]; then
         fi
     fi
     if [ "$OS_SYS" == "Darwin" ]; then
-        if [ ! -x "/usr/bin/keychain" ]; then
+        if [ ! -x "/sw/bin/keychain" ]; then
             echo "Unable to find keychain!"
             return
         else
-            KEYCHAIN=/usr/bin/keychain
+            KEYCHAIN=/sw/bin/keychain
        fi
     fi
 

@@ -2,11 +2,11 @@
 #------------------------------------------------------------------------------
 # create_symlinks.sh - Dotfiles create symlink to file in home dir.
 #
-# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2010 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
-# $Id: create-symlinks.sh,v 1.3 2010/03/05 20:59:56 john Exp $
+# $Id$
 #------------------------------------------------------------------------------
 #
 # Need to crearte the following symlinks if they do not exist:
@@ -15,6 +15,8 @@
 #    .bashrc       -> .profile
 #    .bash_logout  -> .files/bash_logout
 #    .dir_colors   -> .files/dir_colors
+#    .vimrc        -> .files/vimrc
+#    .vim_runtime  -> .files/vim_runtime
 
 if [ ! -L "$HOME/.profile" ]; then
     ln -fs $HOME/.files/bash_profile $HOME/.profile
@@ -35,3 +37,12 @@ fi
 if [ ! -L "$HOME/.dir_colors" ]; then
     ln -fs $HOME/.files/dir_colors $HOME/.dir_colors
 fi 
+
+if [ ! -L "$HOME/.vimrc" ]; then
+    ln -fs $HOME/.files/vimrc $HOME/.vimrc
+fi 
+
+if [ ! -L "$HOME/.vim_runtime" ]; then
+    ln -fs $HOME/.files/vim_runtime $HOME/.vim_runtime
+fi 
+

@@ -47,6 +47,9 @@ fi
 if [ -f /auto/surf-tp/configs/iwe/tools/apache-maven-2.2.1/bin/mvn ]; then
     alias mvn='/auto/surf-tp/configs/iwe/tools/apache-maven-2.2.1/bin/mvn ${1:+"$@"}'
 fi
+if [ -f /usr/cisco/packages/git/current/libexec/git-core/git-svn ]; then
+    alias git-svn='/usr/cisco/packages/git/current/libexec/git-core/git-svn ${1:+"$@"}'
+fi
 if [ -f /opt/rational/clearcase/bin/cleartool ]; then
     alias ct=/opt/rational/clearcase/bin/cleartool
 fi

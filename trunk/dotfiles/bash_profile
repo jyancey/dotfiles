@@ -27,7 +27,9 @@ export OS_PLATFORM=`uname -p`
 # Figure out which Linux distrabution we are on
 if [ $OS_SYS == "Linux" ]; then
     OS_DIST=`/usr/bin/lsb_release -d | sed -e 's/Description:.//'`
+    OS_DIST_NAME=`/usr/bin/lsb_release -i | sed -e 's/Distributor ID:.//'`
     export OS_DIST
+    export OS_DIST_NAME
 fi
 export EDITOR=vi
 export PAGER=less

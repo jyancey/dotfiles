@@ -14,7 +14,14 @@
 # Linux is a bit odd and it depends on which distrabution you run.
 if [ "${OS_SYS}" == "Linux" ]; then
     if [[ "$OS_DIST" =~ "Red Hat" || "$OS_DIST" =~ "CentOS" ]]; then
-        if [ -f "/usr/bin/java" ]; then
+        if [[ "$OS_DIST" =~ "Red Hat" && 
+              "$OS_DIST_NAME" =~ "RedHatEnterpriseAS" ]];then
+            if [ -f /ws/ccbubld-sjc/hudson-sjc-slave/tools/JDK6_18/bin/java ]; then
+
+                LANG=en_US.ISO-8859-1
+                JAVA_HOME=/ws/ccbubld-sjc/hudson-sjc-slave/tools/JDK6_18
+            fi
+        elif [ -f "/usr/bin/java" ]; then
             JAVA_HOME=/usr
         elif [ -f "/usr/lib/jvm/jre-sun/bin/java" ]; then
             JAVA_HOME=/usr/lib/jvm/jre-sun

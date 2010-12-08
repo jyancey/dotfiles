@@ -64,6 +64,8 @@ fi
 if [ -f /usr/ucb/ps ]; then 
     alias bsdps=/usr/ucb/ps
 fi
+alias ..='cd ..'
+alias ...='cd ../..'
 alias h='fc -l' 2>/dev/null
 alias j='jobs -l' 2>/dev/null
 alias l='ls -F' 2>/dev/null

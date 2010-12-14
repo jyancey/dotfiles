@@ -33,6 +33,7 @@ if [ $OS_SYS == "Linux" ]; then
 fi
 export EDITOR=vi
 export PAGER=less
+export LANG=en_US.ISO-8859-1
 
 if [ "$PS1" ]; then
     if [ "x`tput kbs`" != "x" ]; then # We can't do this with "dumb" terminal

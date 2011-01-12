@@ -9,6 +9,12 @@
 # $Id$
 #------------------------------------------------------------------------------
 #
+# Bail out early if we started up from an X session. This only seems to be a
+# problem on Ubuntu systems. Go figure.
+if [ "$GDMSESSION" ]; then
+    exit
+fi
+
 # Running as a login shell! We have already picked up the path setting 
 # from /etc/profile, now get the global aliases and functions
 if [ -f /etc/bashrc ]; then

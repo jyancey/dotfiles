@@ -92,9 +92,9 @@ alias java14=/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Commands/j
 #
 # Easy SSH shortcuts.
 #
-alias fedora='ssh john@sjc-joyancey-8717'
-alias centos='ssh john@sjc-joyancey-87110'
-alias ubuntu='ssh john@sjc-joyancey-87111'
+alias pcbsd='ssh john@192.168.1.15'
+alias centos='ssh john@192.168.1.16'
+alias ubuntu='ssh john@192.168.1.11'
 alias sjclnx='ssh joyancey@sjc-joyancey-lnx'
 alias iwesbx='ssh joyancey@iwe-sandbox5'
 #

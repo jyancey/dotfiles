@@ -19,6 +19,11 @@ fi
 # from /etc/profile, now get the global aliases and functions
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
+if
+
+# Use bash_completion, if completion exists
+if [ -f /sw/etc/bash_completion ]; then
+    . /sw/etc/bash_completion
 fi
 
 # Start up key chain server

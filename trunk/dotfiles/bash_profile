@@ -19,7 +19,7 @@ fi
 # from /etc/profile, now get the global aliases and functions
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
-if
+fi
 
 # Use bash_completion, if completion exists
 if [ -f /sw/etc/bash_completion ]; then

@@ -24,4 +24,5 @@
 /usr/sfw/share/man
 /usr/gnu/man
 /usr/gnu/share/man
-
+/Library/TeX/Distributions/.DefaultTeX/Contents/Man
+/usr/local/git/share/man

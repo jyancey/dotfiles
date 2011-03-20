@@ -36,3 +36,6 @@
 /usr/local/carets/bin
 /opt/rational/clearcase/bin
 /nfs/iwe/bin
+/usr/texbin
+/usr/local/git/bin
+/usr/local/crossgcc/bin

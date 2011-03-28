@@ -42,4 +42,8 @@ P1="$MA$SYM$BM-$BB[$WH\u$MA@$WH\h$BB]$BM-$MA$SYM$NO "
 P2="$MA$SYM$BM-$BB{$BW\W$BB}$BM-$MA$SYM$NO\n"
 P3="$MA$SYM$BM-$BB>$NO\$ "
 export PS1="$P1$P2$P3"
+#
+# Define the actual prompt, which will look some thing like:
+# [login@hostname]$
+#export PS1="$NO$BB[$WH\u$MA@$WH\h$BB]$NO\$ "
 

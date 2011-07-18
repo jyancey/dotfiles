@@ -77,4 +77,4 @@ fi
 #fi
 
 export JAVA_HOME
-export MAVEN_OPTS='-Xmx1024m -Xms512m'
+export MAVEN_OPTS='-Xmx2048m -Xms1024m -XX:MaxPermSize=128m'

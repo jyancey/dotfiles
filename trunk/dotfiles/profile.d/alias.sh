@@ -64,39 +64,46 @@ fi
 if [ -f /usr/ucb/ps ]; then 
     alias bsdps=/usr/ucb/ps
 fi
-alias ..='cd ..'
 alias ...='cd ../..'
+alias ..='cd ..'
+alias cl=clear 2>/dev/null
+alias cws='cd /ws/joyancey-sjc'
+alias gb='git branch'
+alias gba='git branch -a'
+alias gc='git commit -v'
+alias gca='git commit -v -a'
+alias gd='git diff | mate'
+alias ghst='history | gr ${1:+"$@"}' 2>/dev/null
+alias gl='git pull'
+alias gp='git push'
+alias gr='egrep -i ${1:+"$@"}' 2>/dev/null
+alias gsvn='git-svn ${1:+"$@"}'
+alias gst='git status'
 alias h='fc -l' 2>/dev/null
 alias j='jobs -l' 2>/dev/null
-alias l='ls -F' 2>/dev/null
+alias java14=/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Commands/java
+alias java15=/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Commands/java
+alias java16=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Commands/java
 alias l.='ls -dh .*' 2>/dev/null
+alias l='ls -F' 2>/dev/null
 alias lf='ls -lFAh' 2>/dev/null
 alias ll='ls -lFh' 2>/dev/null
 alias lls='ls -lR | $HOME/bin/fullpath.rb' 2>/dev/null
-alias gr='egrep -i ${1:+"$@"}' 2>/dev/null
-alias gh='history | gr ${1:+"$@"}' 2>/dev/null
-alias cl=clear 2>/dev/null
-alias cws='cd /ws/joyancey-sjc'
-alias rrm='rm -fr ${1:+"$@"}'
+alias mc='mvn clean'
 alias mcd='mvn clean deploy'
 alias mci='mvn clean install'
 alias mcp='mvn clean package'
-alias mp='mvn package'
-alias mc='mvn clean'
 alias mep='mvn help:effective-pom'
-alias gs='git-svn ${1:+"$@"}'
+alias mp='mvn package'
+alias rrm='rm -fr ${1:+"$@"}'
 alias wdiff='diff -bituNr ${1:+"$@"}'
-alias java16=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Commands/java
-alias java15=/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Commands/java
-alias java14=/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Commands/java
 #
 # Easy SSH shortcuts.
 #
-alias pcbsd='ssh john@192.168.1.15'
-alias centos='ssh john@192.168.1.16'
-alias ubuntu='ssh john@192.168.1.11'
-alias sjclnx='ssh joyancey@sjc-joyancey-lnx'
-alias iwesbx='ssh joyancey@iwe-sandbox5'
+alias solaris='ssh john@192.168.1.15'
+alias ubuntu='ssh john@192.168.1.16'
+alias sjclnx='ssh joyancey@sjc-joyancey-lnx.cisco.com'
+alias iwesbx='ssh joyancey@iwe-quadlite.cisco.com'
 #
 # Different Environment setups
 #

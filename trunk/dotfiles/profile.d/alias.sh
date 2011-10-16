@@ -29,6 +29,7 @@ if [ "$OS_SYS" == "Darwin" ]; then
         alias ls='/sw/bin/gls --color=auto'
     else
         alias ls='ls -G'
+        export LSCOLORS=exgxDxDxcxDxDxhbcxheex
     fi
     if [ -x /sw/bin/svn ]; then
         alias svn=/sw/bin/svn

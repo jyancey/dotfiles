@@ -6,6 +6,8 @@
 /sw/sbin
 /opt/bin
 /opt/sbin
+/usr/texbin
+/usr/gnubin
 /usr/tools/bin
 /usr/tools/sbin
 /usr/local/bin
@@ -28,14 +30,14 @@
 /usr/sfw/sbin
 /usr/java/bin
 /usr/xpg4/bin
+/opt/cisco/bin
+/opt/cisco/sbin
 /opt/csw/bin
 /opt/csw/sbin
 /opt/onbld/bin
 /sw/nonprod/bin
 /ecs/bin
-/usr/local/carets/bin
 /opt/rational/clearcase/bin
 /nfs/iwe/bin
-/usr/texbin
-/usr/local/git/bin
+/nfs/iwe/sbin
 /usr/local/crossgcc/bin

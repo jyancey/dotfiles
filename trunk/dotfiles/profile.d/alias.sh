@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # alias.sh - Dotfiles.
 #
-# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -29,7 +29,7 @@ if [ "$OS_SYS" == "Darwin" ]; then
         alias ls='/sw/bin/gls --color=auto'
     else
         alias ls='ls -G'
-        export LSCOLORS=exgxDxDxcxDxDxhbcxheex
+        declare -x LSCOLORS=exgxDxDxcxDxDxhbcxheex
     fi
     if [ -x /sw/bin/svn ]; then
         alias svn=/sw/bin/svn

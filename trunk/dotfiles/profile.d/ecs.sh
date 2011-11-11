@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # ecs.sh - Dotfiles.
 #
-# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -17,4 +17,4 @@ PRINTER=sjc24-03-c305-c
 LPDEST=$PRINTER
 MOZ_PRINTER_NAME=$PRINTER
 
-export CVSROOT CVSIGNORE CVS_RSH PRINTER LPDEST MOZ_PRINTER_NAME
+declare -x CVSROOT CVSIGNORE CVS_RSH PRINTER LPDEST MOZ_PRINTER_NAME

@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # manpath.sh - Dotfiles.
 #
-# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -22,33 +22,33 @@ manpathremove () {
               NEWMANPATH=${NEWMANPATH:+$NEWMANPATH:}$DIR
             fi
     done
-    export $MANPATHVARIABLE="$NEWMANPATH"
+    declare -x $MANPATHVARIABLE="$NEWMANPATH"
 }
 
 manpathprepend () {
     manpathremove $1 $2
     local MANPATHVARIABLE=${2:-MANPATH}
-    export $MANPATHVARIABLE="$1${!MANPATHVARIABLE:+:${!MANPATHVARIABLE}}"
+    declare -x $MANPATHVARIABLE="$1${!MANPATHVARIABLE:+:${!MANPATHVARIABLE}}"
 }
 
 manpathappend () {
     manpathremove $1 $2
     local MANPATHVARIABLE=${2:-MANPATH}
-    export $MANPATHVARIABLE="${!MANPATHVARIABLE:+${!MANPATHVARIABLE}:}$1"
+    declare -x $MANPATHVARIABLE="${!MANPATHVARIABLE:+${!MANPATHVARIABLE}:}$1"
 }
 
 # Set the inital MANPATH
 MANPATH=/usr/man
 
 # Scream over all the manpaths listed in the 'manpaths' file.
-for D in `cat $HOME/.files/manpaths`; do
-    # echo "$D..."
-    if [ -d "$D" ]; then
-        manpathappend $D
+for DIRS in `cat $HOME/.files/manpaths`; do
+    # echo "$DIRS..."
+    if [ -d "$DIRS" ]; then
+        manpathappend $DIRS
     fi
 done
 
 # Now to clean up
 unset manpathremove manpathprepend manpathappend
 
-export MANPATH=$MANPATH:${HOME}/man
+declare -x MANPATH=$MANPATH:${HOME}/man

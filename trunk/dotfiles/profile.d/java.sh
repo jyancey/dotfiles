@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # java.sh - Dotfiles.
 #
-# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -76,5 +76,5 @@ fi
 #    CATALINA_HOME=/usr/appserv/tomcat6
 #fi
 
-export JAVA_HOME
-export MAVEN_OPTS='-Xmx2048m -Xms1024m -XX:MaxPermSize=128m'
+declare -x JAVA_HOME
+declare -x MAVEN_OPTS='-Xmx2048m -Xms1024m -XX:MaxPermSize=128m'

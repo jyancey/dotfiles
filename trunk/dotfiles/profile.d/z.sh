@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # z.sh - Dotfiles.
 #
-# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -27,100 +27,102 @@
 # First we have to fix the locations of awk and grep that work on
 # all the system types we log into, SunOS, Linux, Darwin
 if [ "$OS_SYS" == "SunOS" ]; then
-    export AWK=/usr/xpg4/bin/awk
-    export GREP=/usr/xpg4/bin/grep
+    declare -x AWK=/usr/xpg4/bin/awk
+    declare -x GREP=/usr/xpg4/bin/grep
 elif [ "$OS_SYS" == "Linux" ]; then
-    export AWK=/bin/awk
-    export GREP=/bin/grep
+    declare -x AWK=/bin/awk
+    declare -x GREP=/bin/grep
 elif [ "$OS_SYS" == "Darwin" ]; then
-    export AWK=/usr/bin/awk
-    export GREP=/usr/bin/grep
+    declare -x AWK=/usr/bin/awk
+    declare -x GREP=/usr/bin/grep
 fi
  
 z() {
- local datafile=$HOME/.path-jump.lst
- if [ "$1" = "--add" ]; then
-  # add
-  shift
-  # $HOME isn't worth matching
-  [ "$*" = "$HOME" ] && return
-  $AWK -v p="$*" -v t="$(date +%s)" -F"|" '
-   BEGIN { rank[p] = 1; time[p] = t }
-   $2 >= 1 {
-    if( $1 == p ) {
-     rank[$1] = $2 + 1
-     time[$1] = t
-    } else {
-     rank[$1] = $2
-     time[$1] = $3
+    local datafile=$HOME/.path-jump.lst
+    if [ "$1" = "--add" ]; then
+        # add
+        shift
+        # $HOME isn't worth matching
+        if [ "$*" = "$HOME" ]; then
+            return
+        fi
+        $AWK -v p="$*" -v t="$(date +%s)" -F"|" '
+        BEGIN { rank[p] = 1; time[p] = t }
+        $2 >= 1 {
+            if( $1 == p ) {
+                rank[$1] = $2 + 1
+                time[$1] = t
+            } else {
+                rank[$1] = $2
+                time[$1] = $3
+            }
+            count += $2
+        }
+        END {
+            if( count > 1000 ) {
+                for( i in rank ) print i "|" 0.9*rank[i] "|" time[i] # aging
+            } else for( i in rank ) print i "|" rank[i] "|" time[i]
+        }
+        ' $datafile 2>/dev/null > $datafile.tmp
+        mv -f $datafile.tmp $datafile
+    elif [ "$1" = "--complete" ]; then
+        # tab completion
+        $AWK -v q="$2" -F"|" '
+        BEGIN { split(substr(q,3),fnd," ") }
+        {
+            if( system("test -d \"" $1 "\"") ) next
+                for( i in fnd ) $1 !~ fnd[i] && $1 = ""; if( $1 ) print $1
+        }
+        ' $datafile 2>/dev/null
+    else
+        # list/go
+        while [ "$1" ]; do case "$1" in
+        -h) echo "z [-h][-l][-r][-t] args" >&2; return;;
+        -l) local list=1;;
+        -r) local typ="rank";;
+        -t) local typ="recent";;
+        --) while [ "$1" ]; do shift; local fnd="$fnd $1";done;;
+        *) local fnd="$fnd $1";;
+    esac; local last=$1; shift; done
+    [ "$fnd" ] || local list=1
+    # if we hit enter on a completion just go there
+    [ -d "$last" ] && cd "$last" && return
+    [ -f "$datafile" ] || return
+    cd="$($AWK -v t="$(date +%s)" -v list="$list" -v typ="$typ" -v q="$fnd" -v tmpfl="$datafile.tmp" -F"|" '
+    function frecent(rank, time) {
+        dx = t-time
+        if( dx < 3600 ) return rank*4
+            if( dx < 86400 ) return rank*2
+                if( dx < 604800 ) return rank/2
+                    return rank/4
     }
-    count += $2
-   }
-   END {
-    if( count > 1000 ) {
-     for( i in rank ) print i "|" 0.9*rank[i] "|" time[i] # aging
-    } else for( i in rank ) print i "|" rank[i] "|" time[i]
-   }
-  ' $datafile 2>/dev/null > $datafile.tmp
-  mv -f $datafile.tmp $datafile
- elif [ "$1" = "--complete" ]; then
-  # tab completion
-  $AWK -v q="$2" -F"|" '
-   BEGIN { split(substr(q,3),fnd," ") }
-   {
-    if( system("test -d \"" $1 "\"") ) next
-    for( i in fnd ) $1 !~ fnd[i] && $1 = ""; if( $1 ) print $1
-   }
-  ' $datafile 2>/dev/null
- else
-  # list/go
-  while [ "$1" ]; do case "$1" in
-   -h) echo "z [-h][-l][-r][-t] args" >&2; return;;
-   -l) local list=1;;
-   -r) local typ="rank";;
-   -t) local typ="recent";;
-   --) while [ "$1" ]; do shift; local fnd="$fnd $1";done;;
-    *) local fnd="$fnd $1";;
-  esac; local last=$1; shift; done
-  [ "$fnd" ] || local list=1
-  # if we hit enter on a completion just go there
-  [ -d "$last" ] && cd "$last" && return
-  [ -f "$datafile" ] || return
-  cd="$($AWK -v t="$(date +%s)" -v list="$list" -v typ="$typ" -v q="$fnd" -v tmpfl="$datafile.tmp" -F"|" '
-   function frecent(rank, time) {
-    dx = t-time
-    if( dx < 3600 ) return rank*4
-    if( dx < 86400 ) return rank*2
-    if( dx < 604800 ) return rank/2
-    return rank/4
-   }
-   function output(files, toopen, override) {
-    if( list ) {
-     if( typ == "recent" ) {
-      cmd = "sort -nr >&2"
-     } else cmd = "sort -n >&2"
-     for( i in files ) if( files[i] ) printf "%-15s %s\n", files[i], i | cmd
-     if( override ) printf "%-15s %s\n", "common:", override > "/dev/stderr"
-    } else {
-     if( override ) toopen = override
-     print toopen
+    function output(files, toopen, override) {
+        if( list ) {
+            if( typ == "recent" ) {
+                cmd = "sort -nr >&2"
+            } else cmd = "sort -n >&2"
+            for( i in files ) if( files[i] ) printf "%-15s %s\n", files[i], i | cmd
+            if( override ) printf "%-15s %s\n", "common:", override > "/dev/stderr"
+            } else {
+                if( override ) toopen = override
+            print toopen
+        }
     }
-   }
-   function common(matches, fnd, nc) {
-    for( i in matches ) {
-     if( matches[i] && (!short || length(i) < length(short)) ) short = i
+    function common(matches, fnd, nc) {
+        for( i in matches ) {
+            if( matches[i] && (!short || length(i) < length(short)) ) short = i
+        }
+        if( short == "/" ) return
+            for( i in matches ) if( matches[i] && i !~ short ) x = 1
+            if( x ) return
+                if( nc ) {
+                    for( i in fnd ) if( tolower(short) !~ tolower(fnd[i]) ) x = 1
+                } else for( i in fnd ) if( short !~ fnd[i] ) x = 1
+                if( !x ) return short
     }
-    if( short == "/" ) return
-    for( i in matches ) if( matches[i] && i !~ short ) x = 1
-    if( x ) return
-    if( nc ) {
-     for( i in fnd ) if( tolower(short) !~ tolower(fnd[i]) ) x = 1
-    } else for( i in fnd ) if( short !~ fnd[i] ) x = 1
-    if( !x ) return short
-   }
-   BEGIN { split(q, a, " ") }
-   {
-    if( system("test -d \"" $1 "\"") ) next
+    BEGIN { split(q, a, " ") }
+    {
+        if( system("test -d \"" $1 "\"") ) next
     print $0 >> tmpfl
     if( typ == "rank" ) {
      f = $2
@@ -147,16 +149,15 @@ z() {
    }
   ' $datafile)"
   if [ $? -gt 0 ]; then
-   rm -f $datafile.tmp
+      rm -f $datafile.tmp
   else
-   mv -f $datafile.tmp $datafile
-   [ "$cd" ] && cd "$cd"
+      mv -f $datafile.tmp $datafile
+      [ "$cd" ] && cd "$cd"
   fi
- fi
+fi
 }
 # tab completion
 complete -C 'z --complete "$COMP_LINE"' z
 # populate directory list. avoid clobbering other PROMPT_COMMANDs.
 echo $PROMPT_COMMAND | $GREP -q "z"
 [ $? -gt 0 ] && PROMPT_COMMAND='z --add "$(pwd -P)";'"$PROMPT_COMMAND"
- 

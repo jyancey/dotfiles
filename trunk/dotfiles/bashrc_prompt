@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # bashrc_prompt - Dotfiles bash login prompt file.
 #
-# Copyright (c) 2000-2010 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -25,7 +25,7 @@ else
    SYM='-'
 fi
 
-# Define the actual prompt, which will look some thing like:
+# Define the actual prompt, which will look like:
 # --[login@hostname]--
 # --{~}--
 # --(0)->$
@@ -33,17 +33,17 @@ fi
 #P1="$MA$SYM$BM-$BB[$WH\u$MA@$WH\h$BB]$BM-$MA$SYM$NO\n"
 #P2="$MA$SYM$BM-$BB{$BW\w$BB}$BM-$MA$SYM$NO\n"
 #P3="$MA$SYM$BM-$BB($BW\$?$BB)$BM-$MA>$NO\$ "
-#
-# Define the actual prompt, which will look some thing like:
+
+# Define the actual prompt, which will look like:
 # --[login@hostname]-- --{~}--
 # -->$
 #
 P1="$MA$SYM$BM-$BB[$WH\u$MA@$WH\h$BB]$BM-$MA$SYM$NO "
 P2="$MA$SYM$BM-$BB{$BW\W$BB}$BM-$MA$SYM$NO\n"
 P3="$MA$SYM$BM-$BB>$NO\$ "
-export PS1="$P1$P2$P3"
-#
-# Define the actual prompt, which will look some thing like:
+declare -x PS1="$P1$P2$P3"
+
+# Define the actual prompt, which will look like:
 # [login@hostname]$
-#export PS1="$NO$BB[$WH\u$MA@$WH\h$BB]$NO\$ "
+#declare -x PS1="$NO$BB[$WH\u$MA@$WH\h$BB]$NO\$ "
 

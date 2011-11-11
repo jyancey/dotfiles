@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # bashmarks.sh - Dotfiles.
 #
-# Copyright (c) 2000-2010 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -20,8 +20,7 @@
 #   * sl        # display a list of boomarks
 
 # If the repository of bookmarks does not exist, create it
-if  [ ! -e $HOME/.dirmarks ]
-then
+if  [ ! -e $HOME/.dirmarks ]; then
     mkdir $HOME/.dirmarks
 fi
 
@@ -65,10 +64,10 @@ function g () {
 
 # "p" - Push a bookmark
 function p () { 
-    # Note, the author's preference is to list the directory stack in a single 
-    # column.  Thus, the standard behavior of "pushd" and "popd" have been 
-    # replaced by discarding the normal output of these commands and using a 
-    # "dirs -p" after each one.
+    # Note, list the directory stack in a single  column.  Thus, the 
+    # standard behavior of "pushd" and "popd" have been replaced by 
+    # discarding the normal output of these commands and using a  "dirs -p" 
+    # after each one.
 
     # if no argument given, then just pushd and print out the directory stack
     if [ -z "$1" ]; then

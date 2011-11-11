@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # path.sh - Dotfiles.
 #
-# Copyright (c) 2000-2009 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -22,33 +22,33 @@ pathremove () {
               NEWPATH=${NEWPATH:+$NEWPATH:}$DIR
             fi
     done
-    export $PATHVARIABLE="$NEWPATH"
+    declare -x $PATHVARIABLE="$NEWPATH"
 }
 
 pathprepend () {
     pathremove $1 $2
     local PATHVARIABLE=${2:-PATH}
-    export $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
+    declare -x $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
 }
 
 pathappend () {
     pathremove $1 $2
     local PATHVARIABLE=${2:-PATH}
-    export $PATHVARIABLE="${!PATHVARIABLE:+${!PATHVARIABLE}:}$1"
+    declare -x $PATHVARIABLE="${!PATHVARIABLE:+${!PATHVARIABLE}:}$1"
 }
 
 # Set the inital PATH
 PATH=/bin:/usr/bin
 
 # Scream over all the paths listed in the 'paths' file.
-for D in `cat $HOME/.files/paths`; do
-    # echo "$D..."
-    if [ -d "$D" ]; then
-        pathappend $D
+for DIRS in `cat $HOME/.files/paths`; do
+    # echo "$DIRS..."
+    if [ -d "$DIRS" ]; then
+        pathappend $DIRS
     fi
 done
 
 # Now to clean up
 unset pathremove pathprepend pathappend
 
-export PATH=$PATH:${HOME}/bin
+declare -x PATH=$PATH:${HOME}/bin

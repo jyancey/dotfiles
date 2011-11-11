@@ -22,19 +22,19 @@ manpathremove () {
               NEWMANPATH=${NEWMANPATH:+$NEWMANPATH:}$DIR
             fi
     done
-    declare -x $MANPATHVARIABLE="$NEWMANPATH"
+    export $MANPATHVARIABLE="$NEWMANPATH"
 }
 
 manpathprepend () {
     manpathremove $1 $2
     local MANPATHVARIABLE=${2:-MANPATH}
-    declare -x $MANPATHVARIABLE="$1${!MANPATHVARIABLE:+:${!MANPATHVARIABLE}}"
+    export $MANPATHVARIABLE="$1${!MANPATHVARIABLE:+:${!MANPATHVARIABLE}}"
 }
 
 manpathappend () {
     manpathremove $1 $2
     local MANPATHVARIABLE=${2:-MANPATH}
-    declare -x $MANPATHVARIABLE="${!MANPATHVARIABLE:+${!MANPATHVARIABLE}:}$1"
+    export $MANPATHVARIABLE="${!MANPATHVARIABLE:+${!MANPATHVARIABLE}:}$1"
 }
 
 # Set the inital MANPATH

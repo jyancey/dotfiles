@@ -22,19 +22,19 @@ pathremove () {
               NEWPATH=${NEWPATH:+$NEWPATH:}$DIR
             fi
     done
-    declare -x $PATHVARIABLE="$NEWPATH"
+    export $PATHVARIABLE="$NEWPATH"
 }
 
 pathprepend () {
     pathremove $1 $2
     local PATHVARIABLE=${2:-PATH}
-    declare -x $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
+    export $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
 }
 
 pathappend () {
     pathremove $1 $2
     local PATHVARIABLE=${2:-PATH}
-    declare -x $PATHVARIABLE="${!PATHVARIABLE:+${!PATHVARIABLE}:}$1"
+    export $PATHVARIABLE="${!PATHVARIABLE:+${!PATHVARIABLE}:}$1"
 }
 
 # Set the inital PATH

@@ -9,6 +9,8 @@
 # $Id$
 #------------------------------------------------------------------------------
 #
+declare -x POSIXLY_CORRECT=1
+
 # Bail out early if we started up from an X session. This only seems to be a
 # problem on Ubuntu systems. Go figure.
 if [ "$GDMSESSION" ]; then

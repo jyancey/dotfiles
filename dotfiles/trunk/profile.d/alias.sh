@@ -46,7 +46,10 @@ if [ -f /auto/surf-tp/tools/ant/apache-ant-1.7.1/bin/ant ]; then
     alias ant='/auto/surf-tp/tools/ant/apache-ant-1.7.1/bin/ant ${1:+"$@"}'
 fi
 if [ -f /auto/surf-tp/configs/iwe/tools/apache-maven-2.2.1/bin/mvn ]; then
-    alias mvn='/auto/surf-tp/configs/iwe/tools/apache-maven-2.2.1/bin/mvn ${1:+"$@"}'
+    alias mvn2='/auto/surf-tp/configs/iwe/tools/apache-maven-2.2.1/bin/mvn ${1:+"$@"}'
+fi
+if [ -f /auto/surf-tp/configs/arti/tools/apache-maven-3.0.3/bin/mvn ]; then
+    alias mvn3='/auto/surf-tp/configs/arti/tools/apache-maven-3.0.3/bin/mvn ${1:+"$@"}'
 fi
 if [ -f /usr/cisco/packages/git/current/libexec/git-core/git-svn ]; then
     alias git-svn='/usr/cisco/packages/git/current/libexec/git-core/git-svn ${1:+"$@"}'
@@ -90,6 +93,7 @@ alias l='ls -F' 2>/dev/null
 alias lf='ls -lFAh' 2>/dev/null
 alias ll='ls -lFh' 2>/dev/null
 alias lls='ls -lR | $HOME/bin/fullpath.rb' 2>/dev/null
+alias mvn='mvn3'
 alias mc='mvn clean'
 alias mcd='mvn clean deploy'
 alias mci='mvn clean install'

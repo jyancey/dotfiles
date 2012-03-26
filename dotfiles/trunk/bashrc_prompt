@@ -16,6 +16,7 @@ MA="\[\033[0;35;40m\]"   # Magenta
 BB="\[\033[1;34;40m\]"   # Bright Blue
 BW="\[\033[1;37;40m\]"   # Bright White
 BM="\[\033[1;35;40m\]"   # Bright Magenta
+BY="\[\033[1;33;40m\]"   # Bright Yello
 
 # Find out if we are root
 if [ $UID -eq 0 ] ; then
@@ -39,11 +40,11 @@ fi
 # -->$
 #
 P1="$MA$SYM$BM-$BB[$WH\u$MA@$WH\h$BB]$BM-$MA$SYM$NO "
-P2="$MA$SYM$BM-$BB{$BW\W$BB}$BM-$MA$SYM$NO\n"
+P2="$MA$SYM$BM-$BB{$BW\W$BB}$BM-$MA$SYM$N0\n"
 P3="$MA$SYM$BM-$BB>$NO\$ "
 declare -x PS1="$P1$P2$P3"
 
 # Define the actual prompt, which will look like:
 # [login@hostname]$
-#declare -x PS1="$NO$BB[$WH\u$MA@$WH\h$BB]$NO\$ "
+#declare -x PS1="$NO$BB[$WH\u$MA@$WH\h$BB]$NO $(__git_ps1 "(%s)")\$ "
 

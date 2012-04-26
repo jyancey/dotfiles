@@ -83,7 +83,7 @@ alias glog='git log --graph --full-history --all --color --pretty=tformat:"%x1b[
 alias gp='git push'
 alias gr='egrep -i ${1:+"$@"}' 2>/dev/null
 alias gsvn='git-svn ${1:+"$@"}'
-alias gst='git status'
+alias gst='git status -s'
 alias h='fc -l' 2>/dev/null
 alias j='jobs -l' 2>/dev/null
 alias java14=/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Commands/java

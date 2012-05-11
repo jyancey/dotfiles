@@ -99,3 +99,9 @@ for EXTRAS in $HOME/.files/profile.d/*.sh ; do
 done
 
 umask 022
+
+export PATH=/Applications/SenchaSDKTools-2.0.0-Beta:$PATH
+
+export PATH=/Applications/SenchaSDKTools-2.0.0-Beta/command:$PATH
+
+export PATH=/Applications/SenchaSDKTools-2.0.0-Beta/jsbuilder:$PATH

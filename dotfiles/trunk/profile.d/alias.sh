@@ -82,7 +82,7 @@ alias gl='git pull'
 alias glog='git log --graph --full-history --all --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
 alias gp='git push'
 alias gr='egrep -i ${1:+"$@"}' 2>/dev/null
-alias gsvn='git-svn ${1:+"$@"}'
+alias gsvn='git svn ${1:+"$@"}'
 alias gst='git status -s'
 alias h='fc -l' 2>/dev/null
 alias j='jobs -l' 2>/dev/null

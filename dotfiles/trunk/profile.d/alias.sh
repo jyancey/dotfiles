@@ -79,7 +79,8 @@ alias gca='git commit -v -a'
 alias gd='git diff | mate'
 alias ghst='history | gr ${1:+"$@"}' 2>/dev/null
 alias gl='git pull'
-alias glog='git log --graph --full-history --all --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
+alias glogs='git log --graph --full-history --all --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
+alias glog='git log --graph --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
 alias gp='git push'
 alias gr='egrep -i ${1:+"$@"}' 2>/dev/null
 alias gsvn='git svn ${1:+"$@"}'
@@ -102,6 +103,7 @@ alias mcp='mvn clean package'
 alias mep='mvn help:effective-pom'
 alias mp='mvn package'
 alias rrm='rm -fr ${1:+"$@"}'
+alias sed='gsed'
 alias wdiff='diff -bituNr ${1:+"$@"}'
 #
 # Easy SSH shortcuts.

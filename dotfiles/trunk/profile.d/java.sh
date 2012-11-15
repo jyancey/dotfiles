@@ -54,8 +54,8 @@ if [ "$OS_SYS" == "SunOS" ]; then
     fi
 fi
 if [ "$OS_SYS" == "Darwin" ]; then
-    if [ -d "/System/Library/Frameworks/JavaVM.framework/Home" ]; then
-        JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home
+    if [ -d "/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home" ]; then
+        JAVA_HOME=/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
     fi
 fi
 # FreeBSD can have Sun Java, or the Diablo version

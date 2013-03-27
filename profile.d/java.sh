@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # java.sh - Dotfiles.
 #
-# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2013 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -82,12 +82,43 @@ if [ "$OS_SYS" == "FreeBSD" ]; then
     fi
 fi
 
-# Tomcat6 (typically under /usr/share/tomcat6) set CATALINA_HOME
-#if [ -d "/usr/share/tomcat6" ]; then
-#    CATALINA_HOME=/usr/share/tomcat6
-#elif [ -d "/usr/appserv/tomcat6" ]; then
-#    CATALINA_HOME=/usr/appserv/tomcat6
-#fi
+# Let's define a few other Java type things.
+# Maven build system
+if [ -d "/sw/share/java/maven3" ]; then
+    MAVEN_HOME=/sw/share/java/maven3
+elif [ -d "/sw/share/java/maven2" ]; then
+    MAVEN_HOME=/sw/share/java/maven2
+fi
+# Groovy: Java scripting language.
+if [ -d "/sw/share/java/groovy" ]; then
+    GROOVY_HOME=/sw/share/java/groovy
+fi
+# Griffon the groovy base desktop application framework.
+if [ -d "/sw/share/java/griffon" ]; then
+    GRIFFON_HOME=/sw/shre/java/griffon
+fi
+# Gradel is the build system based on groovy
+if [ -d "/sw/share/java/gradle" ]; then
+    GRADEL_HOME=/sw/share/java/gradle
+fi
+# Grails is like Rails, but on Groovy
+if [ -d "/sw/share/java/grails" ]; then
+    GRAILS_HOME=/sw/share/java/grails
+fi
+# Tomcat6
+if [ -d "/sw/share/java/tomcat6" ]; then
+    CATALINA_HOME=/sw/share/java/tomcat6
+elif [ -d "/usr/share/tomcat6" ]; then
+    CATALINA_HOME=/usr/share/tomcat6
+elif [ -d "/usr/appserv/tomcat6" ]; then
+    CATALINA_HOME=/usr/appserv/tomcat6
+fi
 
 declare -x JAVA_HOME
+declare -x MAVEN_HOME
 declare -x MAVEN_OPTS='-Xmx2048m -Xms1024m -XX:MaxPermSize=128m'
+declare -x GROOVY_HOME
+declare -x GRIFFON_HOME
+declare -x GRADEL_HOME
+declare -x GRAILS_HOME
+declare -x CATALINA_HOME

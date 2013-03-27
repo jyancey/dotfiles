@@ -37,6 +37,7 @@ fi
 declare -x OS_SYS=`uname -s`
 declare -x OS_REL=`uname -r`
 declare -x OS_PLATFORM=`uname -p`
+declare -x OS_MACHINE=`uname -m`
 
 # Setup the basices then bail ou if Windoze.
 if [ $OS_SYS == "CYGWIN_NT-6.1-WOW64" ]; then
@@ -57,14 +58,22 @@ if [ $OS_SYS == "CYGWIN_NT-6.1-WOW64" ]; then
     return
 fi
 
-# Figure out which Linux distrabution we are on
+# Figure out which Linux distribution we are on
 if [ $OS_SYS == "Linux" ]; then
     OS_DIST=`/usr/bin/lsb_release -d | sed -e 's/Description:.//'`
     OS_DIST_NAME=`/usr/bin/lsb_release -i | sed -e 's/Distributor ID:.//'`
     declare -x OS_DIST
     declare -x OS_DIST_NAME
 fi
-declare -x EDITOR=vi
+# Figure out which MacOSX distribution we are on
+if [ $OS_SYS == "Darwin" ]; then
+    OS_DIST=`/usr/bin/sw_vers -productVersion`
+    OS_DIST_NAME=`/usr/bin/sw_vers -productName`
+    declare -x OS_DIST
+    declare -x OS_DIST_NAME
+fi
+
+declare -x EDITOR=vim
 declare -x PAGER=less
 declare -x LC_ALL=C
 declare -x LC_CTYPE=C
@@ -99,9 +108,3 @@ for EXTRAS in $HOME/.files/profile.d/*.sh ; do
 done
 
 umask 022
-
-export PATH=/Applications/SenchaSDKTools-2.0.0-Beta:$PATH
-
-export PATH=/Applications/SenchaSDKTools-2.0.0-Beta/command:$PATH
-
-export PATH=/Applications/SenchaSDKTools-2.0.0-Beta/jsbuilder:$PATH

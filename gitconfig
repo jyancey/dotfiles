@@ -1,0 +1,78 @@
+[gui]
+	fontui = -family Monaco -size 14 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family Monaco -size 14 -weight normal -slant roman -underline 0 -overstrike 0
+
+[user]
+	name = John Yancey
+	email = joyancey@cisco.com
+
+[core]
+	excludesfile = $HOME/.gitignore_global
+	editor = /usr/bin/vim
+
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+
+[pretty]
+	graph = %C(blue)%h%C(reset) %C(green)%d%C(reset) %s %C(yellow)%cn <%ce>%C(reset) %C(red)[%cd]%C(reset)
+
+[alias]
+	br = branch -a --color=auto
+	ci = commit
+	co = checkout
+	ffco = flow feature checkout
+	ffdiff = flow feature diff
+	fff = flow feature finish
+	fflist = flow feature list -v
+	ffpub = flow feature publish
+	ffpull = flow feature pull
+	ffrebase = flow feature rebase
+	ffs = flow feature start
+	fftrack = flow feature track
+	fhf = flow hotfix finish
+	fhlist = flow hotfix list -v
+	fhs = flow hotfix start
+	frf = flow release finish
+	frlist = flow release list -v
+	frpub = flow release publish
+	frs = flow release start
+	frtrack = flow release track
+	fslist = flow support list -v
+	fss = flow support start -F
+	last = log -1 HEAD
+	lg  = log --graph --pretty=graph --abbrev-commit --date=relative
+	lg1 = log --pretty=oneline --abbrev-commit --decorate
+	lga = log --graph --color=auto --pretty=graph --decorate=short --date=local --cherry-mark --all
+	lgf = log --graph --color=auto --pretty=graph --full-history --all 
+	lgl = log --graph --color=auto --pretty=graph --decorate=short --date=local --cherry-mark
+	lgm = log --graph --color=auto --pretty=graph --decorate=short --date=local --cherry-mark --merges
+	push-for-review = push origin HEAD:refs/for/master
+	st = status -s
+	staged = diff --cached
+	unstage = reset HEAD --
+
+[color]
+	ui = auto
+
+[mergetool]
+	keepBackup = true
+
+[branch "master"]
+	rebase = true
+
+[branch]
+	autosetuprebase = always
+
+[rebase]
+	stat = true
+
+[push]
+	default = matching
+
+[merge]
+	ff = false

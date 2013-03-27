@@ -25,36 +25,36 @@
 	br = branch -a --color=auto
 	ci = commit
 	co = checkout
-	flist = flow feature list -v
-	fs = flow feature start
-	ff = flow feature finish
-	fpub = flow feature publish
-	ftrack = flow feature track
-	fdiff = flow feature diff
-	frebase = flow feature rebase
-	fco = flow feature checkout
-	fpull = flow feature pull
-	rlist = flow release list -v
-	rs = flow release start
-	rf = flow release finish
-	rpub = flow release publish
-	rtrack = flow release track
-	hlist = flow hotfix list -v
-	hs = flow hotfix start
-	hf = flow hotfix finish
-	slist = flow support list -v
-	ss = flow support start -F
+	ffco = flow feature checkout
+	ffdiff = flow feature diff
+	fff = flow feature finish
+	fflist = flow feature list -v
+	ffpub = flow feature publish
+	ffpull = flow feature pull
+	ffrebase = flow feature rebase
+	ffs = flow feature start
+	fftrack = flow feature track
+	fhf = flow hotfix finish
+	fhlist = flow hotfix list -v
+	fhs = flow hotfix start
+	frf = flow release finish
+	frlist = flow release list -v
+	frpub = flow release publish
+	frs = flow release start
+	frtrack = flow release track
+	fslist = flow support list -v
+	fss = flow support start -F
 	last = log -1 HEAD
 	lg  = log --graph --pretty=graph --abbrev-commit --date=relative
+	lg1 = log --pretty=oneline --abbrev-commit --decorate
 	lga = log --graph --color=auto --pretty=graph --decorate=short --date=local --cherry-mark --all
 	lgf = log --graph --color=auto --pretty=graph --full-history --all 
 	lgl = log --graph --color=auto --pretty=graph --decorate=short --date=local --cherry-mark
 	lgm = log --graph --color=auto --pretty=graph --decorate=short --date=local --cherry-mark --merges
-	lg1 = log --pretty=oneline --abbrev-commit --decorate
-	st = status -s
-	unstage = reset HEAD --
 	push-for-review = push origin HEAD:refs/for/master
+	st = status -s
 	staged = diff --cached
+	unstage = reset HEAD --
 
 [color]
 	ui = auto

@@ -73,6 +73,8 @@ if [ $OS_SYS == "Darwin" ]; then
     x86_64=$(sysctl -n hw.optional.x86_64)
     if [ $x86_64 -eq 1 ]; then
         declare -x OS_PLATFORM="x86_64"
+    else
+        declare -x OS_PLATFORM="i386"
     fi
     declare -x OS_DIST
     declare -x OS_DIST_NAME

@@ -35,6 +35,9 @@ elif [ "$OS_SYS" == "Linux" ]; then
 elif [ "$OS_SYS" == "Darwin" ]; then
     declare -x AWK=/usr/bin/awk
     declare -x GREP=/usr/bin/grep
+elif [ "$OS_SYS" == "FreeBSD" ]; then
+    declare -x AWK=/usr/bin/awk
+    declare -x GREP=/usr/bin/grep
 fi
  
 z() {

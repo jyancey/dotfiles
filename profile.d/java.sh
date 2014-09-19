@@ -60,7 +60,7 @@ if [ "$OS_SYS" == "Darwin" ]; then
     if [ ! -z "$JAVE_HOME" ]; then
         if [ "$OS_DIST" =~ "10.8" ]; then
             if [ -d "/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home" ]; then
-                JAVA_HOME=/Library/Java/JavaVirtualMachines/1.6.0_41-b02-445.jdk/Contents/Home
+                JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home
             fi
         elif [ "$OS_DIST" =~ "10.7" ]; then
             if [ -d "/Library/Java/JavaVirtualMachines/jdk1.7.0_09.jdk/Contents/Home" ]; then
@@ -95,7 +95,7 @@ if [ -d "/sw/share/java/groovy" ]; then
 fi
 # Griffon the groovy base desktop application framework.
 if [ -d "/sw/share/java/griffon" ]; then
-    GRIFFON_HOME=/sw/shre/java/griffon
+    GRIFFON_HOME=/sw/share/java/griffon
 fi
 # Gradel is the build system based on groovy
 if [ -d "/sw/share/java/gradle" ]; then

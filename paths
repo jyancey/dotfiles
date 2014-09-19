@@ -10,6 +10,8 @@
 /usr/gnubin
 /usr/tools/bin
 /usr/tools/sbin
+/usr/xctools/bin
+/usr/xctools/sbin
 /usr/local/bin
 /usr/local/sbin
 /usr/gnu/bin

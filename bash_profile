@@ -9,6 +9,10 @@
 # $Id$
 #------------------------------------------------------------------------------
 #
+if [ "$DEBUG" ]; then
+  echo "Turning on debug"
+fi
+
 #declare -x POSIXLY_CORRECT=1
 
 # Bail out early if we started up from an X session. This only seems to be a
@@ -20,17 +24,26 @@ fi
 # Running as a login shell! We have already picked up the path setting 
 # from /etc/profile, now get the global aliases and functions
 if [ -f /etc/bashrc ]; then
-    source /etc/bashrc
+  if [ "$DEBUG" ]; then
+    echo "---> sourcing /etc/bashrc"
+  fi
+  source /etc/bashrc
 fi
 
 # Use bash_completion, if completion exists
 if [ -f /sw/etc/bash_completion ]; then
-    source /sw/etc/bash_completion
+  if [ "$DEBUG" ]; then
+    echo "---> sourcing /sw/etc/bash_completion"
+  fi
+  source /sw/etc/bash_completion
 fi
 
 # Start up key chain server
 if [ ! -f $HOME/.nokeychain ]; then
-    source $HOME/.files/bashrc_keychain
+  if [ "$DEBUG" ]; then
+    echo "---> sourcing $HOME/.files/bashrc_keychain"
+  fi
+  source $HOME/.files/bashrc_keychain
 fi
 
 # Export out all the system information
@@ -38,6 +51,12 @@ declare -x OS_SYS=`uname -s`
 declare -x OS_REL=`uname -r`
 declare -x OS_PLATFORM=`uname -p`
 declare -x OS_MACHINE=`uname -m`
+if [ "$DEBUG" ]; then
+  echo "---> setting system $OS_SYS"
+  echo "---> setting release $OS_REL"
+  echo "---> setting platform $OS_PLATFORM"
+  echo "---> setting arch $OS_MACHINE"
+fi
 
 # Setup the basices then bail ou if Windoze.
 if [ $OS_SYS == "CYGWIN_NT-6.1-WOW64" ]; then
@@ -78,6 +97,11 @@ if [ $OS_SYS == "Darwin" ]; then
     fi
     declare -x OS_DIST
     declare -x OS_DIST_NAME
+    if [ "$DEBUG" ]; then
+      echo "---> re-setting platform $OS_PLATFORM"
+      echo "---> setting dist $OS_DIST"
+      echo "---> setting name $OS_DIST_NAME"
+    fi
 fi
 
 declare -x EDITOR=vim
@@ -102,6 +126,9 @@ if [ "$PS1" ]; then
     esac
     if [ -e $HOME/.files/bashrc_prompt ]; then
         source $HOME/.files/bashrc_prompt
+        if [ "$DEBUG" ]; then
+          echo "---> sourcing $HOME/.files/bashrc_prompt"
+        fi
     else
         declare -x PS1="[\u@\h \W]\\$ "
     fi
@@ -111,6 +138,9 @@ fi
 for EXTRAS in $HOME/.files/profile.d/*.sh ; do
   if [ -r "$EXTRAS" ]; then
     source $EXTRAS
+    if [ "$DEBUG" ]; then
+      echo "---> sourcing $EXTRAS"
+    fi
   fi
 done
 

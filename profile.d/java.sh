@@ -116,7 +116,7 @@ fi
 
 declare -x JAVA_HOME
 declare -x MAVEN_HOME
-declare -x MAVEN_OPTS='-Xmx2048m -Xms1024m -XX:MaxPermSize=128m'
+declare -x MAVEN_OPTS='-Xmx4096m -Xms2048m'
 declare -x GROOVY_HOME
 declare -x GRIFFON_HOME
 declare -x GRADEL_HOME

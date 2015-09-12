@@ -43,3 +43,4 @@
 /nfs/iwe/bin
 /nfs/iwe/sbin
 /usr/local/crossgcc/bin
+/usr/local/go/bin

@@ -30,6 +30,8 @@ else
    SYM='-'
 fi
 
+/sw/bin/fortune | /sw/bin/cowsay -n
+
 # Define the actual prompt, which will look like:
 # --[login@hostname]--
 # --{~}--

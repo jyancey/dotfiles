@@ -33,7 +33,6 @@ function s () {
         # build the bookmark file with the contents "$CD directory_path"
         ( echo -n '$CD ' > $HOME/.dirmarks/"$1" ; 
           pwd | sed "s/ /\\\\ /g" >> $HOME/.dirmarks/"$1" ; ) > /dev/null 2>&1
-
     fi
 
     # if the bookmark could not be created, print an error message and

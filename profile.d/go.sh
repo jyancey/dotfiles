@@ -9,13 +9,13 @@
 # $Id$
 #------------------------------------------------------------------------------
 
-if [ -x /usr/local/go ]; then
+if [ -x "/usr/local/go" ]; then
   GOROOT=/usr/local/go
 fi
 
-if [ -x /Users/joyancey/Development/goprojects ]; then
+if [ -x "/Users/joyancey/Development/goprojects" ]; then
   GOPATH=/Users/joyancey/Development/GoProjects
-elif [ -x /nfs/source/GoProjects]; then
+elif [ -x "/nfs/source/GoProjects" ]; then
   GOPATH=/nfs/source/GoProjects
 fi
 declare -x GOROOT GOPATH

@@ -23,8 +23,6 @@
 /usr/dt/bin
 /usr/openwin/bin
 /usr/proc/bin
-/usr/cisco/bin
-/usr/cisco/sbin
 /opt/SUNWspro/bin
 /opt/SunStudioExpress/bin
 /usr/ccs/bin
@@ -32,15 +30,10 @@
 /usr/sfw/sbin
 /usr/java/bin
 /usr/xpg4/bin
-/opt/cisco/bin
-/opt/cisco/sbin
 /opt/csw/bin
 /opt/csw/sbin
 /opt/onbld/bin
 /sw/nonprod/bin
 /ecs/bin
-/opt/rational/clearcase/bin
-/nfs/iwe/bin
-/nfs/iwe/sbin
 /usr/local/crossgcc/bin
 /usr/local/go/bin

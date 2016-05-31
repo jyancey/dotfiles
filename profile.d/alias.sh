@@ -42,28 +42,8 @@ if [ "$OS_SYS" == "FreeBSD" ]; then
         alias ls='ls -G'
     fi
 fi
-if [ -f /auto/surf-tp/tools/ant/apache-ant-1.7.1/bin/ant ]; then
-    alias ant='/auto/surf-tp/tools/ant/apache-ant-1.7.1/bin/ant ${1:+"$@"}'
-fi
-if [ -f /auto/surf-tp/configs/iwe/tools/apache-maven-2.2.1/bin/mvn ]; then
-    alias mvn2='/auto/surf-tp/configs/iwe/tools/apache-maven-2.2.1/bin/mvn ${1:+"$@"}'
-fi
-if [ -f /auto/surf-tp/configs/arti/tools/apache-maven-3.0.3/bin/mvn ]; then
-    alias mvn3='/auto/surf-tp/configs/arti/tools/apache-maven-3.0.3/bin/mvn ${1:+"$@"}'
-fi
-if [ -f /usr/cisco/packages/git/current/libexec/git-core/git-svn ]; then
-    alias git-svn='/usr/cisco/packages/git/current/libexec/git-core/git-svn ${1:+"$@"}'
-fi
 if [ -f /usr/local/bin/git-svn ]; then
     alias git-svn='/usr/local/bin/git-svn ${1:+"$@"}'
-fi
-if [ -f /usr/cisco/bin/vim ]; then
-    alias vim=/usr/cisco/bin/vim
-    alias vi=/usr/cisco/bin/vim
-    alias edit=/usr/cisco/bin/vim
-fi
-if [ -f /opt/rational/clearcase/bin/cleartool ]; then
-    alias ct=/opt/rational/clearcase/bin/cleartool
 fi
 if [ -f /usr/ucb/ps ]; then 
     alias bsdps=/usr/ucb/ps
@@ -71,7 +51,6 @@ fi
 alias ...='cd ../..'
 alias ..='cd ..'
 alias cl=clear 2>/dev/null
-alias cws='cd /ws/joyancey-sjc'
 alias gb='git branch'
 alias gba='git branch -a'
 alias gc='git commit -v'
@@ -106,21 +85,7 @@ alias rrm='rm -fr ${1:+"$@"}'
 alias sed='gsed'
 alias wdiff='diff -bituNr ${1:+"$@"}'
 #
-# Easy SSH shortcuts.
-#
-alias solaris='ssh john@192.168.1.15'
-alias ubuntu='ssh john@192.168.1.16'
-alias sjclnx='ssh joyancey@sjc-joyancey-lnx.cisco.com'
-alias iwesbx='ssh joyancey@iwe-quadlite.cisco.com'
-#
 # Different Environment setups
 #
-alias iosenv='. $HOME/.files/build_env/iosenv.sh'
-alias iosund='. $HOME/.files/build_env/iosund.sh'
-alias novaenv='. $HOME/.files/build_env/novaenv.sh'
-alias novaund='. $HOME/.files/build_env/novaund.sh'
-alias novaadm='. $HOME/.files/build_env/novaadm.sh'
 alias jdsenv='. $HOME/.files/build_env/jdsenv.sh'
-alias iweenv='. $HOME/.files/build_env/iweenv.sh'
-alias iweund='. $HOME/.files/build_env/iweund.sh'
 alias gnustep='. $HOME/.files/build_env/gnustep.sh'

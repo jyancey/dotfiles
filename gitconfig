@@ -4,7 +4,7 @@
 
 [user]
 	name = John Yancey
-	email = joyancey@cisco.com
+	email = jyancey@merrypranksters.org
 
 [core]
 	excludesfile = $HOME/.gitignore_global
@@ -81,3 +81,7 @@
 [filter "media"]
 	clean = git-media-clean %f
 	smudge = git-media-smudge %f
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f

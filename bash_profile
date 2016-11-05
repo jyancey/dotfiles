@@ -9,6 +9,9 @@
 # $Id$
 #------------------------------------------------------------------------------
 #
+# Uncomment to turn dotfile debug statments on.
+# export DEBUG=1
+#
 if [ "$DEBUG" ]; then
   echo "Turning on debug"
 fi
@@ -145,3 +148,5 @@ for EXTRAS in $HOME/.files/profile.d/*.sh ; do
 done
 
 umask 022
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"

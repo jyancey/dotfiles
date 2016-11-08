@@ -10,6 +10,6 @@
 #------------------------------------------------------------------------------
 #
 if [ -d "${HOME}/.ec2" ]; then
-  EC2_HOME=${HOME}/.ec2/
-  source ${ECS_HOME}/env.sh
+  EC2_HOME=${HOME}/.ec2
+  source ${EC2_HOME}/env.sh
 fi

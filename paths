@@ -4,6 +4,7 @@
 /usr/sbin
 /sw/bin
 /sw/sbin
+/sw/lib/go
 /opt/bin
 /opt/sbin
 /usr/texbin
@@ -14,6 +15,9 @@
 /usr/xctools/sbin
 /usr/local/bin
 /usr/local/sbin
+/usr/local/texbin
+/usr/local/go/bin
+/usr/local/crossgcc/bin
 /usr/gnu/bin
 /usr/gnu/sbin
 /usr/X11/bin
@@ -35,5 +39,3 @@
 /opt/onbld/bin
 /sw/nonprod/bin
 /ecs/bin
-/usr/local/crossgcc/bin
-/usr/local/go/bin

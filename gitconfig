@@ -7,7 +7,7 @@
 	email = jyancey@merrypranksters.org
 
 [core]
-	excludesfile = $HOME/.gitignore_global
+	excludesfile = /Users/john/.gitignore_global
 	editor = /usr/bin/vim
 
 [difftool "sourcetree"]
@@ -85,3 +85,5 @@
 	required = true
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
+[commit]
+	template = /Users/john/.stCommitMsg

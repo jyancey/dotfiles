@@ -9,6 +9,7 @@
 [core]
 	excludesfile = /Users/john/.gitignore_global
 	editor = /usr/bin/vim
+	quotepath = false
 
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
@@ -87,3 +88,5 @@
 	smudge = git-lfs smudge %f
 [commit]
 	template = /Users/john/.stCommitMsg
+[credential "https://stash.veritas.com"]
+	helper = /Users/john/git-credential-veritas-stash.pex --autorun

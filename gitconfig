@@ -89,4 +89,4 @@
 [commit]
 	template = /Users/john/.stCommitMsg
 [credential "https://stash.veritas.com"]
-	helper = /Users/john/git-credential-veritas-stash.pex --autorun
+	helper = /Users/john/bin/git-credential-veritas-stash.pex --autorun

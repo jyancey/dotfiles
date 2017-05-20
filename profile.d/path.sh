@@ -51,5 +51,5 @@ done
 # Now to clean up
 unset pathremove pathprepend pathappend
 
-declare -x PATH=$PATH:${HOME}/bin:${HOME}/.ec2/bin
+declare -x PATH=$PATH:${HOME}/bin:${HOME}/.ec2/bin:${GOPATH}/bin
 

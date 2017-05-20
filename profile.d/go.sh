@@ -10,12 +10,12 @@
 #------------------------------------------------------------------------------
 
 if [ -x "/usr/local/go" ]; then
-  GOROOT=/usr/local/go
+  export GOROOT=/usr/local/go
+elif [ -x "/sw/lib/go" ]; then
+  export GOROOT=/sw/lib/go
 fi
 
-if [ -x "/Users/joyancey/Development/goprojects" ]; then
-  GOPATH=/Users/joyancey/Development/GoProjects
-elif [ -x "/nfs/source/GoProjects" ]; then
-  GOPATH=/nfs/source/GoProjects
+if [ -x "${HOME}/Developer/sources/GoProjects" ]; then
+  export GOPATH=${HOME}/Developer/sources/GoProjects
 fi
-declare -x GOROOT GOPATH
+

@@ -51,4 +51,4 @@ done
 # Now to clean up
 unset manpathremove manpathprepend manpathappend
 
-declare -x MANPATH=$MANPATH:${HOME}/man
+declare -x MANPATH=$MANPATH:${HOME}/man:${HOME}/.npm-packages/share/man

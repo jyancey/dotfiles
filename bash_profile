@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # bash_profile - Dotfiles bash login profile file.
 #
-# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2018 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -10,7 +10,7 @@
 #------------------------------------------------------------------------------
 #
 # Uncomment to turn dotfile debug statments on.
-# export DEBUG=1
+#export DEBUG=1
 #
 if [ "$DEBUG" ]; then
   echo "Turning on debug"
@@ -137,6 +137,13 @@ if [ "$PS1" ]; then
     fi
 fi
 
+if [ -e "${HOME}/.iterm2_shell_integration.bash" ]; then
+	source $HOME/.iterm2_shell_integration.bash
+    if [ "$DEBUG" ]; then
+      echo "---> sourcing $HOME/.iterm2_shell_integration.bash"
+    fi
+fi
+
 # Now for all the tricky stuff
 for EXTRAS in $HOME/.files/profile.d/*.sh ; do
   if [ -r "$EXTRAS" ]; then
@@ -148,5 +155,3 @@ for EXTRAS in $HOME/.files/profile.d/*.sh ; do
 done
 
 umask 022
-
-test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"

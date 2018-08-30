@@ -1,0 +1,9 @@
+# Default npm registry.
+registry = https://registry.npmjs.org/
+
+# Adding in the Netflix Artifactory instence.
+registry = http://artifacts.netflix.com/api/npm/npm-netflix/
+@nrdp:registry = http://artifacts.netflix.com/api/npm/npm-netflix/
+
+# Install npm packages in this location.
+prefix=${HOME}/.npm-packages

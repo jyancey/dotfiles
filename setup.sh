@@ -19,6 +19,7 @@
 #    vimrc        -->  ~/.files/vimrc
 #    vim_runtime  -->  ~/.vim_runtime
 #    gitconfig    -->  ~/.gitconfig
+#    npmrc        -->  ~/.files/npmrc
 
 echo "Setting up:"
 echo " -->  profile"
@@ -68,4 +69,10 @@ echo " -->  gitignore_global"
 if [ ! -L "$HOME/.gitingore_global" ];then
     ln -fs $HOME/.files/gitignore_global $HOME/.gitignore_global
 fi
+
+echo " -->  npmrc"
+if [ ! -L "$HOME/.npmrc" ]; then
+    ln -fs $HOME/.files/npmrc $HOME/.npmrc
+fi
+
 echo "Done!"

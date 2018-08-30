@@ -4,10 +4,10 @@
 
 [user]
 	name = John Yancey
-	email = jyancey@merrypranksters.org
+	email = jyancey@netflix.com
 
 [core]
-	excludesfile = /Users/john/.gitignore_global
+	excludesfile = /Users/jyancey/.gitignore_global
 	editor = /usr/bin/vim
 	quotepath = false
 
@@ -16,7 +16,7 @@
 	path = 
 
 [mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
 
 [pretty]

@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # aws.sh - Dotfiles.
 #
-# Copyright (c) 2000-2013 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2018 by John Yancey, All rights reserved.
 #
 # August 2013 John Yancey <john.yancey@acm.org>
 #

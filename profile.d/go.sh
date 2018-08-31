@@ -15,7 +15,11 @@ elif [ -x "/sw/lib/go" ]; then
   export GOROOT=/sw/lib/go
 fi
 
-if [ -x "${HOME}/Developer/sources/GoProjects" ]; then
-  export GOPATH=${HOME}/Developer/sources/GoProjects
+if [ -x "${HOME}/go" ]; then
+  export GOPATH=${HOME}/go
+fi
+
+if [ -x "${GOPATH}/bin" ]; then
+  export PATH=${PATH}:${GOPATH}/bin
 fi
 

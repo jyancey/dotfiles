@@ -1,5 +1,5 @@
 # This is a sample build configuration.
-image: atlassian/default-image:latest
+image: atlassian/default-image:2
 pipelines:
   default:
     - step:

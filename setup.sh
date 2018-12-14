@@ -1,27 +1,39 @@
 #! /bin/sh
 #------------------------------------------------------------------------------
-# create_symlinks.sh - Dotfiles create symlink to file in home dir.
+# setup.sh - Create symlink to dot files in home dir.
 #
-# Copyright (c) 2000-2010 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2018 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
 # $Id$
 #------------------------------------------------------------------------------
 #
-# Need to crearte the following symlinks and directories if they do not
-# exist:
-#    profile      -->  ~/.files/bash_profile
-#    bash_profile -->  ~/.profile
-#    bashrc       -->  ~/.profile
-#    bash_logout  -->  ~/.files/bash_logout
-#    dir_colors   -->  ~/.files/dir_colors
-#    vimrc        -->  ~/.files/vimrc
-#    vim_runtime  -->  ~/.vim_runtime
-#    gitconfig    -->  ~/.gitconfig
-#    npmrc        -->  ~/.files/npmrc
+# This assumes that the dotfiles repo is checked out into the $HOME/.files 
+# directory. This will create the following symlinks and directories if they
+# do not exist:
+#    $HOME/.files/bashrc       -->  ~/.profile
+#    $HOME/.files/bash_logout  -->  ~/.files/bash_logout
+#    $HOME/.files/bash_profile -->  ~/.profile
+#    $HOME/.files/dir_colors   -->  ~/.files/dir_colors
+#    $HOME/.files/gitconfig    -->  ~/.gitconfig
+#    $HOME/.files/npmrc        -->  ~/.files/npmrc
+#    $HOME/.files/profile      -->  ~/.files/bash_profile
+#    $HOME/.files/vimrc        -->  ~/.files/vimrc
+#    $HOME/.files/vim_runtime  -->  ~/.vim_runtime
 
-dotFiles=( profile bash_profile bashrc bash_logout dir_colors vimrc vim_runtime gitconfig gitignore_global npmrc )
+dotFiles=(
+    bashrc \
+    bash_logout \
+    bash_profile \
+    dir_colors \
+    gitconfig \
+    gitignore_global \
+    npmrc \
+    profile \
+    vimrc \
+    vim_runtime
+)
 
 echo "Setting up:"
 for file in "${dotFiles[@]}"; do

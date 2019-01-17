@@ -18,7 +18,7 @@
 #    $HOME/.files/dir_colors   -->  ~/.dir_colors
 #    $HOME/.files/gitconfig    -->  ~/.gitconfig
 #    $HOME/.files/npmrc        -->  ~/.npmrc
-#    $HOME/.files/profile      -->  ~/.bash_profile
+#    $HOME/.files/profile      -->  ~/.profile
 #    $HOME/.files/vimrc        -->  ~/.vimrc
 #    $HOME/.files/vim_runtime  -->  ~/.vim_runtime
 

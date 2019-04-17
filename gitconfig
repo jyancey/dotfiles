@@ -87,6 +87,7 @@
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 [commit]
-	template = /Users/john/.stCommitMsg
-[credential "https://stash.veritas.com"]
-	helper = /Users/john/bin/git-credential-veritas-stash.pex --autorun
+	template = /Users/jyancey/.files/git-commit-template.txt
+	cleanup = strip
+[rerere]
+	enabled = true

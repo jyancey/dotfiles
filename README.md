@@ -2,7 +2,7 @@
 
 This repository containes my personal dot files, these files would only really work for someone like, well, me.
 
-There are lot's of assumptions about where directories are located, and how development environments are consctructed. These dot files have lasted through four different conpanies, and works for my personal leptop and desktop, so can't be all that bad.
+There are lot's of assumptions about where directories are located, and how development environments are consctructed. These dot files have lasted through four different conpanies, and works for my personal laptop and desktop, so can't be all that bad.
 
 ## Getting The Basics ##
 
@@ -12,7 +12,7 @@ I personally use [MacPorts](https://www.macports.org), and build the package fro
 
 Download the source packages from the [MacPorts](https://www.macports.org/install.php) website, then:
 
-1. ‚Äúcd‚Äù into the directory where you've downloaded the source package and unpack the thing.
+1. ìcdî into the directory where you've downloaded the source package and unpack the thing.
 2. `./configure --prefix='/sw' && make && sudo make install`
 
 

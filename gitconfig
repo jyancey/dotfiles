@@ -4,10 +4,10 @@
 
 [user]
 	name = John Yancey
-	email = jyancey@netflix.com
+	email = john.yancey@mac.com
 
 [core]
-	excludesfile = /Users/jyancey/.gitignore_global
+	excludesfile = /Users/john/.gitignore_global
 	editor = /usr/bin/vim
 	quotepath = false
 
@@ -77,17 +77,25 @@
 
 [merge]
 	ff = false
+
 [credential]
 	helper = osxkeychain
+
 [filter "media"]
 	clean = git-media-clean %f
 	smudge = git-media-smudge %f
+
 [filter "lfs"]
 	required = true
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
+
 [commit]
 	template = /Users/jyancey/.files/git-commit-template.txt
 	cleanup = strip
+
 [rerere]
 	enabled = true
+
+[pull]
+	rebase = true

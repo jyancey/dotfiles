@@ -6,15 +6,16 @@ There are lot's of assumptions about where directories are located, and how deve
 
 ## Getting The Basics ##
 
-I personally use [MacPorts](https://www.macports.org), and build the package from source to locate the installed packages in the `/sw` directory. This is a hold over from Cisco, where all the needed development tooling was located in that directory. This also allows from other packages to exist in `/usr/local` with out interferring with the commands I've become used to using.
+I personally use [MacPorts](https://www.macports.org), and build the package from source to locate the installed packages in the `/usr/local` directory. Back in the good old days, this is where one would find all the "extra" tooling that the SysAdmin had installed, becuase the normal OS install lacked usefull items like a compiler (you had to pay extra for the developer tool kits).
+
+This is unsupported for [MacPorts](https://www.macports.org), note the build from source, but I like `/usr/local` to look like what you'd see in the system `/usr` directory. Why? Well, if you are used to developing where `*.h` files are in `/usr/include` you then expectat they would also exist in `/usr/local/include`, see nice.
 
 ### MacPorts Source Installation ###
 
-Download the source packages from the [MacPorts](https://www.macports.org/install.php) website, then:
+Download the source packages from the [MacPorts Dowloads](https://www.macports.org/install.php) website, then:
 
-1. “cd” into the directory where you've downloaded the source package and unpack the thing.
-2. `./configure --prefix='/sw' && make && sudo make install`
-
+1. `cd`into the directory where you've downloaded the source package and unpack the thing.
+2. `./configure --prefix=/usr/local --with-unsupported-prefix && make && sudo make install`
 
 Once the [MacPorts](https://www.macports.org) package manager is installed, you'll need to add the following ports as the minimum:
 
@@ -28,11 +29,11 @@ Once the [MacPorts](https://www.macports.org) package manager is installed, you'
  * osxutils
  * tree
 
-Accept all the additional dependent packages that are pulled in from these basic ports.
+Accept all the additional dependent packages that are pulled in from these basic ports by using `port -N install ${package}`.
 
 ## Setting Up the Dotfiles ##
 
-Now comes the easy part, assuming your checked out this repository in to `$HOME/.files`, run the `$HOME/.files/setup.sh` script that exists in your new `.files` directory. This will create all the dot files in your `$HOME` directory, but as symbolic links to the source files in your `.files` directory.
+Now comes the easy part, assuming you've checked out this repository in to `$HOME/.files`, run the `$HOME/.files/setup.sh` script that exists in your new `.files` directory. This will create all the dot files in your `$HOME` directory, but as symbolic links to the source files in your `.files` directory.
 
 ### License ###
 

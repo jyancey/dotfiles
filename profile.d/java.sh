@@ -84,30 +84,30 @@ fi
 
 # Let's define a few other Java type things.
 # Maven build system
-if [ -d "/sw/share/java/maven3" ]; then
-    MAVEN_HOME=/sw/share/java/maven3
-elif [ -d "/sw/share/java/maven2" ]; then
-    MAVEN_HOME=/sw/share/java/maven2
+if [ -d "/usr/local/share/java/maven3" ]; then
+    MAVEN_HOME=/usr/local/share/java/maven3
+elif [ -d "/usr/local/share/java/maven2" ]; then
+    MAVEN_HOME=/usr/local/share/java/maven2
 fi
 # Groovy: Java scripting language.
-if [ -d "/sw/share/java/groovy" ]; then
-    GROOVY_HOME=/sw/share/java/groovy
+if [ -d "/usr/local/share/java/groovy" ]; then
+    GROOVY_HOME=/usr/local/share/java/groovy
 fi
 # Griffon the groovy base desktop application framework.
-if [ -d "/sw/share/java/griffon" ]; then
-    GRIFFON_HOME=/sw/share/java/griffon
+if [ -d "/usr/local/share/java/griffon" ]; then
+    GRIFFON_HOME=/usr/local/share/java/griffon
 fi
 # Gradel is the build system based on groovy
-if [ -d "/sw/share/java/gradle" ]; then
-    GRADEL_HOME=/sw/share/java/gradle
+if [ -d "/usr/local/share/java/gradle" ]; then
+    GRADEL_HOME=/usr/local/share/java/gradle
 fi
 # Grails is like Rails, but on Groovy
-if [ -d "/sw/share/java/grails" ]; then
-    GRAILS_HOME=/sw/share/java/grails
+if [ -d "/usr/local/share/java/grails" ]; then
+    GRAILS_HOME=/usr/local/share/java/grails
 fi
 # Tomcat6
-if [ -d "/sw/share/java/tomcat6" ]; then
-    CATALINA_HOME=/sw/share/java/tomcat6
+if [ -d "/usr/local/share/java/tomcat6" ]; then
+    CATALINA_HOME=/usr/local/share/java/tomcat6
 elif [ -d "/usr/share/tomcat6" ]; then
     CATALINA_HOME=/usr/share/tomcat6
 elif [ -d "/usr/appserv/tomcat6" ]; then

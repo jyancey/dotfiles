@@ -24,13 +24,15 @@ BY="\[\033[1;33m\]"   # Bright Yellow
 
 # Find out if we are root
 if [ $UID -eq 0 ] ; then
-   # The '#' character serves as an extra reminder that I am root
-   SYM='#'
+  # The '#' character serves as an extra reminder that I am root
+  SYM='#'
 else
-   SYM='-'
+  SYM='-'
 fi
 
-/sw/bin/fortune | /sw/bin/cowsay -n
+if [ -e /usr/local/bin/fortune -a -e /usr/local/bin/cowsay ]; then
+  /usr/local/bin/fortune | /usr/local/bin/cowsay -n
+fi
 
 # Define the actual prompt, which will look like:
 # --[login@hostname]--

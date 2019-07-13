@@ -12,15 +12,16 @@
 # This assumes that the dotfiles repo is checked out into the $HOME/.files 
 # directory. This will create the following symlinks and directories if they
 # do not exist:
-#    $HOME/.files/bashrc       -->  ~/.bashrc
-#    $HOME/.files/bash_logout  -->  ~/.bash_logout
-#    $HOME/.files/bash_profile -->  ~/.profile
-#    $HOME/.files/dir_colors   -->  ~/.dir_colors
-#    $HOME/.files/gitconfig    -->  ~/.gitconfig
-#    $HOME/.files/npmrc        -->  ~/.npmrc
-#    $HOME/.files/profile      -->  ~/.profile
-#    $HOME/.files/vimrc        -->  ~/.vimrc
-#    $HOME/.files/vim_runtime  -->  ~/.vim_runtime
+#    $HOME/.files/bashrc            -->  ~/.bashrc
+#    $HOME/.files/bash_logout       -->  ~/.bash_logout
+#    $HOME/.files/bash_profile      -->  ~/.profile
+#    $HOME/.files/dir_colors        -->  ~/.dir_colors
+#    $HOME/.files/gitconfig         -->  ~/.gitconfig
+#    $HOME/.files/gitignore_global  -->  ~/.gitignore_global
+#    $HOME/.files/npmrc             -->  ~/.npmrc
+#    $HOME/.files/profile           -->  ~/.profile
+#    $HOME/.files/vimrc             -->  ~/.vimrc
+#    $HOME/.files/vim_runtime       -->  ~/.vim_runtime
 
 dotFiles=(
     bashrc \

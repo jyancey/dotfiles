@@ -25,14 +25,14 @@ if [ "$OS_SYS" == "SunOS" ]; then
     fi
 fi
 if [ "$OS_SYS" == "Darwin" ]; then
-    if [ -x /sw/bin/gls ]; then
-        alias ls='/sw/bin/gls --color=auto'
+    if [ -x /usr/local/bin/gls ]; then
+        alias ls='/usr/local/bin/gls --color=auto'
     else
         alias ls='ls -G'
         declare -x LSCOLORS=exgxDxDxcxDxDxhbcxheex
     fi
-    if [ -x /sw/bin/svn ]; then
-        alias svn=/sw/bin/svn
+    if [ -x /usr/local/bin/svn ]; then
+        alias svn=/usr/local/bin/svn
     fi
 fi
 if [ "$OS_SYS" == "FreeBSD" ]; then

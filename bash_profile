@@ -34,11 +34,11 @@ if [ -f /etc/bashrc ]; then
 fi
 
 # Use bash_completion, if completion exists
-if [ -f /sw/etc/bash_completion ]; then
+if [ -f /usr/local/etc/bash_completion ]; then
   if [ "$DEBUG" ]; then
-    echo "---> sourcing /sw/etc/bash_completion"
+    echo "---> sourcing /usr/local/etc/bash_completion"
   fi
-  source /sw/etc/bash_completion
+  source /usr/local/etc/bash_completion
 fi
 
 # Start up key chain server

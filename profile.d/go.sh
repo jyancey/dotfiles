@@ -9,14 +9,26 @@
 # $Id$
 #------------------------------------------------------------------------------
 
+if [ -x "${HOME}/Develop" ];then
+  export DEVPATH=${HOME}/Develop
+elif [ -x "${HOME}/Developer" ]; then
+  export DEVPATH=${HOME}/Developer
+fi
+
 if [ -x "/usr/local/go" ]; then
   export GOROOT=/usr/local/go
   export PATH=${PATH}:/usr/local/go/bin
-elif [ -x "/sw/lib/go" ]; then
-  export GOROOT=/sw/lib/go
+elif [ -x "/usr/local/lib/go" ]; then
+  export GOROOT=/usr/local/lib/go
 fi
 
-if [ -x "${HOME}/WorkSpace/golang" ]; then
-  export GOPATH=${HOME}/WorkSpace/golang
+if [ -x "${DEVPATH}" ]; then
+  export GOPATH=${DEVPATH}/go
+elif [ -x "${HOME}/go" ]; then
+  export GOPATH=${HOME}/go
+fi
+
+if [ -x "${GOPATH}/bin" ]; then
+  export PATH=${PATH}:${GOPATH}/bin
 fi
 

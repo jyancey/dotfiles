@@ -14,8 +14,8 @@
 # Set a default keychain
 if [ -x /usr/bin/keychain ]; then
     declare -x KEYCHAIN=/usr/bin/keychain
-elif [ -x /sw/bin/keychain ]; then
-    declare -x KEYCHAIN=/sw/bin/keychain
+elif [ -x /usr/local/bin/keychain ]; then
+    declare -x KEYCHAIN=/usr/local/bin/keychain
 fi
 HOSTNAME=`uname -n`
 id | egrep -e "(joyancey|john)" > /dev/null 
@@ -39,11 +39,11 @@ if [ $? -eq 0 ]; then
         fi
     fi
     if [ "$OS_SYS" == "Darwin" ]; then
-        if [ ! -x "/sw/bin/keychain" ]; then
+        if [ ! -x "/usr/local/bin/keychain" ]; then
             echo "Unable to find keychain!"
             return
         else
-            declare -x KEYCHAIN=/sw/bin/keychain
+            declare -x KEYCHAIN=/usr/local/bin/keychain
        fi
     fi
 

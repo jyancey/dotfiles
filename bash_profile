@@ -41,14 +41,6 @@ if [ -f /usr/local/etc/bash_completion ]; then
   source /usr/local/etc/bash_completion
 fi
 
-# Start up key chain server
-if [ ! -f $HOME/.nokeychain ]; then
-  if [ "$DEBUG" ]; then
-    echo "---> sourcing $HOME/.files/bashrc_keychain"
-  fi
-  source $HOME/.files/bashrc_keychain
-fi
-
 # Export out all the system information
 declare -x OS_SYS=`uname -s`
 declare -x OS_REL=`uname -r`
@@ -142,6 +134,14 @@ if [ -e "${HOME}/.iterm2_shell_integration.bash" ]; then
     if [ "$DEBUG" ]; then
       echo "---> sourcing $HOME/.iterm2_shell_integration.bash"
     fi
+fi
+
+# Start up key chain server
+if [ ! -f $HOME/.nokeychain ]; then
+  if [ "$DEBUG" ]; then
+    echo "---> sourcing $HOME/.files/bashrc_keychain"
+  fi
+  source $HOME/.files/bashrc_keychain
 fi
 
 # Now for all the tricky stuff

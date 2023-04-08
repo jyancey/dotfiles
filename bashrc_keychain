@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # bashrc_keychain - Dotfiles.
 #
-# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2019 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -12,57 +12,45 @@
 # Start up a keychain agent to avoid crazy password challenge all the time
 #
 # Set a default keychain
-if [ -x /usr/bin/keychain ]; then
-    declare -x KEYCHAIN=/usr/bin/keychain
-elif [ -x /sw/bin/keychain ]; then
-    declare -x KEYCHAIN=/sw/bin/keychain
-fi
-HOSTNAME=`uname -n`
-id | egrep -e "(joyancey|john)" > /dev/null 
-if [ $? -eq 0 ]; then
-    declare -x HOSTNAME_SHORT=`hostname | sed -e 's/\.cisco\.com//'`
-    if [ "$OS_SYS" == "SunOS" ]; then
-        if [ ! -x "/usr/cisco/bin/keychain" ]; then
-            echo "Unable to find keychain!"
-            return
-        else
-            declare -x KEYCHAIN=/usr/cisco/bin/keychain
-        fi
-    fi
-    if [ "$OS_SYS" == "Linux" ]; then
+declare -x HOSTNAME=`uname -n`
+
+if [ "$OS_SYS" == "Linux" ]; then
+    if [ "$DEBUG" ]; then
         echo "Looking for keychain..."
-        if [ ! -x "/usr/bin/keychain" ]; then
-            echo "Unable to find keychain!"
-            return
-        else
-            declare -x KEYCHAIN=/usr/bin/keychain
-        fi
     fi
-    if [ "$OS_SYS" == "Darwin" ]; then
-        if [ ! -x "/sw/bin/keychain" ]; then
-            echo "Unable to find keychain!"
-            return
-        else
-            declare -x KEYCHAIN=/sw/bin/keychain
-       fi
-    fi
-
-    # If the file $HOME/.nokeychain exists, don't run keychain
-    if [ -e $HOME/.nokeychain ]; then
-        echo "Skipping keychain"
+    if [ ! -x "/usr/bin/keychain" ]; then
+        echo "Unable to find keychain!"
         return
+    else
+        KEYCHAIN=/usr/bin/keychain
     fi
-
-    # The 'keychainHOSTS' variable is a list of hostnames we really
-    # want to run keychain agent on. The " _" is a placeholder to ensure 
-    # there is no empty variable.
-    keychainHOSTS=" _" 
-    echo "$keychainHOSTS" | grep `echo $HOSTNAME_SHORT` > /dev/null
-
-    # If we didn't run a new agent above, AND our host is a keychainHOST, 
-    # run it:
-    if [ $?  = "0" ] && [ $keychainON = "0" ]; then
-        $KEYCHAIN -q $HOME/.ssh/id_rsa > /dev/null
-        source $HOME/.ssh-agent-${HOSTNAME}
+fi
+if [ "$OS_SYS" == "Darwin" ]; then
+    if [ "$DEBUG" ]; then
+        echo "Looking for keychain..."
     fi
+    if [ ! -x "/usr/local/bin/keychain" ]; then
+        echo "Unable to find keychain!"
+        return
+    else
+        KEYCHAIN=/usr/local/bin/keychain
+   fi
+fi
+
+# If the file $HOME/.nokeychain exists, don't run keychain
+if [ -e $HOME/.nokeychain ]; then
+    echo "Skipping keychain"
+    declare -x keychainON=1
+fi
+
+# The 'keychainHOSTS' variable is a list of hostnames we really
+# want to run keychain agent on. The " _" is a placeholder to ensure 
+# there is no empty variable.
+keychainHOSTS=" _" 
+echo "$keychainHOSTS" | grep `echo $HOSTNAME` > /dev/null
+
+# Run it
+if [ "$keychainON" != 0 ]; then
+    $KEYCHAIN -q $HOME/.ssh/id_rsa > /dev/null
+    source $HOME/.keychain/${HOSTNAME}-sh
 fi

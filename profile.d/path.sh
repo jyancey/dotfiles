@@ -51,6 +51,4 @@ done
 # Now to clean up
 unset pathremove pathprepend pathappend
 
-declare -x PATH=$PATH:${HOME}/bin:${HOME}/.ec2/bin:${GOPATH}/bin:${HOME}/.npm-packages/bin
-
-
+declare -x PATH

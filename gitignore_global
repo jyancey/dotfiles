@@ -1,4 +1,9 @@
 *~
 .DS_Store
 .gitmodules
+.idea
+.vscode
+.dSYM
+cmake-build-debug
+CMakeFiles
 target

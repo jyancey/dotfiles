@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # setup.sh - Create symlink to dot files in home dir.
 #
-# Copyright (c) 2000-2018 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2020 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -12,21 +12,26 @@
 # This assumes that the dotfiles repo is checked out into the $HOME/.files 
 # directory. This will create the following symlinks and directories if they
 # do not exist:
-#    $HOME/.files/bashrc       -->  ~/.bashrc
-#    $HOME/.files/bash_logout  -->  ~/.bash_logout
-#    $HOME/.files/bash_profile -->  ~/.profile
-#    $HOME/.files/dir_colors   -->  ~/.dir_colors
-#    $HOME/.files/gitconfig    -->  ~/.gitconfig
-#    $HOME/.files/npmrc        -->  ~/.npmrc
-#    $HOME/.files/profile      -->  ~/.profile
-#    $HOME/.files/vimrc        -->  ~/.vimrc
-#    $HOME/.files/vim_runtime  -->  ~/.vim_runtime
+#    $HOME/.files/bashrc            -->  ~/.bashrc
+#    $HOME/.files/bash_logout       -->  ~/.bash_logout
+#    $HOME/.files/bash_profile      -->  ~/.profile
+#    $HOME/.files/dir_colors        -->  ~/.dir_colors
+#    $HOME/.files/hgignore_global   -->  ~/.hgignore_global
+#    $HOME/.files/ident.pro         -->  ~/.ident.pro
+#    $HOME/.files/gitconfig         -->  ~/.gitconfig
+#    $HOME/.files/gitignore_global  -->  ~/.gitignore_global
+#    $HOME/.files/npmrc             -->  ~/.npmrc
+#    $HOME/.files/profile           -->  ~/.profile
+#    $HOME/.files/vimrc             -->  ~/.vimrc
+#    $HOME/.files/vim_runtime       -->  ~/.vim_runtime
 
 dotFiles=(
     bashrc \
     bash_logout \
     bash_profile \
     dir_colors \
+    hgignore_global \
+    indent.pro \
     gitconfig \
     gitignore_global \
     npmrc \

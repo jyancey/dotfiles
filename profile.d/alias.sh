@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # alias.sh - Dotfiles.
 #
-# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2020 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -25,14 +25,14 @@ if [ "$OS_SYS" == "SunOS" ]; then
     fi
 fi
 if [ "$OS_SYS" == "Darwin" ]; then
-    if [ -x /sw/bin/gls ]; then
-        alias ls='/sw/bin/gls --color=auto'
+    if [ -x /usr/local/bin/gls ]; then
+        alias ls='/usr/local/bin/gls --color=auto'
     else
         alias ls='ls -G'
         declare -x LSCOLORS=exgxDxDxcxDxDxhbcxheex
     fi
-    if [ -x /sw/bin/svn ]; then
-        alias svn=/sw/bin/svn
+    if [ -x /usr/local/bin/svn ]; then
+        alias svn=/usr/local/bin/svn
     fi
 fi
 if [ "$OS_SYS" == "FreeBSD" ]; then
@@ -84,6 +84,8 @@ alias lls='ls -lR | $HOME/bin/fullpath.rb' 2>/dev/null
 alias rrm='rm -fr ${1:+"$@"}'
 alias sed='gsed'
 alias wdiff='diff -bituNr ${1:+"$@"}'
+# Lock the screen
+alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 #
 # Different Environment setups
 #

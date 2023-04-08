@@ -9,14 +9,21 @@
 # $Id$
 #------------------------------------------------------------------------------
 
-if [ -x "/usr/local/go" ]; then
-  export GOROOT=/usr/local/go
-  export PATH=${PATH}:/usr/local/go/bin
-elif [ -x "/sw/lib/go" ]; then
-  export GOROOT=/sw/lib/go
+if [ "${OS_PLATFORM}" == "x86_64" ]; then
+  export GOARCH=amd64
+fi
+if [ "${OS_SYS}" == "Darwin" ]; then
+  export GOOS=darwin
 fi
 
-if [ -x "${HOME}/WorkSpace/golang" ]; then
-  export GOPATH=${HOME}/WorkSpace/golang
+if [ -x /usr/local/lib/go ]; then
+  export GOROOT=/usr/local/lib/go
+fi
+  
+if [ -x "${HOME}/src" ]; then
+  export GOPATH=${HOME}/src/go
 fi
 
+if [ -x "${HOME}/bin" ]; then
+  export GOBIN=${HOME}/bin
+fi

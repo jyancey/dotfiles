@@ -4,9 +4,11 @@
 /usr/sbin
 /sw/bin
 /sw/sbin
-/sw/lib/go
+/sw/nonprod/bin
+/sw/lib/go/bin
 /opt/bin
 /opt/sbin
+/opt/lib/go/bin
 /usr/texbin
 /usr/gnubin
 /usr/tools/bin
@@ -25,11 +27,11 @@
 /usr/X11R6/bin
 /usr/X11R6/sbin
 /usr/dt/bin
+/usr/dt/sbin
 /usr/openwin/bin
 /usr/proc/bin
-/opt/SUNWspro/bin
-/opt/SunStudioExpress/bin
 /usr/ccs/bin
+/usr/ccs/sbin
 /usr/sfw/bin
 /usr/sfw/sbin
 /usr/java/bin
@@ -37,5 +39,7 @@
 /opt/csw/bin
 /opt/csw/sbin
 /opt/onbld/bin
-/sw/nonprod/bin
-/ecs/bin
+${HOME}/.ec2/bin
+${HOME}/.npm-packages/bin
+${HOME}/.cargo/bin
+${HOME}/bin

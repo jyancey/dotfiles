@@ -41,6 +41,14 @@ if [ -f /usr/local/etc/bash_completion ]; then
   source /usr/local/etc/bash_completion
 fi
 
+# Start up key chain server
+if [ ! -f $HOME/.nokeychain ]; then
+  if [ "$DEBUG" ]; then
+    echo "---> sourcing $HOME/.files/bashrc_keychain"
+  fi
+  source $HOME/.files/bashrc_keychain
+fi
+
 # Export out all the system information
 declare -x OS_SYS=`uname -s`
 declare -x OS_REL=`uname -r`
@@ -83,17 +91,9 @@ fi
 if [ $OS_SYS == "Darwin" ]; then
     OS_DIST=`/usr/bin/sw_vers -productVersion`
     OS_DIST_NAME=`/usr/bin/sw_vers -productName`
-    # x86_64 Apple hardware often runs 32-bit kernels (see OHAI-63)
-    x86_64=$(sysctl -n hw.optional.x86_64)
-    if [ $x86_64 -eq 1 ]; then
-        declare -x OS_PLATFORM="x86_64"
-    else
-        declare -x OS_PLATFORM="i386"
-    fi
     declare -x OS_DIST
     declare -x OS_DIST_NAME
     if [ "$DEBUG" ]; then
-      echo "---> re-setting platform $OS_PLATFORM"
       echo "---> setting dist $OS_DIST"
       echo "---> setting name $OS_DIST_NAME"
     fi

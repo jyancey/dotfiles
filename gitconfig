@@ -4,7 +4,7 @@
 
 [user]
 	name = John Yancey
-	email = john.yancey@mac.com
+	email = john.yancey@anaplan.com
 
 [core]
 	excludesfile = /Users/john/.gitignore_global
@@ -87,8 +87,9 @@
 
 [filter "lfs"]
 	required = true
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
 
 [commit]
 	template = /Users/jyancey/.files/git-commit-template.txt

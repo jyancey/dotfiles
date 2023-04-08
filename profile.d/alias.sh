@@ -2,7 +2,7 @@
 #------------------------------------------------------------------------------
 # alias.sh - Dotfiles.
 #
-# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2020 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
 #
@@ -84,6 +84,8 @@ alias lls='ls -lR | $HOME/bin/fullpath.rb' 2>/dev/null
 alias rrm='rm -fr ${1:+"$@"}'
 alias sed='gsed'
 alias wdiff='diff -bituNr ${1:+"$@"}'
+# Lock the screen
+alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 #
 # Different Environment setups
 #

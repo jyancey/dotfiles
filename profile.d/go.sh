@@ -9,26 +9,21 @@
 # $Id$
 #------------------------------------------------------------------------------
 
-if [ -x "${HOME}/Develop" ];then
-  export DEVPATH=${HOME}/Develop
-elif [ -x "${HOME}/Developer" ]; then
-  export DEVPATH=${HOME}/Developer
+if [ "${OS_PLATFORM}" == "x86_64" ]; then
+  export GOARCH=amd64
+fi
+if [ "${OS_SYS}" == "Darwin" ]; then
+  export GOOS=darwin
 fi
 
-if [ -x "/usr/local/go" ]; then
-  export GOROOT=/usr/local/go
-  export PATH=${PATH}:/usr/local/go/bin
-elif [ -x "/usr/local/lib/go" ]; then
+if [ -x /usr/local/lib/go ]; then
   export GOROOT=/usr/local/lib/go
 fi
-
-if [ -x "${DEVPATH}" ]; then
-  export GOPATH=${DEVPATH}/go
-elif [ -x "${HOME}/go" ]; then
-  export GOPATH=${HOME}/go
+  
+if [ -x "${HOME}/src" ]; then
+  export GOPATH=${HOME}/src/go
 fi
 
-if [ -x "${GOPATH}/bin" ]; then
-  export PATH=${PATH}:${GOPATH}/bin
+if [ -x "${HOME}/bin" ]; then
+  export GOBIN=${HOME}/bin
 fi
-

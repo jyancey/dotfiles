@@ -58,16 +58,8 @@ if [ "$OS_SYS" == "Darwin" ]; then
     fi
     # JAVA_HOME not set, so we have to hunt for it.
     if [ ! -z "$JAVE_HOME" ]; then
-        if [ "$OS_DIST" =~ "10.8" ]; then
-            if [ -d "/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home" ]; then
-                JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0.jdk/Contents/Home
-            fi
-        elif [ "$OS_DIST" =~ "10.7" ]; then
-            if [ -d "/Library/Java/JavaVirtualMachines/jdk1.7.0_09.jdk/Contents/Home" ]; then
-                JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_09.jdk/Contents/Home
-            elif [ -d "/Library/Java/JavaVirtualMachines/1.6.0_41-b02-445.jdk/Contents/Home" ]; then
-                JAVA_HOME=/Library/Java/JavaVirtualMachines/1.6.0_41-b02-445.jdk/Contents/Home
-            fi
+        if [ -d "/Library/Java/JavaVirtualMachines/jdk-20.jdk/Contents/Home" ]; then
+            JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-20.jdk/Contents/Home
         fi
     fi
 fi

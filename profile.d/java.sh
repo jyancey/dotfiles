@@ -36,21 +36,6 @@ fi
 #
 # Linux is a bit odd and it depends on which distrabution you run.
 if [ "${OS_SYS}" == "Linux" ]; then
-    if [[ "$OS_DIST" =~ "Red Hat" || "$OS_DIST" =~ "CentOS" ]]; then
-        if [[ "$OS_DIST" =~ "Red Hat" && 
-              "$OS_DIST_NAME" =~ "RedHatEnterpriseAS" ]];then
-            if [ -f /auto/ecp_hudson/tools/jdk/jdk1.6.0_18/bin/java ]; then
-                LANG=en_US.ISO-8859-1
-                JAVA_HOME=/auto/ecp_hudson/tools/jdk/jdk1.6.0_18/
-            fi
-        elif [ -f "/usr/bin/java" ]; then
-            JAVA_HOME=/usr
-        elif [ -f "/usr/lib/jvm/jre-sun/bin/java" ]; then
-            JAVA_HOME=/usr/lib/jvm/jre-sun
-        elif [ -f "/usr/lib/jvm/jre/bin/java" ]; then
-            JAVA_HOME=/usr/lib/jvm/jre
-       fi
-    fi
     if [[ "$OS_DIST" =~ "Fedora" ]]; then
         if [ -f "/usr/bin/java" ]; then
             JAVA_HOME=/usr
@@ -70,11 +55,7 @@ if [ "${OS_SYS}" == "Linux" ]; then
        fi
     fi 
 fi
-if [ "$OS_SYS" == "SunOS" ]; then
-    if [ -f "/usr/java/bin/java" ]; then
-        JAVA_HOME=/usr/java
-    fi
-fi
+
 if [ "$OS_SYS" == "Darwin" ]; then
     if [ -x "/usr/libexec/java_home" ]; then
         JAVA_HOME=`/usr/libexec/java_home`

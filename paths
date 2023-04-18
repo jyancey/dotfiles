@@ -39,7 +39,9 @@
 /opt/csw/bin
 /opt/csw/sbin
 /opt/onbld/bin
-${HOME}/.ec2/bin
-${HOME}/.npm-packages/bin
-${HOME}/.cargo/bin
-${HOME}/bin
+/usr/ucb/bin
+/usr/ucb/sbin
+/Users/john/.ec2/bin
+/Users/john/.npm-packages/bin
+/Users/john/.cargo/bin
+/Users/john/bin

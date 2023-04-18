@@ -2,9 +2,28 @@
 #------------------------------------------------------------------------------
 # bash_profile - Dotfiles bash login profile file.
 #
-# Copyright (c) 2000-2018 by John Yancey, All rights reserved.
+# CDDL HEADER START
 #
-# August 2000 John Yancey <john.yancey@acm.org>
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license in  the LICENSE file
+# or https://opensource.org/license/cddl-1-0/
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2000-2023 by John Yancey, All rights reserved.
+#
+# August 2000 John Yancey <john.w.yancey@gmail.org>
 #
 # $Id$
 #------------------------------------------------------------------------------
@@ -24,7 +43,7 @@ if [ "$GDMSESSION" ]; then
     exit
 fi
 
-# Running as a login shell! We have already picked up the path setting 
+# Running as a login shell! We have already picked up the path setting
 # from /etc/profile, now get the global aliases and functions
 if [ -f /etc/bashrc ]; then
   if [ "$DEBUG" ]; then
@@ -41,14 +60,6 @@ if [ -f /usr/local/etc/bash_completion ]; then
   source /usr/local/etc/bash_completion
 fi
 
-# Start up key chain server
-if [ ! -f $HOME/.nokeychain ]; then
-  if [ "$DEBUG" ]; then
-    echo "---> sourcing $HOME/.files/bashrc_keychain"
-  fi
-  source $HOME/.files/bashrc_keychain
-fi
-
 # Export out all the system information
 declare -x OS_SYS=`uname -s`
 declare -x OS_REL=`uname -r`
@@ -59,25 +70,6 @@ if [ "$DEBUG" ]; then
   echo "---> setting release $OS_REL"
   echo "---> setting platform $OS_PLATFORM"
   echo "---> setting arch $OS_MACHINE"
-fi
-
-# Setup the basices then bail ou if Windoze.
-if [ $OS_SYS == "CYGWIN_NT-6.1-WOW64" ]; then
-    eval "$(dircolors -b $HOME/.dir_colors)"
-    if [ -f /etc/bash_completion ]; then
-    source /etc/bash_completion
-    fi
-    source $HOME/.files/bashrc_prompt
-    # Some shortcuts for different directory listings
-    alias ls='ls -hF --color=tty'                 # classify files in colour
-    alias dir='ls --color=auto --format=vertical'
-    alias vdir='ls --color=auto --format=long'
-    alias ll='ls -l'                              # long list
-    alias la='ls -A'                              # all but . and ..
-    alias l='ls -CF'
-    echo -ne "\e]2;$@\a\e]1;$@\a";
-    declare -x PATH=$PATH:/usr/gnu/bin
-    return
 fi
 
 # Figure out which Linux distribution we are on
@@ -119,7 +111,9 @@ if [ "$PS1" ]; then
       *)
       ;;
     esac
-    if [ -e $HOME/.files/bashrc_prompt ]; then
+    if [ -x /usr/local/bin/oh-my-posh ]; then
+        eval "$(oh-my-posh init bash)"
+    elif [ -e $HOME/.files/bashrc_prompt ]; then
         source $HOME/.files/bashrc_prompt
         if [ "$DEBUG" ]; then
           echo "---> sourcing $HOME/.files/bashrc_prompt"
@@ -147,10 +141,10 @@ fi
 # Now for all the tricky stuff
 for EXTRAS in $HOME/.files/profile.d/*.sh ; do
   if [ -r "$EXTRAS" ]; then
-    source $EXTRAS
     if [ "$DEBUG" ]; then
       echo "---> sourcing $EXTRAS"
     fi
+    source $EXTRAS
   fi
 done
 

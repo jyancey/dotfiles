@@ -2,9 +2,9 @@
 "------------------------------------------------------------------------------
 " vimrc - vim resource file.
 "
-" Copyright (c) 2000-2010 by John Yancey, All rights reserved.
+" Copyright (c) 2000-2023 by John Yancey, All rights reserved.
 "
-" September 2008 John Yancey <john.yancey@acm.org>
+" September 2008 John Yancey <john.w.yancey@gmail.org>
 "
 " $Id$
 "------------------------------------------------------------------------------

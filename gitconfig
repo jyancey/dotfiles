@@ -1,6 +1,6 @@
 [gui]
-	fontui = -family Monaco -size 14 -weight normal -slant roman -underline 0 -overstrike 0
-	fontdiff = -family Monaco -size 14 -weight normal -slant roman -underline 0 -overstrike 0
+	fontui = -family Monaco -size 16 -weight normal -slant roman -underline 0 -overstrike 0
+	fontdiff = -family Monaco -size 16 -weight normal -slant roman -underline 0 -overstrike 0
 
 [user]
 	name = John Yancey
@@ -49,7 +49,7 @@
 	lg  = log --graph --pretty=graph --abbrev-commit --date=relative
 	lg1 = log --pretty=oneline --abbrev-commit --decorate
 	lga = log --graph --color=auto --pretty=graph --decorate=short --date=local --cherry-mark --all
-	lgf = log --graph --color=auto --pretty=graph --full-history --all 
+	lgf = log --graph --color=auto --pretty=graph --full-history --all
 	lgl = log --graph --color=auto --pretty=graph --decorate=short --date=local --cherry-mark
 	lgm = log --graph --color=auto --pretty=graph --decorate=short --date=local --cherry-mark --merges
 	push-for-review = push origin HEAD:refs/for/master

@@ -2,6 +2,25 @@
 #------------------------------------------------------------------------------
 # alias.sh - Dotfiles.
 #
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license in  the LICENSE file
+# or https://opensource.org/license/cddl-1-0/
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
 # Copyright (c) 2000-2020 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.yancey@acm.org>
@@ -9,6 +28,10 @@
 # $Id$
 #------------------------------------------------------------------------------
 #
+if [ "$DEBUG" ]; then
+  echo "-------> setting up alias"
+fi
+
 # Set up some simple to use aliases for things.
 #
 if [ "$OS_SYS" == "Linux" ]; then
@@ -25,7 +48,9 @@ if [ "$OS_SYS" == "SunOS" ]; then
     fi
 fi
 if [ "$OS_SYS" == "Darwin" ]; then
-    if [ -x /usr/local/bin/gls ]; then
+    if [ -x /usr/local/bin/lsd ]; then
+        alias ls='/usr/local/bin/lsd'
+    elif [ -x /usr/local/bin/gls ]; then
         alias ls='/usr/local/bin/gls --color=auto'
     else
         alias ls='ls -G'
@@ -45,7 +70,7 @@ fi
 if [ -f /usr/local/bin/git-svn ]; then
     alias git-svn='/usr/local/bin/git-svn ${1:+"$@"}'
 fi
-if [ -f /usr/ucb/ps ]; then 
+if [ -f /usr/ucb/ps ]; then
     alias bsdps=/usr/ucb/ps
 fi
 alias ...='cd ../..'

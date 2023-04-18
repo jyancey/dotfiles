@@ -22,6 +22,7 @@ Once the [MacPorts](https://www.macports.org) package manager is installed, you'
  * coreutils
  * cowsay
  * diffutils
+ * figlet
  * findutils
  * fortune
  * iTerm2

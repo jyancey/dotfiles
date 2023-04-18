@@ -112,6 +112,9 @@ if [ "$PS1" ]; then
       ;;
     esac
     if [ -x /usr/local/bin/oh-my-posh ]; then
+        if [ "$DEBUG" ]; then
+          echo "---> sourcing $HOME/.files/oh-my-posh"
+        fi
         eval "$(oh-my-posh init bash --config $HOME/.files/oh-my-posh/themes/markbull.omp.json)"
     elif [ -e $HOME/.files/bashrc_prompt ]; then
         source $HOME/.files/bashrc_prompt

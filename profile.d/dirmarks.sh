@@ -23,7 +23,7 @@
 #
 # Copyright (c) 2000-2011 by John Yancey, All rights reserved.
 #
-# August 2000 John Yancey <john.yancey@acm.org>
+# August 2000 John Yancey <john.w.yancey@gmail.com>
 #
 # $Id:$
 #------------------------------------------------------------------------------

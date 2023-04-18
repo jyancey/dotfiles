@@ -92,8 +92,8 @@
 	process = git-lfs filter-process
 
 [commit]
-	template = /Users/jyancey/.files/git-commit-template.txt
-	cleanup = strip
+	#template = /Users/jyancey/.files/git-commit-template.txt
+	#cleanup = strip
 
 [rerere]
 	enabled = true

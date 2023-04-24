@@ -64,7 +64,7 @@ manpathappend () {
 MANPATH=/usr/man
 
 # Scream over all the manpaths listed in the 'manpaths' file.
-for DIRS in `cat $HOME/.files/manpaths`; do
+for DIRS in `cat $HOME/.files/lib/manpaths`; do
     # echo "$DIRS..."
     if [ -d "$DIRS" ]; then
         manpathappend $DIRS

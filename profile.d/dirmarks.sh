@@ -1,6 +1,6 @@
 #! /bin/bash
 #------------------------------------------------------------------------------
-# bashmarks.sh - Dotfiles.
+# dirmarks.sh - Dotfiles.
 #
 # CDDL HEADER START
 #
@@ -32,140 +32,162 @@ if [ "$DEBUG" ]; then
   echo "-------> setting up bookmarks"
 fi
 
-# maintains a set of "bookmarks" for directories you actually use
-#
-# USE:
-#   * g foo     # go to dir matching bookmark foo
-#   * d foo bar # display bookmarks matching foo and bar
-#   * s foo     # save dir as bookmark foo
-#   * r foo     # remove bookmark matching foo
-#   * p foo     # push bookmark foo into directory stack
-#   * sl        # display a list of boomarks
+# USAGE:
+# bm -a bookmarkname - saves the curr dir as bookmarkname
+# bm -g bookmarkname - jumps to the that bookmark
+# bm -g b[TAB] - tab completion is available
+# bm -p bookmarkname - prints the bookmark
+# bm -p b[TAB] - tab completion is available
+# bm -d bookmarkname - deletes the bookmark
+# bm -d [TAB] - tab completion is available
+# bm -l - list all bookmarks
 
-# If the repository of bookmarks does not exist, create it
-if  [ ! -e $HOME/.dirmarks ]; then
-    mkdir $HOME/.dirmarks
+# setup file to store bookmarks
+if [ ! -n "$DMKRS" ]; then
+    DMKRS=~/.dirmarks
 fi
+touch "$DMKRS"
 
-# "s" - Save bookmark
-function s () { 
-    if [ -n "$2" ]; then
-        # build the bookmark file with the contents "$CD directory_path"
-        ( echo '$CD ' \"$2\" > $HOME/.dirmarks/"$1" ;) > /dev/null 2>&1
+# main function
+function dm {
+  option="${1}"
+  case ${option} in
+    # save current directory to bookmarks [ bm -a BOOKMARK_NAME ]
+    -a)
+      _save_bookmark "$2"
+    ;;
+    # delete bookmark [ bm -d BOOKMARK_NAME ]
+    -d)
+      _delete_bookmark "$2"
+    ;;
+    # jump to bookmark [ bm -g BOOKMARK_NAME ]
+    -g)
+      _goto_bookmark "$2"
+    ;;
+    # print bookmark [ bm -p BOOKMARK_NAME ]
+    -p)
+      _print_bookmark "$2"
+    ;;
+    # show bookmark list [ bm -l ]
+    -l)
+      _list_bookmark
+    ;;
+    # help [ bm -h ]
+    -h)
+      _echo_usage
+    ;;
+    *)
+      if [[ $1 == -* ]]; then
+        # unrecognized option. echo error message and usage [ bm -X ]
+        echo "Unknown option '$1'"
+        _echo_usage
+        kill -SIGINT $$
+        exit 1
+      elif [[ $1 == "" ]]; then
+        # no args supplied - echo usage [ bm ]
+        _echo_usage
+      else
+        # non-option supplied as first arg.  assume goto [ bm BOOKMARK_NAME ]
+        _goto_bookmark "$1"
+      fi
+    ;;
+  esac
+}
+
+# print usage information
+function _echo_usage {
+  echo 'USAGE:'
+  echo "dm -h                   - Prints this usage info"
+  echo 'dm -a <bookmark_name>   - Saves the current directory as "bookmark_name"'
+  echo 'dm [-g] <bookmark_name> - Goes (cd) to the directory associated with "bookmark_name"'
+  echo 'dm -p <bookmark_name>   - Prints the directory associated with "bookmark_name"'
+  echo 'dm -d <bookmark_name>   - Deletes the bookmark'
+  echo 'dm -l                   - Lists all available bookmarks'
+}
+
+# save current directory to bookmarks
+function _save_bookmark {
+  _bookmark_name_valid "$@"
+  if [ -z "$exit_message" ]; then
+    _purge_line "$DMKRS" "export DIR_$1="
+    CURDIR=$(echo $PWD| sed "s#^$HOME#\$HOME#g")
+    echo "export DIR_$1=\"$CURDIR\"" >> $DMKRS
+  fi
+}
+
+# delete bookmark
+function _delete_bookmark {
+  _bookmark_name_valid "$@"
+  if [ -z "$exit_message" ]; then
+    _purge_line "$DMKRS" "export DIR_$1="
+    unset "DIR_$1"
+  fi
+}
+
+# jump to bookmark
+function _goto_bookmark {
+    source $DMKRS
+    target="$(eval $(echo echo $(echo \$DIR_$1)))"
+    if [ -d "$target" ]; then
+        cd "$target"
+    elif [ ! -n "$target" ]; then
+        printf '%s\n' "WARNING: '${1}' dirmark does not exist"
     else
-        # build the bookmark file with the contents "$CD directory_path"
-        ( echo -n '$CD ' > $HOME/.dirmarks/"$1" ; 
-          pwd | sed "s/ /\\\\ /g" >> $HOME/.dirmarks/"$1" ; ) > /dev/null 2>&1
-    fi
-
-    # if the bookmark could not be created, print an error message and
-    # exit with a failing return code
-    if [ $? != 0 ]; then
-        echo bash: dirmarks: $HOME/.dirmarks/"$1" could not be created >&2
-        false
+        printf '%s\n' "WARNING: '${target}' does not exist"
     fi
 }
 
-# "g" - Go to bookmark
-function g () { 
-    # if no arguments, then just go to the home directory
-    if [ -z "$1" ]; then
-        cd
-    else
-        # if $1 is in $HOME/.dirmarks and does not begin with ".", then go to it
-        if [ -f $HOME/.dirmarks/"$1" -a ${1:0:1} != "." ]; then 
-            # update the bookmark's timestamp and then execute it
-            touch $HOME/.dirmarks/"$1" ; 
-            CD=cd source $HOME/.dirmarks/"$1" ; 
-        # else just do a "cd" to the argument, usually a directory path of "-"
-        else
-            cd "$1"
-        fi
+# list bookmarks with dirname
+function _list_bookmark {
+    source $DMKRS
+    # if color output is not working for you, comment out the line below '\033[1;32m' == "red"
+    env | sort | awk '/DIR_.+/{split(substr($0,5),parts,"="); printf("\033[0;33m%-20s\033[0m %s\n", parts[1], parts[2]);}'
+    # uncomment this line if color output is not working with the line above
+    # env | grep "^DIR_" | cut -c5- | sort |grep "^.*="
+}
+
+# print bookmark
+function _print_bookmark {
+    source $DMKRS
+    echo "$(eval $(echo echo $(echo \$DIR_$1)))"
+}
+
+# list bookmarks without dirname
+function _l {
+    source $DMKRS
+    env | grep "^DIR_" | cut -c5- | sort | grep "^.*=" | cut -f1 -d "="
+}
+
+# validate bookmark name
+function _bookmark_name_valid {
+    exit_message=""
+    if [ -z $1 ]; then
+        exit_message="dirmark name required"
+        echo $exit_message
+    elif [ "$1" != "$(echo $1 | sed 's/[^A-Za-z0-9_]//g')" ]; then
+        exit_message="dirmark name is not valid"
+        echo $exit_message
     fi
 }
 
-# "p" - Push a bookmark
-function p () { 
-    # Note, list the directory stack in a single  column.  Thus, the 
-    # standard behavior of "pushd" and "popd" have been replaced by 
-    # discarding the normal output of these commands and using a  "dirs -p" 
-    # after each one.
+# safe delete line from sdirs
+function _purge_line {
+  if [ -s "$1" ]; then
+    # safely create a temp file
+    t=$(mktemp -t dirmarks.XXXXXX) || exit 1
+    trap "/bin/rm -f -- '$t'" EXIT
 
-    # if no argument given, then just pushd and print out the directory stack
-    if [ -z "$1" ]; then
-        pushd > /dev/null && dirs -p
+    # purge line
+    sed "/$2/d" "$1" >| "$t"
+    /bin/mv "$t" "$1"
 
-    # if $1 is a dash, then just do a "popd" and print out the directory stack
-    elif [ "$1" == "-" ]; then
-        popd > /dev/null
-        dirs -p
-    else
-        # if $1 is in $HOME/.dirmarks and does not begin with ".", then go to it
-        # and then print out the directory stack
-        if [ -f $HOME/.dirmarks/"$1" -a "${1:0:1}" != "." ]; then
-            touch $HOME/.dirmarks/$1 ; 
-            CD=pushd source $HOME/.dirmarks/$1 > /dev/null && dirs -p ; 
-
-        # else just do a "pushd" and print out the directory stack
-        else
-            pushd "$1" > /dev/null && dirs -p
-        fi
-    fi
+    # cleanup temp file
+    /bin/rm -f -- "$t"
+    trap - EXIT
+  fi
 }
 
-# "sl" - Saved bookmark Listing
-function sl () { 
-    # if the "-l" argument is given, then do a long listing, passing any 
-    # remaining arguments to "ls", printing in reverse time order.  Pass the
-    # output to "less" to page the output if longer than a screen in length.
-    if [ "$1" == "-l" ]; then
-        shift
-        ( cd $HOME/.dirmarks ;
-        ls -lt $* | 
-            sed -e 's/  */ /g' -e '/^total/d' \
-                -e 's/^\(... \)\([0-9] \)/\1 \2/' | 
-            cut -d ' ' -s -f6- | sed -e '/ [0-9] /s// &/' | less -FX ; )
-
-    # else print the short form of the bookmarks in reverse time order
-    else
-        ( cd $HOME/.dirmarks ; ls -xt $* ; )
-    fi
-}
-
-# "r" - Remove a saved bookmark
-function r () { 
-    # if the bookmark file exists, remove it
-    if [ -e $HOME/.dirmarks/"$1" ]; then
-        rm $HOME/.dirmarks/"$1"
-
-    # if the bookmark file does not exist, complain and exit with a failing code
-    else
-        echo bash: dirmarks: $HOME/.dirmarks/"$1" does not exist >&2
-        false
-    fi
-}
-
-# "d" - Display (or Dereference) a saved bookmark
-# to use: cd "$(d xxx)"
-function d () {  
-    # if the bookmark exists, then extract its directory path and print it
-    if [ -e $HOME/.dirmarks/"$1" ]; then
-        sed -e 's/\$CD //' -e 's/\\//g' $HOME/.dirmarks/"$1"
-
-    # if the bookmark does not exists, complain and exit with a failing code
-    else
-        echo bash: dirmarks: $HOME/.dirmarks/"$1" does not exist >&2
-        false
-    fi
-}
-
-# "mh" - Display dirmarks help
-function mh (){
-    echo "USE:"
-    echo "  * g foo     # go to dir matching bookmark foo"
-    echo "  * d foo bar # display bookmarks matching foo and bar"
-    echo "  * s foo     # save dir as bookmark foo"
-    echo "  * r foo     # remove bookmark matching foo"
-    echo "  * p foo     # push bookmark foo into directory stack"
-    echo "  * sl        # display a list of boomarks"
-}
+alias s='dm -a'       # Save a dirmark [dirmark_name]
+alias g='dm -g'       # Go to dirmark [bookmark_name]
+alias p='dm -p'       # Print dirmark of a path [path]
+alias d='dm -d'       # Delete a dirmark [dirmark_name]

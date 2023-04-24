@@ -70,6 +70,6 @@ echo "$keychainHOSTS" | grep `echo $HOSTNAME` > /dev/null
 
 # Run it
 if [ "$keychainON" != 0 ]; then
-    $KEYCHAIN --gpg2 $HOME/.ssh/id_rsa > /dev/null
+    $KEYCHAIN $HOME/.ssh/id_rsa > /dev/null
     source $HOME/.keychain/${HOSTNAME}-sh
 fi

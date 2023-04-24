@@ -64,7 +64,7 @@ pathappend () {
 PATH=/bin:/usr/bin
 
 # Scream over all the paths listed in the 'paths' file.
-for DIRS in `cat $HOME/.files/paths`; do
+for DIRS in `cat $HOME/.files/lib/paths`; do
     if [ "$DEBUG" ]; then
         echo "-------> $DIRS..."
     fi

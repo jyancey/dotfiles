@@ -2,5 +2,8 @@
     "editor.fontSize": 14,
     "workbench.colorTheme": "Andromeda Bordered",
     "workbench.preferredHighContrastColorTheme": "Default Light+",
-    "workbench.preferredDarkColorTheme": "Default Light+"
+    "workbench.preferredDarkColorTheme": "Default Light+",
+    "markdown-preview-github-styles.darkTheme": "light",
+    "gitflow.path": "/usr/local/bin/git-flow",
+    "gitflow.showAllCommands": true
 }

@@ -75,7 +75,53 @@ if [ -f /usr/ucb/ps ]; then
 fi
 alias ...='cd ../..'
 alias ..='cd ..'
-alias cl=clear 2>/dev/null
+alias cls=clear 2>/dev/null
+alias gr='egrep -i ${1:+"$@"}' 2>/dev/null
+alias h='fc -l' 2>/dev/null
+alias j='jobs -l' 2>/dev/null
+alias l.='ls -dh .*' 2>/dev/null
+alias l='ls -F' 2>/dev/null
+alias lf='ls -lFAh' 2>/dev/null
+alias ll='ls -lFh' 2>/dev/null
+#alias lls='ls -lR | $HOME/bin/fullpath.rb' 2>/dev/null
+alias rrm='rm -fr ${1:+"$@"}'
+alias sed='gsed'
+alias wdiff='diff -bituNr ${1:+"$@"}'
+
+#
+# Java, and Java tools
+#
+alias java16=/Library/Java/JavaVirtualMachines/1.6.0_41-b02-445.jdk/Contents/Home/bin/java
+alias java17=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home/bin/java
+alias java18=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home/bin/java
+#alias mvn='mvn3'
+#alias mc='mvn clean'
+#alias mcd='mvn clean deploy'
+#alias mci='mvn clean install'
+#alias mcp='mvn clean package'
+#alias mep='mvn help:effective-pom'
+#alias mp='mvn package'
+#
+# Golang
+#
+alias gob='go build'
+alias goc='go clean'
+alias god='go doc'
+alias gof='go fmt'
+alias gofa='go fmt ./...'
+alias gog='go get'
+alias goi='go install'
+alias gol='go list'
+alias gom='go mod'
+alias gop='cd $GOPATH'
+alias gopb='cd $GOPATH/bin'
+alias gops='cd $GOPATH/src'
+alias gor='go run'
+alias got='go test'
+alias gov='go vet'
+#
+# Git
+#
 alias gb='git branch'
 alias gba='git branch -a'
 alias gc='git commit -v'
@@ -86,30 +132,11 @@ alias gl='git pull'
 alias glogs='git log --graph --full-history --all --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
 alias glog='git log --graph --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
 alias gp='git push'
-alias gr='egrep -i ${1:+"$@"}' 2>/dev/null
 alias gsvn='git svn ${1:+"$@"}'
 alias gst='git status -s'
-alias h='fc -l' 2>/dev/null
-alias j='jobs -l' 2>/dev/null
-alias java16=/Library/Java/JavaVirtualMachines/1.6.0_41-b02-445.jdk/Contents/Home/bin/java
-alias java17=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home/bin/java
-alias java18=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home/bin/java
-alias l.='ls -dh .*' 2>/dev/null
-alias l='ls -F' 2>/dev/null
-alias lf='ls -lFAh' 2>/dev/null
-alias ll='ls -lFh' 2>/dev/null
-alias lls='ls -lR | $HOME/bin/fullpath.rb' 2>/dev/null
-#alias mvn='mvn3'
-#alias mc='mvn clean'
-#alias mcd='mvn clean deploy'
-#alias mci='mvn clean install'
-#alias mcp='mvn clean package'
-#alias mep='mvn help:effective-pom'
-#alias mp='mvn package'
-alias rrm='rm -fr ${1:+"$@"}'
-alias sed='gsed'
-alias wdiff='diff -bituNr ${1:+"$@"}'
+#
 # Lock the screen
+#
 alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
 #
 # Different Environment setups

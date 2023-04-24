@@ -29,7 +29,7 @@
 #------------------------------------------------------------------------------
 #
 # Path to your oh-my-bash installation.
-export OSH=$HOME/.oh-my-bash
+export OSH=${HOME}/.files/oh-my-bash
 
 DISABLE_AUTO_UPDATE="true"
 DISABLE_LS_COLORS="false"
@@ -65,7 +65,10 @@ plugins=(
   goenv
 )
 
-if [ "$DEBUG" ]; then
-    echo "---> source oh-my-bash.sh"
+
+if [ -e "${OSH}/oh-my-bash.sh" ]; then
+    if [ "$DEBUG" ]; then
+        echo "---> source ${OSH}/oh-my-bash.sh"
+    fi
+    source ${OSH}/oh-my-bash.sh
 fi
-source "$OSH"/oh-my-bash.sh

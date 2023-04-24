@@ -63,7 +63,7 @@ infopathappend () {
 INFOPATH=/usr/info
 
 # Scream over all the infopaths listed in the 'infopaths' file.
-for D in `cat $HOME/.files/infopaths`; do
+for D in `cat $HOME/.files/lib/infopaths`; do
     # echo "$D..."
     if [ -d "$D" ]; then
         infopathappend $D

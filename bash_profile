@@ -97,6 +97,14 @@ declare -x LC_ALL=C
 declare -x LC_CTYPE=C
 declare -x LANG=en_US.ISO-8859-1
 
+# Source in the common base function from the lib directory
+if [ -e "${HOME}/.files/lib/base.sh" ]; then
+    if [ "$DEBUG" ]; then
+        echo "---> sourcing ${HOME}/.files/lib/base.sh"
+    fi
+    source ${HOME}/.files/lib/base.sh
+fi
+
 if [ "$PS1" ]; then
     if [ "x`tput kbs`" != "x" ]; then # We can't do this with "dumb" terminal
       stty erase `tput kbs`
@@ -115,11 +123,11 @@ if [ "$PS1" ]; then
         if [ "$DEBUG" ]; then
           echo "---> sourcing $HOME/.files/oh-my-posh"
         fi
-        eval "$(oh-my-posh init bash --config $HOME/.files/oh-my-posh/themes/markbull.omp.json)"
-    elif [ -e $HOME/.files/bashrc_prompt ]; then
-        source $HOME/.files/bashrc_prompt
+        eval "$(oh-my-posh init bash --config ${HOME}/.files/oh-my-posh/themes/yancey.omp.json)"
+    elif [ -e ${HOME}/.files/bashrc_prompt ]; then
+        source ${HOME}/.files/bashrc_prompt
         if [ "$DEBUG" ]; then
-          echo "---> sourcing $HOME/.files/bashrc_prompt"
+          echo "---> sourcing ${HOME}/.files/bashrc_prompt"
         fi
     else
         declare -x PS1="[\u@\h \W]\\$ "
@@ -127,18 +135,18 @@ if [ "$PS1" ]; then
 fi
 
 if [ -e "${HOME}/.iterm2_shell_integration.bash" ]; then
-	source $HOME/.iterm2_shell_integration.bash
+	source ${HOME}/.iterm2_shell_integration.bash
     if [ "$DEBUG" ]; then
-      echo "---> sourcing $HOME/.iterm2_shell_integration.bash"
+      echo "---> sourcing ${HOME}/.iterm2_shell_integration.bash"
     fi
 fi
 
 # Start up key chain server
-if [ ! -f $HOME/.nokeychain ]; then
+if [ ! -f "${HOME}/.nokeychain" ]; then
   if [ "$DEBUG" ]; then
-    echo "---> sourcing $HOME/.files/bashrc_keychain"
+    echo "---> sourcing ${HOME}/.files/bashrc_keychain"
   fi
-  source $HOME/.files/bashrc_keychain
+  source ${HOME}/.files/bashrc_keychain
 fi
 
 # Now for all the tricky stuff

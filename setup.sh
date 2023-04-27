@@ -31,9 +31,8 @@
 # This assumes that the dotfiles repo is checked out into the $HOME/.files
 # directory. This will create the following symlinks and directories if they
 # do not exist:
-#    $HOME/.files/bashrc            -->  ~/.bashrc
+#    $HOME/.files/shellrc           -->  ~/.bashrc
 #    $HOME/.files/bash_logout       -->  ~/.bash_logout
-#    $HOME/.files/bash_profile      -->  ~/.profile
 #    $HOME/.files/dir_colors        -->  ~/.dir_colors
 #    $HOME/.files/hgignore_global   -->  ~/.hgignore_global
 #    $HOME/.files/ident.pro         -->  ~/.ident.pro
@@ -43,11 +42,13 @@
 #    $HOME/.files/profile           -->  ~/.profile
 #    $HOME/.files/vimrc             -->  ~/.vimrc
 #    $HOME/.files/vim_runtime       -->  ~/.vim_runtime
+#    $HOME/.files/zprofile          -->  ~/.zprofile
+#    $HOME/.files/shellrc           -->  ~/.zshrc
+#    #HOME/.files/zsh_logout        -->  ~/.zsh_logout
 
 dotFiles=(
     bashrc \
     bash_logout \
-    bash_profile \
     dir_colors \
     hgignore_global \
     indent.pro \
@@ -56,14 +57,21 @@ dotFiles=(
     npmrc \
     profile \
     vimrc \
-    vim_runtime
+    vim_runtime \
+    zprofile \
+    zshrc \
+    zsh_logout
 )
 
 echo "Setting up:"
 for file in "${dotFiles[@]}"; do
-	if [ ! -L "$HOME/.$file" ]; then
+	if [[ ! -L "$HOME/.$file" ]]; then
 		echo " --> $file"
-	    ln -fs $HOME/.files/$file $HOME/.$file
+        if [[ ${file} == "profile" || ${file} == "zshrc" ]];then
+            ln -fs $HOME/.files/shellrc $HOME/.$file
+        else
+            ln -fs $HOME/.files/$file $HOME/.$file 
+        fi
 	fi
 done
 echo "Done!"

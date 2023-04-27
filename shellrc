@@ -1,6 +1,6 @@
 #! ${SHELL}
 #------------------------------------------------------------------------------
-# zshrc - Dotfiles zsh shell resource file.
+# bashrc & zshrc - Dotfiles bash & zsh shell resource file.
 #
 # CDDL HEADER START
 #
@@ -35,27 +35,36 @@ if [[ "${DEBUG}" ]]; then
   echo "Turning on debug"
 fi
 
-# Running as a non-login shell! We have already picked up the path setting
-# from /etc/zprofile, now get our own aliases and functions
-if [[ -f /etc/zshrc ]]; then
-  if [[ "${DEBUG}" ]]; then
-    echo "---> sourcing /etc/zshrc"
-  fi
-  source /etc/zshrc
+#declare -x POSIXLY_CORRECT=1
+
+# Cheat a little to turn $SHELL in to either zsh, or bash.
+if [[ $SHELL =~ "bash" ]]; then
+  MYSHELL="bash"
+elif [[ $SHELL =~ "zsh" ]]; then
+  MYSHELL="zsh"
 fi
-if [[ -f /etc/zshrc_Apple_Terminal ]]; then
+
+# Running as a non-login shell! We have already picked up the path setting
+# from global, now get our own aliases and functions
+if [[ -f /etc/${MYSHELL}rc ]]; then
   if [[ "${DEBUG}" ]]; then
-    echo "---> sourcing /etc/zshrc_Apple_Terminal"
+    echo "---> sourcing /etc/${MYSHELL}rc"
   fi
-    source /etc/zshrc_Apple_Terminal
+  source /etc/${MYSHELL}rc
+fi
+if [[ -f /etc/${MYSHELL}rc_Apple_Terminal ]]; then
+  if [[ "${DEBUG}" ]]; then
+    echo "---> sourcing /etc/${MYSHELL}rc_Apple_Terminal"
+  fi
+    source /etc/${MYSHELL}rc_Apple_Terminal
 fi
 
 # Use zsh_completion, if completion exists
-if [[ -f /usr/local/etc/zshsh_completion ]]; then
+if [[ -f /usr/local/etc/${MYSHELL}_completion ]]; then
   if [[ "${DEBUG}" ]]; then
-    echo "---> sourcing /usr/local/etc/zsh_completion"
+    echo "---> sourcing /usr/local/etc/${MYSHELL}_completion"
   fi
-  source /usr/local/etc/zsh_completion
+  source /usr/local/etc/${MYSHELL}_completion
 fi
 
 # Export out all the system information
@@ -72,21 +81,21 @@ fi
 
 # Figure out which Linux distribution we are on
 if [[ ${OS_SYS} == "Linux" ]]; then
-    OS_DIST=`/usr/bin/lsb_release -d | sed -e 's/Description:.//'`
-    OS_DIST_NAME=`/usr/bin/lsb_release -i | sed -e 's/Distributor ID:.//'`
-    declare -x OS_DIST
-    declare -x OS_DIST_NAME
+  OS_DIST=`/usr/bin/lsb_release -d | sed -e 's/Description:.//'`
+  OS_DIST_NAME=`/usr/bin/lsb_release -i | sed -e 's/Distributor ID:.//'`
+  declare -x OS_DIST
+  declare -x OS_DIST_NAME
 fi
 # Figure out which MacOSX distribution we are on
 if [[ ${OS_SYS} == "Darwin" ]]; then
-    OS_DIST=`/usr/bin/sw_vers -productVersion`
-    OS_DIST_NAME=`/usr/bin/sw_vers -productName`
-    export OS_DIST
-    export OS_DIST_NAME
-    if [[ "${DEBUG}" ]]; then
-      echo "---> setting dist $OS_DIST"
-      echo "---> setting name $OS_DIST_NAME"
-    fi
+  OS_DIST=`/usr/bin/sw_vers -productVersion`
+  OS_DIST_NAME=`/usr/bin/sw_vers -productName`
+  export OS_DIST
+  export OS_DIST_NAME
+  if [[ "${DEBUG}" ]]; then
+    echo "---> setting dist $OS_DIST"
+    echo "---> setting name $OS_DIST_NAME"
+  fi
 fi
 
 declare -x EDITOR=vim
@@ -96,46 +105,46 @@ declare -x LC_CTYPE=C
 declare -x LANG=en_US.ISO-8859-1
 
 if [[ "${PS1}" ]]; then
-    if [[ "x`tput kbs`" != "x" ]]; then # We can't do this with "dumb" terminal
-      stty erase `tput kbs`
+  if [[ "x`tput kbs`" != "x" ]]; then # We can't do this with "dumb" terminal
+    stty erase `tput kbs`
+  fi
+  case $TERM in
+    xterm*)
+      PROMPT_COMMAND='echo -ne "\033]0;${LOGNAME}@${HOSTNAME}: ${PWD}\007"'
+      if [ "$TERM" = "xterm-color" ]; then
+        declare -x TERM=xterm
+      fi
+      ;;
+    *)
+      ;;
+  esac
+  if [[ -x /usr/local/bin/oh-my-posh ]]; then
+    if [[ "${DEBUG}" ]]; then
+      echo "---> sourcing $HOME/.files/oh-my-posh"
     fi
-    case $TERM in
-      xterm*)
-          PROMPT_COMMAND='echo -ne "\033]0;${LOGNAME}@${HOSTNAME}: ${PWD}\007"'
-          if [ "$TERM" = "xterm-color" ]; then
-              declare -x TERM=xterm
-          fi
-        ;;
-      *)
-        ;;
-    esac
-    if [[ -x /usr/local/bin/oh-my-posh ]]; then
-        if [[ "${DEBUG}" ]]; then
-          echo "---> sourcing $HOME/.files/oh-my-posh"
-        fi
-        eval "$(oh-my-posh init zsh --config ${HOME}/.files/oh-my-posh/themes/yancey.omp.json)"
-    elif [ -e "${HOME}/.files/bashrc_prompt" ]; then
-        source ${HOME}/.files/bashrc_prompt
-        if [ "${DEBUG}" ]; then
-          echo "---> sourcing ${HOME}/.files/bashrc_prompt"
-        fi
+    eval "$(oh-my-posh init ${MYSHELL} --config ${HOME}/.files/oh-my-posh/themes/yancey.omp.json)"
+    elif [ -e "${HOME}/.files/${MYSHELL}rc_prompt" ]; then
+      if [ "${DEBUG}" ]; then
+        echo "---> sourcing ${HOME}/.files/${MYSHELL}rc_prompt"
+      fi
+      source ${HOME}/.files/${MYSHELL}rc_prompt
     else
-        declare -x PS1="[\u@\h \W]\\$ "
-    fi
+      declare -x PS1="[\u@\h \W]\\$ "
+  fi
 fi
-if [ -e "${HOME}/.iterm2_shell_integration.bash" ]; then
-	source ${HOME}/.iterm2_shell_integration.bash
+if [ -e "${HOME}/.iterm2_shell_integration.${MYSHELL}" ]; then
     if [ "$DEBUG" ]; then
-      echo "---> sourcing ${HOME}/.iterm2_shell_integration.bash"
+      echo "---> sourcing ${HOME}/.iterm2_shell_integration.${MYSHELL}"
     fi
+    source ${HOME}/.iterm2_shell_integration.${MYSHELL}
 fi
 
 # Start up key chain server
 if [[ ! -f "${HOME}/.nokeychain" ]]; then
   if [[ "${DEBUG}" ]]; then
-    echo "---> sourcing ${HOME}/.files/bashrc_keychain"
+    echo "---> sourcing ${HOME}/.files/keychain"
   fi
-  source ${HOME}/.files/bashrc_keychain
+  source ${HOME}/.files/keychain
 fi
 
 # Now for all the tricky stuff

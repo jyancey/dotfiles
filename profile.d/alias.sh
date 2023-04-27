@@ -28,49 +28,49 @@
 # $Id$
 #------------------------------------------------------------------------------
 #
-if [ "$DEBUG" ]; then
+if [[ "${DEBUG}" ]]; then
   echo "-------> setting up alias"
 fi
 
 # Set up some simple to use aliases for things.
 #
-if [ "$OS_SYS" == "Linux" ]; then
+if [[ "${OS_SYS}" == "Linux" ]]; then
     alias ls='ls --color=auto'
     alias vi='vim'
 fi
-if [ "$OS_SYS" == "SunOS" ]; then
-    if [ "$OS_REL" == "5.11" ]; then
-        if [ -x /usr/gnu/bin/ls ]; then
+if [[ "${OS_SYS}" == "SunOS" ]]; then
+    if [[ "$OS_REL" == "5.11" ]]; then
+        if [[ -x /usr/gnu/bin/ls ]]; then
             alias ls='/usr/gnu/bin/ls --color=auto'
-        elif [ -x /jds/cbe/bin/ls ]; then
+        elif [[ -x /jds/cbe/bin/ls ]]; then
             alias ls='/jds/cbe/bin/ls --color=auto'
         fi
     fi
 fi
-if [ "$OS_SYS" == "Darwin" ]; then
-    if [ -x /usr/local/bin/lsd ]; then
+if [[ "${OS_SYS}" == "Darwin" ]]; then
+    if [[ -x /usr/local/bin/lsd ]]; then
         alias ls='/usr/local/bin/lsd'
-    elif [ -x /usr/local/bin/gls ]; then
+    elif [[ -x /usr/local/bin/gls ]]; then
         alias ls='/usr/local/bin/gls --color=auto'
     else
         alias ls='ls -G'
         declare -x LSCOLORS=exgxDxDxcxDxDxhbcxheex
     fi
-    if [ -x /usr/local/bin/svn ]; then
+    if [[ -x /usr/local/bin/svn ]]; then
         alias svn=/usr/local/bin/svn
     fi
 fi
-if [ "$OS_SYS" == "FreeBSD" ]; then
-    if [ -x /usr/local/bin/gls ]; then
+if [[ "${OS_SYS}" == "FreeBSD" ]]; then
+    if [[ -x /usr/local/bin/gls ]]; then
         alias ls='/usr/local/bin/gls --color=auto'
     else
         alias ls='ls -G'
     fi
 fi
-if [ -f /usr/local/bin/git-svn ]; then
+if [[ -f /usr/local/bin/git-svn ]]; then
     alias git-svn='/usr/local/bin/git-svn ${1:+"$@"}'
 fi
-if [ -f /usr/ucb/ps ]; then
+if [[ -f /usr/ucb/ps ]]; then
     alias bsdps=/usr/ucb/ps
 fi
 alias ...='cd ../..'

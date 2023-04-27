@@ -1,6 +1,6 @@
-#! /bin/bash
+#! /bin/zsh
 #------------------------------------------------------------------------------
-# go.sh - Dotfiles.
+# zprofile - Dotfiles zsh login profile file.
 #
 # CDDL HEADER START
 #
@@ -21,34 +21,11 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2015-2018 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2023 by John Yancey, All rights reserved.
 #
-# August 2015 John Yancey <john.w.yancey@gmail.com>
+# August 2000 John Yancey <john.w.yancey@gmail.org>
 #
 # $Id$
 #------------------------------------------------------------------------------
-if [ "$DEBUG" ]; then
-  echo "-------> setting up golang"
-fi
-
-if [[ "${OS_PLATFORM}" == "x86_64" ]]; then
-  export GOARCH=x86_64
-else
-  export GOARCH=amd64
-fi
-if [[ "${OS_SYS}" == "Darwin" ]]; then
-  export GOOS=darwin
-  export GOARCH=arm64
-fi
-
-if [ -x /usr/local/lib/go ]; then
-  export GOROOT=/usr/local/lib/go
-fi
-  
-if [ -x "${HOME}/src" ]; then
-  export GOPATH=${HOME}/src/go
-fi
-
-if [ -x "${HOME}/bin" ]; then
-  export GOBIN=${HOME}/bin
-fi
+#
+#echo "Nothing in zprofile."

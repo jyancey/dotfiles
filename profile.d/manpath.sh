@@ -28,6 +28,10 @@
 # $Id$
 #------------------------------------------------------------------------------
 #
+# Bail out if this is a zsh shell.
+if [[ ${SHELL} == "/bin/zsh" ]]; then
+   return
+fi
 if [ "$DEBUG" ]; then
   echo "-------> setting up manpaths"
 fi

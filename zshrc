@@ -1,6 +1,6 @@
-#! /bin/bash
+#! /bin/zsh
 #------------------------------------------------------------------------------
-# bash_profile - Dotfiles bash login profile file.
+# zshrc - Dotfiles zsh shell resource file.
 #
 # CDDL HEADER START
 #
@@ -31,41 +31,39 @@
 # Uncomment to turn dotfile debug statments on.
 #export DEBUG=1
 #
-if [ "$DEBUG" ]; then
+if [[ "${DEBUG}" ]]; then
   echo "Turning on debug"
 fi
 
-#declare -x POSIXLY_CORRECT=1
-
-# Bail out early if we started up from an X session. This only seems to be a
-# problem on Ubuntu systems. Go figure.
-if [ "$GDMSESSION" ]; then
-    exit
+# Running as a non-login shell! We have already picked up the path setting
+# from /etc/zprofile, now get our own aliases and functions
+if [[ -f /etc/zshrc ]]; then
+  if [[ "${DEBUG}" ]]; then
+    echo "---> sourcing /etc/zshrc"
+  fi
+  source /etc/zshrc
+fi
+if [[ -f /etc/zshrc_Apple_Terminal ]]; then
+  if [[ "${DEBUG}" ]]; then
+    echo "---> sourcing /etc/zshrc_Apple_Terminal"
+  fi
+    source /etc/zshrc_Apple_Terminal
 fi
 
-# Running as a login shell! We have already picked up the path setting
-# from /etc/profile, now get the global aliases and functions
-if [ -f /etc/bashrc ]; then
-  if [ "$DEBUG" ]; then
-    echo "---> sourcing /etc/bashrc"
+# Use zsh_completion, if completion exists
+if [[ -f /usr/local/etc/zshsh_completion ]]; then
+  if [[ "${DEBUG}" ]]; then
+    echo "---> sourcing /usr/local/etc/zsh_completion"
   fi
-  source /etc/bashrc
-fi
-
-# Use bash_completion, if completion exists
-if [ -f /usr/local/etc/bash_completion ]; then
-  if [ "$DEBUG" ]; then
-    echo "---> sourcing /usr/local/etc/bash_completion"
-  fi
-  source /usr/local/etc/bash_completion
+  source /usr/local/etc/zsh_completion
 fi
 
 # Export out all the system information
-declare -x OS_SYS=`uname -s`
-declare -x OS_REL=`uname -r`
-declare -x OS_PLATFORM=`uname -p`
-declare -x OS_MACHINE=`uname -m`
-if [ "$DEBUG" ]; then
+export OS_SYS=`uname -s`
+export OS_REL=`uname -r`
+export OS_PLATFORM=`uname -p`
+export OS_MACHINE=`uname -m`
+if [ "${DEBUG}" ]; then
   echo "---> setting system $OS_SYS"
   echo "---> setting release $OS_REL"
   echo "---> setting platform $OS_PLATFORM"
@@ -73,19 +71,19 @@ if [ "$DEBUG" ]; then
 fi
 
 # Figure out which Linux distribution we are on
-if [ $OS_SYS == "Linux" ]; then
+if [[ ${OS_SYS} == "Linux" ]]; then
     OS_DIST=`/usr/bin/lsb_release -d | sed -e 's/Description:.//'`
     OS_DIST_NAME=`/usr/bin/lsb_release -i | sed -e 's/Distributor ID:.//'`
     declare -x OS_DIST
     declare -x OS_DIST_NAME
 fi
 # Figure out which MacOSX distribution we are on
-if [ $OS_SYS == "Darwin" ]; then
+if [[ ${OS_SYS} == "Darwin" ]]; then
     OS_DIST=`/usr/bin/sw_vers -productVersion`
     OS_DIST_NAME=`/usr/bin/sw_vers -productName`
-    declare -x OS_DIST
-    declare -x OS_DIST_NAME
-    if [ "$DEBUG" ]; then
+    export OS_DIST
+    export OS_DIST_NAME
+    if [[ "${DEBUG}" ]]; then
       echo "---> setting dist $OS_DIST"
       echo "---> setting name $OS_DIST_NAME"
     fi
@@ -97,16 +95,8 @@ declare -x LC_ALL=C
 declare -x LC_CTYPE=C
 declare -x LANG=en_US.ISO-8859-1
 
-# Source in the common base function from the lib directory
-if [ -e "${HOME}/.files/lib/base.sh" ]; then
-    if [ "$DEBUG" ]; then
-        echo "---> sourcing ${HOME}/.files/lib/base.sh"
-    fi
-    source ${HOME}/.files/lib/base.sh
-fi
-
-if [ "$PS1" ]; then
-    if [ "x`tput kbs`" != "x" ]; then # We can't do this with "dumb" terminal
+if [[ "${PS1}" ]]; then
+    if [[ "x`tput kbs`" != "x" ]]; then # We can't do this with "dumb" terminal
       stty erase `tput kbs`
     fi
     case $TERM in
@@ -115,25 +105,24 @@ if [ "$PS1" ]; then
           if [ "$TERM" = "xterm-color" ]; then
               declare -x TERM=xterm
           fi
-      ;;
+        ;;
       *)
-      ;;
+        ;;
     esac
-    if [ -x /usr/local/bin/oh-my-posh ]; then
-        if [ "$DEBUG" ]; then
+    if [[ -x /usr/local/bin/oh-my-posh ]]; then
+        if [[ "${DEBUG}" ]]; then
           echo "---> sourcing $HOME/.files/oh-my-posh"
         fi
-        eval "$(oh-my-posh init bash --config ${HOME}/.files/oh-my-posh/themes/yancey.omp.json)"
-    elif [ -e ${HOME}/.files/bashrc_prompt ]; then
+        eval "$(oh-my-posh init zsh --config ${HOME}/.files/oh-my-posh/themes/yancey.omp.json)"
+    elif [ -e "${HOME}/.files/bashrc_prompt" ]; then
         source ${HOME}/.files/bashrc_prompt
-        if [ "$DEBUG" ]; then
+        if [ "${DEBUG}" ]; then
           echo "---> sourcing ${HOME}/.files/bashrc_prompt"
         fi
     else
         declare -x PS1="[\u@\h \W]\\$ "
     fi
 fi
-
 if [ -e "${HOME}/.iterm2_shell_integration.bash" ]; then
 	source ${HOME}/.iterm2_shell_integration.bash
     if [ "$DEBUG" ]; then
@@ -142,20 +131,20 @@ if [ -e "${HOME}/.iterm2_shell_integration.bash" ]; then
 fi
 
 # Start up key chain server
-if [ ! -f "${HOME}/.nokeychain" ]; then
-  if [ "$DEBUG" ]; then
+if [[ ! -f "${HOME}/.nokeychain" ]]; then
+  if [[ "${DEBUG}" ]]; then
     echo "---> sourcing ${HOME}/.files/bashrc_keychain"
   fi
   source ${HOME}/.files/bashrc_keychain
 fi
 
 # Now for all the tricky stuff
-for EXTRAS in $HOME/.files/profile.d/*.sh ; do
-  if [ -r "$EXTRAS" ]; then
-    if [ "$DEBUG" ]; then
+for EXTRAS in ${HOME}/.files/profile.d/*.sh ; do
+  if [[ -r "${EXTRAS}" ]]; then
+    if [[ "${DEBUG}" ]]; then
       echo "---> sourcing $EXTRAS"
     fi
-    source $EXTRAS
+    source ${EXTRAS}
   fi
 done
 

@@ -35,7 +35,7 @@ fi
 # Let's export the JAVA_HOME once we find it.
 #
 # Linux is a bit odd and it depends on which distrabution you run.
-if [ "${OS_SYS}" == "Linux" ]; then
+if [[ "${OS_SYS}" == "Linux" ]]; then
     if [[ "$OS_DIST" =~ "Fedora" ]]; then
         if [ -f "/usr/bin/java" ]; then
             JAVA_HOME=/usr
@@ -56,9 +56,9 @@ if [ "${OS_SYS}" == "Linux" ]; then
     fi 
 fi
 
-if [ "$OS_SYS" == "Darwin" ]; then
+if [[ "$OS_SYS" == "Darwin" ]]; then
     if [ -x "/usr/libexec/java_home" ]; then
-        JAVA_HOME=`/usr/libexec/java_home`
+        JAVA_HOME=`eval /usr/libexec/java_home`
     fi
     # JAVA_HOME not set, so we have to hunt for it.
     if [ ! -z "$JAVE_HOME" ]; then
@@ -68,7 +68,7 @@ if [ "$OS_SYS" == "Darwin" ]; then
     fi
 fi
 # FreeBSD can have Sun Java, or the Diablo version
-if [ "$OS_SYS" == "FreeBSD" ]; then
+if [[ "$OS_SYS" == "FreeBSD" ]]; then
     if [ -f "/usr/local/bin/java" ]; then
         JAVA_HOME=/usr/local
     elif [ -f "/usr/local/jdk1.5.0/bin/java" ]; then

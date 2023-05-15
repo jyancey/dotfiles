@@ -218,7 +218,7 @@ int main(int argc, char *argv[])
 	if (argc == 2 && strcmp(argv[1], "-s") == 0)
 		style = STYLE_SH;
 
-	char *path = construct_path("PATH", "/Users/john/.files/lib/paths", "/etc/paths.d");
+	char *path = construct_path("PATH", "/Users/john/lib/dotfiles/lib/paths", "/etc/paths.d");
 	char *manpath = NULL;
 	char *infopath = NULL;
 
@@ -226,13 +226,13 @@ int main(int argc, char *argv[])
 	int do_manpath = (getenv("MANPATH") != NULL);
 	if (do_manpath)
 	{
-		manpath = construct_path("MANPATH", "/Users/john/.files/lib/manpaths", "/etc/manpaths.d");
+		manpath = construct_path("MANPATH", "/Users/john/lib/dotfiles/lib/manpaths", "/etc/manpaths.d");
 	}
 	/* only adjust infopath if already set */
 	int do_infopath = (getenv("INFOPATH") != NULL);
 	if (do_infopath)
 	{
-		infopath = construct_path("INFOPATH", "/Users/john/.files/lib/infopaths", "/etc/infopaths.d");
+		infopath = construct_path("INFOPATH", "/Users/john/lib/dotfiles/lib/infopaths", "/etc/infopaths.d");
 	}
 
 	if (style == STYLE_CSH)

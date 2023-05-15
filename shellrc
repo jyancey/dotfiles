@@ -35,7 +35,7 @@ if [[ "${DEBUG}" ]]; then
   echo "Turning on debug"
 fi
 
-#declare -x POSIXLY_CORRECT=1
+declare -x POSIXLY_CORRECT=1
 
 # Cheat a little to turn $SHELL in to either zsh, or bash.
 if [[ $SHELL =~ "bash" ]]; then
@@ -120,14 +120,14 @@ if [[ "${PS1}" ]]; then
   esac
   if [[ -x /usr/local/bin/oh-my-posh ]]; then
     if [[ "${DEBUG}" ]]; then
-      echo "---> sourcing $HOME/.files/oh-my-posh"
+      echo "---> sourcing $HOME/lib/dotfiles/oh-my-posh"
     fi
-    eval "$(oh-my-posh init ${MYSHELL} --config ${HOME}/.files/oh-my-posh/themes/yancey.omp.json)"
-    elif [ -e "${HOME}/.files/${MYSHELL}rc_prompt" ]; then
+    eval "$(oh-my-posh init ${MYSHELL} --config ${HOME}/lib/dotfiles/oh-my-posh/themes/yancey.omp.json)"
+    elif [ -e "${HOME}/lib/dotfiles/${MYSHELL}rc_prompt" ]; then
       if [ "${DEBUG}" ]; then
-        echo "---> sourcing ${HOME}/.files/${MYSHELL}rc_prompt"
+        echo "---> sourcing ${HOME}/lib/dotfiles/${MYSHELL}rc_prompt"
       fi
-      source ${HOME}/.files/${MYSHELL}rc_prompt
+      source ${HOME}/lib/dotfiles/${MYSHELL}rc_prompt
     else
       declare -x PS1="[\u@\h \W]\\$ "
   fi
@@ -142,13 +142,13 @@ fi
 # Start up key chain server
 if [[ ! -f "${HOME}/.nokeychain" ]]; then
   if [[ "${DEBUG}" ]]; then
-    echo "---> sourcing ${HOME}/.files/keychain"
+    echo "---> sourcing ${HOME}/lib/dotfiles/keychain"
   fi
-  source ${HOME}/.files/keychain
+  source ${HOME}/lib/dotfiles/keychain
 fi
 
 # Now for all the tricky stuff
-for EXTRAS in ${HOME}/.files/profile.d/*.sh ; do
+for EXTRAS in ${HOME}/lib/dotfiles/profile.d/*.sh ; do
   if [[ -r "${EXTRAS}" ]]; then
     if [[ "${DEBUG}" ]]; then
       echo "---> sourcing $EXTRAS"

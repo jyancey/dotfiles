@@ -4,10 +4,10 @@
 
 [user]
 	name = John Yancey
-	email = john.w.yancey@gmail.com
+	email = john.yancey@mac.com
 
 [core]
-	excludesfile = ~/.gitignore_global
+	excludesfile = /Users/john/.gitignore_global
 	editor = vim
 	quotepath = false
 

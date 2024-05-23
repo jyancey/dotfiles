@@ -39,8 +39,6 @@ dot_files=(
   gitignore_global \
   npmrc \
   profile \
-  vimrc \
-  vim_runtime \
   zprofile \
   zshrc \
   zlogout
@@ -119,8 +117,6 @@ function do_reset(){
 #  $HOME/lib/dotfiles/gitignore_global => ~/.gitignore_global
 #  $HOME/lib/dotfiles/npmrc            => ~/.npmrc
 #  $HOME/lib/dotfiles/profile          => ~/.profile
-#  $HOME/lib/dotfiles/vimrc            => ~/.vimrc
-#  $HOME/lib/dotfiles/vim_runtime      => ~/.vim_runtime
 #  $HOME/lib/dotfiles/zprofile         => ~/.zprofile
 #  $HOME/lib/dotfiles/shellrc          => ~/.zshrc
 #  $HOME/lib/dotfiles/zsh_logout       => ~/.zlogout
@@ -142,8 +138,9 @@ function do_file_link(){
 
 usage(){
   printf "Usage: setup.sh [-r]\n"
-  printf "  check that MacPorts and base packages are installed, then\n"
-  printf "  create the neede symliks in the home directory if missing.\n\n"
+  printf "  create the needed symliks in the home directory if missing.\n\n"
+  printf "  checks that MacPorts and base packages are installed, \n"
+  printf "  if host system is Darwin (macOS).\n"
   printf "  Options\n"
   printf "    -r resets the symlinks\n\n"
   exit 1

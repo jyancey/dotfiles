@@ -37,10 +37,10 @@ There are a few optional packages that make things nice, you should `port instal
 
 ### Setting Up the Dotfiles ###
 
-Now comes the easy part, assuming you've checked out this repository in to `$HOME/.files` with `git clone https://github.com/jyancey/dotfiles.git ~/.files` run the `$HOME/.files/setup.sh` script that exists in your new `.files` directory. This will create all the needed dot files in your `$HOME` directory, but as symbolic links to the source files in your `.files` directory. The setup script runs a quick check to make sure you have the basics installed for things to work. You should see:
+Now comes the easy part, assuming you've checked out this repository in to `$HOME/lib/dotfiles` with `git clone https://github.com/jyancey/dotfiles.git ~/lib/dotfiles` run the `$HOME/lib/dotfiles/setup.sh` script that exists in your new `~/lib/dotfiles` directory. This will create all the needed `.${files}` in your `$HOME` directory, but as symbolic links to the source files in your `~/lib/dotfiles` directory. The setup script runs a quick check to make sure you have the basics installed for things to work. You should see:
 
 ```
-$ ~/.files/setup.sh
+$ ~/lib/dotfiles/setup.sh
 One second while I test things out...
  Install prefix '/usr/local' exists.          [OK]
  MacPorts instalation exists.                 [OK]

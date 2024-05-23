@@ -49,7 +49,7 @@ else
   SYM='-'
 fi
 
-if [[ -e /usr/local/bin/fortune -a -e /usr/local/bin/cowsay ]]; then
+if [ -e /usr/local/bin/fortune -a -e /usr/local/bin/cowsay ]; then
   /usr/local/bin/fortune | /usr/local/bin/cowsay -n
 fi
 
@@ -73,9 +73,9 @@ fi
 
 # Define the actual prompt, which will look like:
 # [login@hostname]$
-declare -x PS1="[\u@\h]\$ "
+#declare -x PS1="[\u@\h]\$ "
 
 # Super simple prompt
 # [~/abspath]
 # <login@hostname>$
-#declare -x PS1="$MA[\w]$NO\n$LY<\u@\h>$LR\$$NO "
+declare -x PS1="$MA[\w]$NO\n$LY<\u@\h>$LR\$$NO "

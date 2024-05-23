@@ -33,6 +33,28 @@
 # Set a default keychain
 declare -x HOSTNAME=`hostname -s`
 
+if [[ "${OS_SYS}" == "SunOS" ]]; then
+    if [[ "${DEBUG}" ]]; then
+        echo "Looking for keychain..."
+    fi
+    if [[ ! -x "/usr/local/bin/keychain" ]]; then
+        echo "Unable to find keychain!"
+        return
+    else
+        declare -x KEYCHAIN=/usr/local/bin/keychain
+   fi
+fi
+if [[ "${OS_SYS}" == "FreeBSD" ]]; then
+    if [[ "${DEBUG}" ]]; then
+        echo "Looking for keychain..."
+    fi
+    if [[ ! -x "/usr/local/bin/keychain" ]]; then
+        echo "Unable to find keychain!"
+        return
+    else
+        declare -x KEYCHAIN=/usr/local/bin/keychain
+   fi
+fi
 if [[ "${OS_SYS}" == "Linux" ]]; then
     if [[ "${DEBUG}" ]]; then
         echo "Looking for keychain..."

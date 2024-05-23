@@ -54,18 +54,20 @@
           "type": "git"
         },
         {
-          "background": "#33DD2D",
-          "background_templates": [
-            "{{ if gt .Code 0 }}#f1184c{{ end }}"
-          ],
-          "foreground": "#242424",
+          "background": "#906cff",
+          "foreground": "#100e23",
           "powerline_symbol": "\ue0b0",
-          "properties": {
-            "always_enabled": true
-          },
           "style": "powerline",
-          "template": " \ufc8d ",
-          "type": "exit"
+          "template": " \ue235 {{ if .Error }}{{ .Error }}{{ else }}{{ if .Venv }}{{ .Venv }} {{ end }}{{ .Full }}{{ end }} ",
+          "type": "python"
+        },
+        {
+          "background": "#ff8080",
+          "foreground": "#ffffff",
+          "powerline_symbol": "\ue0b0",
+          "style": "powerline",
+          "template": " \ue20f ",
+          "type": "status"
         }
       ],
       "type": "prompt"
@@ -83,7 +85,13 @@
         {
           "foreground": "#ffffff",
           "style": "plain",
-          "template": "->$",
+          "template": " {{ .Name }} ",
+          "type": "shell"
+        },
+        {
+          "foreground": "lightRed",
+          "style": "plain",
+          "template": "\u279c $",
           "type": "text"
         }
       ],

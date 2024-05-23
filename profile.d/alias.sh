@@ -83,7 +83,6 @@ alias l.='ls -dh .*' 2>/dev/null
 alias l='ls -F' 2>/dev/null
 alias lf='ls -lFAh' 2>/dev/null
 alias ll='ls -lFh' 2>/dev/null
-#alias lls='ls -lR | $HOME/bin/fullpath.rb' 2>/dev/null
 alias rrm='rm -fr ${1:+"$@"}'
 alias sed='gsed'
 alias wdiff='diff -bituNr ${1:+"$@"}'
@@ -122,18 +121,18 @@ alias gov='go vet'
 #
 # Git
 #
-alias gb='git branch'
-alias gba='git branch -a'
-alias gc='git commit -v'
-alias gca='git commit -v -a'
-alias gd='git diff | mate'
-alias ghst='history | gr ${1:+"$@"}' 2>/dev/null
-alias gl='git pull'
-alias glogs='git log --graph --full-history --all --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
-alias glog='git log --graph --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
-alias gp='git push'
-alias gsvn='git svn ${1:+"$@"}'
-alias gst='git status -s'
+alias gtb='git branch'
+alias gtba='git branch -a'
+alias gtc='git commit -v'
+alias gtca='git commit -v -a'
+alias gtd='git diff | bbedit'
+alias gthst='history | gr ${1:+"$@"}' 2>/dev/null
+alias gtl='git pull'
+alias gtlogs='git log --graph --full-history --all --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
+alias gtlog='git log --graph --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
+alias gtp='git push'
+alias gtsvn='git svn ${1:+"$@"}'
+alias gtst='git status -s'
 #
 # Lock the screen
 #
@@ -141,5 +140,5 @@ alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resource
 #
 # Different Environment setups
 #
-alias jdsenv='. $HOME/.files/build_env/jdsenv.sh'
-alias gnustep='. $HOME/.files/build_env/gnustep.sh'
+alias jdsenv='. $HOME/lib/dotfiles/build_env/jdsenv.sh'
+alias gnustep='. $HOME/lib/dotfiles/build_env/gnustep.sh'

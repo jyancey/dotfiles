@@ -28,8 +28,8 @@
 # $Id$
 #------------------------------------------------------------------------------
 #
-# The bashrc file is read when the bash shell is invocatted as an interactive 
-# shell, not a login shell, and executes commands from ~/.bashrc, if  that 
+# The bashrc file is read when the bash shell is invocatted as an interactive
+# shell, not a login shell, and executes commands from ~/.bashrc, if  that
 # file exists.
 #
 #echo "Nothing in bashrc."

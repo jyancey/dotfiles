@@ -7,8 +7,8 @@
 	email = john.w.yancey@gmail.com
 
 [core]
-	excludesfile = /Users/john/.gitignore_global
-	editor = /usr/bin/vim
+	excludesfile = ~/.gitignore_global
+	editor = vim
 	quotepath = false
 
 [difftool "sourcetree"]
@@ -92,7 +92,7 @@
 	process = git-lfs filter-process
 
 [commit]
-	template = /Users/john/.files/git-commit-template.txt
+	template = ~/lib/dotfiles/git-commit-template.txt
 	cleanup = strip
 
 [rerere]

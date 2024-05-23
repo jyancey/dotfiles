@@ -102,7 +102,7 @@ declare -x EDITOR=vim
 declare -x PAGER=less
 declare -x LC_ALL=C
 declare -x LC_CTYPE=C
-declare -x LANG=en_US.ISO-8859-1
+#declare -x LANG=en_US.ISO-8859-1
 
 if [[ "${PS1}" ]]; then
   if [[ "x`tput kbs`" != "x" ]]; then # We can't do this with "dumb" terminal
@@ -123,13 +123,13 @@ if [[ "${PS1}" ]]; then
       echo "---> sourcing $HOME/lib/dotfiles/oh-my-posh"
     fi
     eval "$(oh-my-posh init ${MYSHELL} --config ${HOME}/lib/dotfiles/oh-my-posh/themes/yancey.omp.json)"
-    elif [ -e "${HOME}/lib/dotfiles/${MYSHELL}rc_prompt" ]; then
+    elif [ -e "${HOME}/lib/dotfiles/prompt" ]; then
       if [ "${DEBUG}" ]; then
-        echo "---> sourcing ${HOME}/lib/dotfiles/${MYSHELL}rc_prompt"
+        echo "---> sourcing ${HOME}/lib/dotfiles/prompt"
       fi
-      source ${HOME}/lib/dotfiles/${MYSHELL}rc_prompt
+      source ${HOME}/lib/dotfiles/prompt
     else
-      declare -x PS1="[\u@\h \W]\\$ "
+      declare -x PS1="[\u@\h]\\$ "
   fi
 fi
 if [ -e "${HOME}/.iterm2_shell_integration.${MYSHELL}" ]; then
@@ -156,5 +156,5 @@ for EXTRAS in ${HOME}/lib/dotfiles/profile.d/*.sh ; do
     source ${EXTRAS}
   fi
 done
-
 umask 022
+

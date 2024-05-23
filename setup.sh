@@ -43,7 +43,7 @@ dot_files=(
   vim_runtime \
   zprofile \
   zshrc \
-  zsh_logout
+  zlogout
 )
 
 # Let's check to make sure everything is installed and we are ready to go. This
@@ -69,26 +69,28 @@ function do_check(){
     printf " Missing install prefix '/usr/local'.\t[FAIL]\n"
     exit
   fi
-  if [[ -x ${PHOME} ]]; then
-    printf " MacPorts instalation exists.\t\t\t[OK]\n"
-  else
-    printf " MacPorts instalation missing.\t\t\t[FAIL]\n"
-    exit
-  fi
-  if [[ -x /usr/local/bin/port ]]; then
-    printf " MacPorts port command exists.\t\t\t[OK]\n"
-  else
-    printf " MacPorts port missing exists.\t\t\t[FAIL]\n"
-    exit
-  fi
-  for pkg in "${pkg_base[@]}"; do
-    if [[ `port installed | grep ${pkg}` ]]; then
-        printf " MacPorts package %-15s installed.\t[OK]\n" "${pkg}"
+  if [[ ${OS_SYS} == 'Darwin' ]]; then
+    if [[ -x ${PHOME} ]]; then
+      printf " MacPorts instalation exists.\t\t\t[OK]\n"
     else
-        printf " MacPorts package %-15s missing.\t[FAIL]\n" "${pkg}"
-        exit
+      printf " MacPorts instalation missing.\t\t\t[FAIL]\n"
+      exit
     fi
-  done
+    if [[ -x /usr/local/bin/port ]]; then
+      printf " MacPorts port command exists.\t\t\t[OK]\n"
+    else
+      printf " MacPorts port missing exists.\t\t\t[FAIL]\n"
+      exit
+    fi
+    for pkg in "${pkg_base[@]}"; do
+      if [[ `port installed | grep ${pkg}` ]]; then
+          printf " MacPorts package %-15s installed.\t[OK]\n" "${pkg}"
+      else
+          printf " MacPorts package %-15s missing.\t[FAIL]\n" "${pkg}"
+          exit
+      fi
+    done
+  fi
   return
 }
 
@@ -105,7 +107,7 @@ function do_reset(){
   return
 }
 
-# This assumes that the dotfiles repo is checked out into the 
+# This assumes that the dotfiles repo is checked out into the
 # $HOME/lib/dotfiles directory. This will create the following
 # symlinks and directories if they do not exist:
 #  $HOME/lib/dotfiles/shellrc          => ~/.bashrc
@@ -121,7 +123,7 @@ function do_reset(){
 #  $HOME/lib/dotfiles/vim_runtime      => ~/.vim_runtime
 #  $HOME/lib/dotfiles/zprofile         => ~/.zprofile
 #  $HOME/lib/dotfiles/shellrc          => ~/.zshrc
-#  $HOME/lib/dotfiles/zsh_logout       => ~/.zsh_logout
+#  $HOME/lib/dotfiles/zsh_logout       => ~/.zlogout
 function do_file_link(){
   printf "Setting up symlinks in ${HOME} if needed...\n"
   for file in "${dot_files[@]}"; do
@@ -131,14 +133,14 @@ function do_file_link(){
         ln -fs $HOME/lib/dotfiles/shellrc $HOME/.$file
       else
         printf " linking %-16s => $HOME/lib/dotfiles/%s\n" "$file" "$file"
-        ln -fs $HOME/lib/dotfiles/$file $HOME/.$file 
+        ln -fs $HOME/lib/dotfiles/$file $HOME/.$file
       fi
 	fi
   done
   return
 }
 
-usage(){ 
+usage(){
   printf "Usage: setup.sh [-r]\n"
   printf "  check that MacPorts and base packages are installed, then\n"
   printf "  create the neede symliks in the home directory if missing.\n\n"

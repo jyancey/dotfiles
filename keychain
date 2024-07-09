@@ -70,11 +70,13 @@ if [[ "${OS_SYS}" == "Darwin" ]]; then
     if [ "${DEBUG}" ]; then
         echo "Looking for keychain..."
     fi
-    if [[ ! -x "/usr/local/bin/keychain" ]]; then
+    if [[ -x "/opt/homebrew/bin/keychain" ]]; then
+        declare -x KEYCHAIN=/opt/homebrew/bin/keychain
+    elif [[ -x "/opt/macports/bin/keychain" ]]; then
+        declare -x KEYCHAIN=/opt/macports/bin/keychain
+    else
         echo "Unable to find keychain!"
         return
-    else
-        declare -x KEYCHAIN=/usr/local/bin/keychain
    fi
 fi
 
@@ -92,6 +94,6 @@ echo "${keychainHOSTS}" | grep `echo ${HOSTNAME}` > /dev/null
 
 # Run it
 if [[ "${keychainON}" != 0 ]]; then
-    ${KEYCHAIN} ${HOME}/.ssh/id_rsa > /dev/null
+    ${KEYCHAIN} ${HOME}/.ssh/id_rsa ${HOME}/.ssh/jyancey-GitHub ${HOME}/.ssh/john.yancey-Bitbucket > /dev/null
     source ${HOME}/.keychain/${HOSTNAME}-sh
 fi

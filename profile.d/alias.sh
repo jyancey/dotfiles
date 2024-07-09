@@ -48,8 +48,10 @@ if [[ "${OS_SYS}" == "SunOS" ]]; then
     fi
 fi
 if [[ "${OS_SYS}" == "Darwin" ]]; then
-    if [[ -x /usr/local/bin/lsd ]]; then
-        alias ls='/usr/local/bin/lsd'
+    if [[ -x /opt/homebrew/bin/lsd ]]; then
+        alias ls='/opt/homebrew/bin/lsd'
+    elif [[ -x /opt/macports/bin/lsd ]]; then
+        alias ls='/opt/macports/bin/lsd'
     elif [[ -x /usr/local/bin/gls ]]; then
         alias ls='/usr/local/bin/gls --color=auto'
     else
@@ -140,5 +142,5 @@ alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resource
 #
 # Different Environment setups
 #
-alias jdsenv='. $HOME/lib/dotfiles/build_env/jdsenv.sh'
-alias gnustep='. $HOME/lib/dotfiles/build_env/gnustep.sh'
+alias jdsenv='. $HOME/.config/dotfiles/build_env/jdsenv.sh'
+alias gnustep='. $HOME/.config/dotfiles/build_env/gnustep.sh'

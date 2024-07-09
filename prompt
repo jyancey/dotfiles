@@ -1,6 +1,6 @@
-#! /bin/bash
+#! /bin/env {$SHELL}
 #------------------------------------------------------------------------------
-# bashrc_prompt - Dotfiles bash login prompt file.
+# prompt - Dotfiles login prompt file.
 #
 # CDDL HEADER START
 #
@@ -21,14 +21,14 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2000-2013 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2024 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.w.yancey@gmail.org>
 #
 # $Id$
 #------------------------------------------------------------------------------
 #
-# Define ANSI color sequences
+# Define ANSI color sequences for bash, zsh has this built-in.
 NO='\[\033[0m\]'      # Normal
 WH='\[\033[0;37m\]'   # White
 MA='\[\033[0;35m\]'   # Magenta
@@ -41,41 +41,21 @@ BW='\[\033[1;37m\]'   # Bright White
 BM='\[\033[1;35m\]'   # Bright Magenta
 BY='\[\033[1;33m\]'   # Bright Yellow
 
-# Find out if we are root
-if [[ ${UID} -eq 0 ]] ; then
-  # The '#' character serves as an extra reminder that I am root
-  SYM='#'
-else
-  SYM='-'
-fi
-
-if [ -e /usr/local/bin/fortune -a -e /usr/local/bin/cowsay ]; then
-  /usr/local/bin/fortune | /usr/local/bin/cowsay -n
-fi
-
 # Define the actual prompt, which will look like:
-# --[login@hostname]--
-# --{~}--
-# --(0)->$
+# [~/path]           <-- Path in bright blue
+# <login@hostname>$  <-- User @ Host in bright yellow, $ prompt in bright red
 #
-#P1="$MA$SYM$BM-$BB[$WH\u$MA@$WH\h$BB]$BM-$MA$SYM$NO\n"
-#P2="$MA$SYM$BM-$BB{$BW\w$BB}$BM-$MA$SYM$NO\n"
-#P3="$MA$SYM$BM-$BB($BW\$?$BB)$BM-$MA>$NO\$ "
-
-# Define the actual prompt, which will look like:
-# --[login@hostname]-- --{~}--
-# -->$
-#
-#P1="$MA$SYM$BM-$BB[$WH\u$MA@$WH\h$BB]$BM-$MA$SYM$NO "
-#P2="$MA$SYM$BM-$BB{$BW\W$BB}$BM-$MA$SYM$N0\n"
-#P3="$MA$SYM$BM-$BB>$NO\$ "
-#declare -x PS1="$P1$P2$P3"
-
-# Define the actual prompt, which will look like:
-# [login@hostname]$
-#declare -x PS1="[\u@\h]\$ "
-
-# Super simple prompt
-# [~/abspath]
-# <login@hostname>$
-declare -x PS1="$MA[\w]$NO\n$LY<\u@\h>$LR\$$NO "
+if [[ "${MYSHELL}" == "bash" ]]; then
+  if [[ ${DEBUG} ]]; then
+    echo "---> setting prompt for $MYSHELL"
+  fi
+  declare -x PS1="$BB[\w]$NO\n$BY<\u@\h>$BR\$$NO "
+fi
+if [[ "${MYSHELL}" == "zsh" ]]; then
+  if [[ ${DEBUG} ]]; then
+    echo "---> setting prompt for $MYSHELL"
+  fi
+  # zsh doesn't support '\n' embedded into the prompt, sad.
+  CR=$'\n'
+  declare -x PS1="%F{blue}[%~]%f$CR%F{yellow}<%n@%m>%f%F{red}$%f "
+fi

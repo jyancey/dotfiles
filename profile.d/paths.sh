@@ -37,7 +37,7 @@ if [ -x ${HOME}/bin/my_path_helper ]; then
   if [ "$DEBUG" ]; then
     echo "-------> setting up paths"
   fi
-	eval `${HOME}/bin/my_path_helper -s`
+	eval `${HOME}/bin/path_helper -s`
 fi
 
 declare -x PATH

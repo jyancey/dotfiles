@@ -5,12 +5,8 @@
     "red": "#e06c75",
     "green": "#98c379",
     "yellow": "#e5c07b",
-    "peach": "#ffb86c",
-    "pink": "#ff79c6",
     "blue": "#61afef",
     "magenta": "#c678dd",
-    "violet": "#6272a4",
-    "lavender": "#bd93f9",
     "cyan": "#56b6c2",
     "white": "#dcdfe4",
     "foreground": "#dcdfe4",
@@ -24,16 +20,18 @@
       "newline": true,
       "segments": [
         {
+          "foreground": "p:yellow",
           "style": "plain",
-          "template": "[<p:green>{{ .UserName }}</><p:peach>@</><p:green>{{ .HostName }}</>]",
+          "template": "{{ .UserName }}@{{ .HostName }} ",
           "type": "session"
         },
         {
+          "foreground": "p:blue",
           "style": "plain",
           "properties": {
             "style": "full"
           },
-          "template": "[<p:violet>{{ .Path }}</>]",
+          "template": "{{ .Path }} ",
           "type": "path"
         },
         {
@@ -44,7 +42,7 @@
             "fetch_worktree_count": true
           },
           "style": "plain",
-          "template": "[<p:yellow>git</>:({{ if or (.Working.Changed) (.Staging.Changed) (gt .StashCount 0) }}<p:magenta>{{ .HEAD }}</>{{ else }}<p:green>{{ .HEAD }}</>{{ end }}{{ if (gt .Ahead 0)}}<p:cyan>{{ .BranchStatus }}</>{{ end }}{{ if (gt .Behind 0)}}<p:cyan>{{ .BranchStatus }}</>{{ end }}{{ if .Staging.Changed }} <p:green>{{ .Staging.String }}</>{{ end }}{{ if .Working.Changed }} <p:red>{{ .Working.String }}</>{{ end }})]",
+          "template": "<p:yellow>git</>:({{ if or (.Working.Changed) (.Staging.Changed) (gt .StashCount 0) }}<p:magenta>{{ .HEAD }}</>{{ else }}<p:green>{{ .HEAD }}</>{{ end }}{{ if (gt .Ahead 0)}}<p:cyan>{{ .BranchStatus }}</>{{ end }}{{ if (gt .Behind 0)}}<p:cyan>{{ .BranchStatus }}</>{{ end }}{{ if .Staging.Changed }} <p:green>{{ .Staging.String }}</>{{ end }}{{ if .Working.Changed }} <p:red>{{ .Working.String }}</>{{ end }})",
           "type": "git"
         }
       ],
@@ -55,10 +53,13 @@
       "newline": true,
       "segments": [
         {
-          "foreground": "p:pink",
+          "foreground": "p:foreground",
+          "properties": {
+            "always_enabled": true
+          },
           "style": "plain",
-          "template": "->$ ",
-          "type": "text"
+          "template": "{{ if gt .Code 0 }}<p:red>({{ .Code }}) </>{{ else }}<p:green>({{ .Code }}) </>{{ end }}> ",
+          "type": "status"
         }
       ],
       "type": "prompt"

@@ -1,4 +1,4 @@
-#! ${SHELL}
+#! /bin/env ${SHELL}
 #------------------------------------------------------------------------------
 # bashrc & zshrc - Dotfiles bash & zsh shell resource file.
 #
@@ -28,23 +28,22 @@
 # $Id$
 #------------------------------------------------------------------------------
 #
-# Uncomment to turn dotfile debug statments on.
-#export DEBUG=1
-#
+# Uncomment to turn dotfile debug statements on.
+#declare -x DEBUG=1
+declare -x POSIXLY_CORRECT=1
+
 if [[ "${DEBUG}" ]]; then
   echo "Turning on debug"
 fi
 
-declare -x POSIXLY_CORRECT=1
-
-# Cheat a little to turn $SHELL in to either zsh, or bash.
+# Cheat a little to turn $SHELL into something with out the path.
 if [[ $SHELL =~ "bash" ]]; then
-  MYSHELL="bash"
+  export MYSHELL="bash"
 elif [[ $SHELL =~ "zsh" ]]; then
-  MYSHELL="zsh"
+  export MYSHELL="zsh"
 fi
 
-# Running as a non-login shell! We have already picked up the path setting
+# Running as a non-login shell! We have already picked up the path-setting
 # from global, now get our own aliases and functions
 if [[ -f /etc/${MYSHELL}rc ]]; then
   if [[ "${DEBUG}" ]]; then
@@ -52,11 +51,21 @@ if [[ -f /etc/${MYSHELL}rc ]]; then
   fi
   source /etc/${MYSHELL}rc
 fi
+
+# Apple thing, go figure.
 if [[ -f /etc/${MYSHELL}rc_Apple_Terminal ]]; then
   if [[ "${DEBUG}" ]]; then
     echo "---> sourcing /etc/${MYSHELL}rc_Apple_Terminal"
   fi
     source /etc/${MYSHELL}rc_Apple_Terminal
+fi
+
+# Use bash_completion, if completion exists
+if [[ -f /usr/local/etc/${MYSHELL}_completion ]]; then
+  if [[ "${DEBUG}" ]]; then
+    echo "---> sourcing /usr/local/etc/${MYSHELL}_completion"
+  fi
+  source /usr/local/etc/${MYSHELL}_completion
 fi
 
 # Use zsh_completion, if completion exists
@@ -65,7 +74,15 @@ if [[ -f /usr/local/etc/${MYSHELL}_completion ]]; then
     echo "---> sourcing /usr/local/etc/${MYSHELL}_completion"
   fi
   source /usr/local/etc/${MYSHELL}_completion
+  fpath=(/usr/local/share/zsh/site-functions $fpath)
 fi
+
+# Set the basics and then fine-tune with items in the profile.d directory.
+declare -x EDITOR=vim
+declare -x PAGER=less
+declare -x LC_ALL=C
+declare -x LC_CTYPE=C
+declare -x LANG=en_US.ISO-8859-1
 
 # Export out all the system information
 export OS_SYS=`uname -s`
@@ -79,6 +96,7 @@ if [ "${DEBUG}" ]; then
   echo "---> setting arch $OS_MACHINE"
 fi
 
+# What system are we really running on? The BSDes are better at this, so...
 # Figure out which Linux distribution we are on
 if [[ ${OS_SYS} == "Linux" ]]; then
   OS_DIST=`/usr/bin/lsb_release -d | sed -e 's/Description:.//'`
@@ -86,7 +104,7 @@ if [[ ${OS_SYS} == "Linux" ]]; then
   declare -x OS_DIST
   declare -x OS_DIST_NAME
 fi
-# Figure out which MacOSX distribution we are on
+# Figure out which macOSX distribution we are on
 if [[ ${OS_SYS} == "Darwin" ]]; then
   OS_DIST=`/usr/bin/sw_vers -productVersion`
   OS_DIST_NAME=`/usr/bin/sw_vers -productName`
@@ -98,58 +116,18 @@ if [[ ${OS_SYS} == "Darwin" ]]; then
   fi
 fi
 
-declare -x EDITOR=vim
-declare -x PAGER=less
-declare -x LC_ALL=C
-declare -x LC_CTYPE=C
-#declare -x LANG=en_US.ISO-8859-1
-
-if [[ "${PS1}" ]]; then
-  if [[ "x`tput kbs`" != "x" ]]; then # We can't do this with "dumb" terminal
-    stty erase `tput kbs`
-  fi
-  case $TERM in
-    xterm*)
-      PROMPT_COMMAND='echo -ne "\033]0;${LOGNAME}@${HOSTNAME}: ${PWD}\007"'
-      if [ "$TERM" = "xterm-color" ]; then
-        declare -x TERM=xterm
+# Some terminal sorting to add in goodness from iTerm2
+if [[ ${TERM_PROGRAM} == "iTerm.app" ]]; then
+  if [ -e "${HOME}/.iterm2_shell_integration.${MYSHELL}" ]; then
+      if [ "$DEBUG" ]; then
+        echo "---> sourcing ${HOME}/.iterm2_shell_integration.${MYSHELL}"
       fi
-      ;;
-    *)
-      ;;
-  esac
-  if [[ -x /usr/local/bin/oh-my-posh ]]; then
-    if [[ "${DEBUG}" ]]; then
-      echo "---> sourcing $HOME/lib/dotfiles/oh-my-posh"
-    fi
-#    eval "$(oh-my-posh init ${MYSHELL} --config ${HOME}/lib/dotfiles/oh-my-posh/themes/powerlevel10k_classic.omp.json)"
-    eval "$(oh-my-posh init ${MYSHELL} --config ${HOME}/lib/dotfiles/oh-my-posh/themes/yancey.omp.json)"
-    elif [ -e "${HOME}/lib/dotfiles/prompt" ]; then
-      if [ "${DEBUG}" ]; then
-        echo "---> sourcing ${HOME}/lib/dotfiles/prompt"
-      fi
-      source ${HOME}/lib/dotfiles/prompt
-    else
-      declare -x PS1="[\u@\h]\\$ "
+      source ${HOME}/.iterm2_shell_integration.${MYSHELL}
   fi
-fi
-if [ -e "${HOME}/.iterm2_shell_integration.${MYSHELL}" ]; then
-    if [ "$DEBUG" ]; then
-      echo "---> sourcing ${HOME}/.iterm2_shell_integration.${MYSHELL}"
-    fi
-    source ${HOME}/.iterm2_shell_integration.${MYSHELL}
-fi
-
-# Start up key chain server
-if [[ ! -f "${HOME}/.nokeychain" ]]; then
-  if [[ "${DEBUG}" ]]; then
-    echo "---> sourcing ${HOME}/lib/dotfiles/keychain"
-  fi
-  source ${HOME}/lib/dotfiles/keychain
 fi
 
 # Now for all the tricky stuff
-for EXTRAS in ${HOME}/lib/dotfiles/profile.d/*.sh ; do
+for EXTRAS in ${HOME}/.config/dotfiles/profile.d/*.sh ; do
   if [[ -r "${EXTRAS}" ]]; then
     if [[ "${DEBUG}" ]]; then
       echo "---> sourcing $EXTRAS"
@@ -157,5 +135,22 @@ for EXTRAS in ${HOME}/lib/dotfiles/profile.d/*.sh ; do
     source ${EXTRAS}
   fi
 done
+
+# Clean up the prompt a bit to change from the default look.
+if [ -e "${HOME}/.config/dotfiles/prompt" ]; then
+  if [ "${DEBUG}" ]; then
+    echo "---> sourcing ${HOME}/.config/dotfiles/prompt"
+  fi
+  source ${HOME}/.config/dotfiles/prompt
+fi
+
+# Start up keychain server
+if [[ ! -f "${HOME}/.nokeychain" ]]; then
+  if [[ "${DEBUG}" ]]; then
+    echo "---> sourcing ${HOME}/.config/dotfiles/keychain"
+  fi
+  source ${HOME}/.config/dotfiles/keychain
+fi
+
 umask 022
 

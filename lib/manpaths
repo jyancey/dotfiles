@@ -1,13 +1,15 @@
 /usr/man
 /usr/share/man
 /usr/kerberos/man
+/usr/kerberos/share/man
 /usr/X116/man
 /usr/X116/share//man
 /usr/dt/man
-/usr/openwin/man
+/usr/dt/share/man
 /usr/local/man
 /usr/local/share/man
 /var/man
+/var/share/man
 /sw/man
 /sw/share/man
 /opt/man
@@ -20,5 +22,7 @@
 /usr/sfw/share/man
 /usr/gnu/man
 /usr/gnu/share/man
-/Library/TeX/Distributions/.DefaultTeX/Contents/Man
-/usr/local/git/share/man
+/opt/macports/man
+/opt/macports/share/man
+/opt/homebrew/man
+/opt/homebrew/share/man

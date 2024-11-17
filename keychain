@@ -74,6 +74,8 @@ if [[ "${OS_SYS}" == "Darwin" ]]; then
         declare -x KEYCHAIN=/opt/homebrew/bin/keychain
     elif [[ -x "/opt/macports/bin/keychain" ]]; then
         declare -x KEYCHAIN=/opt/macports/bin/keychain
+    elif [[ -x "/usr/local/bin/keychain" ]]; then
+        declare -x KEYCHAIN=/usr/local/bin/keychain
     else
         echo "Unable to find keychain!"
         return

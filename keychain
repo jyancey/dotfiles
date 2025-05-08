@@ -28,8 +28,18 @@
 # $Id$
 #------------------------------------------------------------------------------
 #
-# Start up a keychain agent to avoid crazy password challenge all the time
+# Start up a keychain agent to avoid crazy password challenges all the time
 #
+# Keys to add to agent:
+ssh_keys=(
+  aws.pem \
+  id_ed25519 \
+  id_rsa \
+  john-Gitea \
+  john.yancey-Bitbucket \
+  jyancey-GitHub
+)
+
 # Set a default keychain
 declare -x HOSTNAME=`hostname -s`
 
@@ -96,6 +106,10 @@ echo "${keychainHOSTS}" | grep `echo ${HOSTNAME}` > /dev/null
 
 # Run it
 if [[ "${keychainON}" != 0 ]]; then
-    ${KEYCHAIN} ${HOME}/.ssh/id_rsa ${HOME}/.ssh/jyancey-GitHub ${HOME}/.ssh/john.yancey-Bitbucket > /dev/null
+    for ssh_key in "${ssh_keys[@]}"; do
+        if [[ -f "$HOME/.ssh/$ssh_key" ]]; then
+            ${KEYCHAIN} -q $HOME/.ssh/$ssh_key > /dev/null
+        fi
+    done
     source ${HOME}/.keychain/${HOSTNAME}-sh
 fi

@@ -89,7 +89,7 @@
 	process = git-lfs filter-process
 
 [commit]
-	template = /Users/john/.stCommitMsg
+	template = ~/.config/dotfiles/git-commit-template.txt
 	cleanup = strip
 
 [rerere]

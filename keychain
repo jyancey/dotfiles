@@ -108,7 +108,7 @@ echo "${keychainHOSTS}" | grep `echo ${HOSTNAME}` > /dev/null
 if [[ "${keychainON}" != 0 ]]; then
     for ssh_key in "${ssh_keys[@]}"; do
         if [[ -f "$HOME/.ssh/$ssh_key" ]]; then
-            ${KEYCHAIN} -q $HOME/.ssh/$ssh_key > /dev/null
+            ${KEYCHAIN} -q --agents ssh,gpg --gpg2 $HOME/.ssh/$ssh_key > /dev/null
         fi
     done
     source ${HOME}/.keychain/${HOSTNAME}-sh

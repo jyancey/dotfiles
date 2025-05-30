@@ -33,7 +33,7 @@
 # filses located in the $HOME/.files/lib/(man|info|paths) files. We are using
 # a modified version of the 'path_helper' command, see the my_path_helper.c 
 # source file in the dotfile repo to see how it works.
-if [ -x ${HOME}/bin/my_path_helper ]; then
+if [ -x ${HOME}/bin/path_helper ]; then
   if [ "$DEBUG" ]; then
     echo "-------> setting up paths"
   fi

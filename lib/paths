@@ -38,4 +38,5 @@
 /opt/onbld/sbin
 /usr/ucb/bin
 /usr/ucb/sbin
-~/john/bin
+/home/john/bin
+/Users/john/bin

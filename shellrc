@@ -29,7 +29,7 @@
 #------------------------------------------------------------------------------
 #
 # Uncomment to turn dotfile debug statements on.
-#declare -x DEBUG=1
+declare -x DEBUG=1
 declare -x POSIXLY_CORRECT=1
 
 if [[ "${DEBUG}" ]]; then
@@ -185,14 +185,3 @@ if [[ ! -f "${HOME}/.nokeychain" ]]; then
 fi
 
 umask 022
-
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/john/.cache/lm-studio/bin"
-# End of LM Studio CLI section
-
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/john/.cache/lm-studio/bin"
-# End of LM Studio CLI section
-

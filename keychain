@@ -37,86 +37,86 @@ ssh_keys=(
   id_rsa \
   john-Gitea \
   john.yancey-Bitbucket \
-  jyancey-GitHub \
+  jyancey-GitHub
 )
 
 # Set a default keychain
 declare -x HOSTNAME=`hostname -s`
 
 if [[ "${OS_SYS}" == "SunOS" ]]; then
-    if [[ "${DEBUG}" ]]; then
-        echo "Looking for keychain..."
-    fi
-    if [[ ! -x "/usr/local/bin/keychain" ]]; then
-        echo "Unable to find keychain!"
-        return
-    else
-        declare -x KEYCHAIN=/usr/local/bin/keychain
-   fi
+  if [[ "${DEBUG}" ]]; then
+    echo "Looking for keychain..."
+  fi
+  if [[ ! -x "/usr/local/bin/keychain" ]]; then
+    echo "Unable to find keychain!"
+    return
+  else
+    declare -x KEYCHAIN=/usr/local/bin/keychain
+  fi
 fi
 if [[ "${OS_SYS}" == "FreeBSD" ]]; then
-    if [[ "${DEBUG}" ]]; then
-        echo "Looking for keychain..."
-    fi
-    if [[ ! -x "/usr/local/bin/keychain" ]]; then
-        echo "Unable to find keychain!"
-        return
-    else
-        declare -x KEYCHAIN=/usr/local/bin/keychain
-   fi
+  if [[ "${DEBUG}" ]]; then
+    echo "Looking for keychain..."
+  fi
+  if [[ ! -x "/usr/local/bin/keychain" ]]; then
+    echo "Unable to find keychain!"
+    return
+  else
+    declare -x KEYCHAIN=/usr/local/bin/keychain
+  fi
 fi
 if [[ "${OS_SYS}" == "Linux" ]]; then
-    if [[ "${DEBUG}" ]]; then
-        echo "Looking for keychain..."
-    fi
-    if [[ ! -x "/usr/bin/keychain" ]]; then
-        echo "Unable to find keychain!"
-        return
-    else
-        declare -x KEYCHAIN=/usr/bin/keychain
-    fi
+  if [[ "${DEBUG}" ]]; then
+    echo "Looking for keychain..."
+  fi
+  if [[ ! -x "/usr/bin/keychain" ]]; then
+    echo "Unable to find keychain!"
+    return
+  else
+    declare -x KEYCHAIN=/usr/bin/keychain
+  fi
 fi
 if [[ "${OS_SYS}" == "Darwin" ]]; then
-    if [ "${DEBUG}" ]; then
-        echo "Looking for keychain..."
-    fi
-    if [[ -x "/opt/homebrew/bin/keychain" ]]; then
-        declare -x KEYCHAIN=/opt/homebrew/bin/keychain
-    elif [[ -x "/opt/macports/bin/keychain" ]]; then
-        declare -x KEYCHAIN=/opt/macports/bin/keychain
-    elif [[ -x "/usr/local/bin/keychain" ]]; then
-        declare -x KEYCHAIN=/usr/local/bin/keychain
-    else
-        echo "Unable to find keychain!"
-        return
-   fi
+  if [ "${DEBUG}" ]; then
+    echo "Looking for keychain..."
+  fi
+  if [[ -x "/opt/homebrew/bin/keychain" ]]; then
+    declare -x KEYCHAIN=/opt/homebrew/bin/keychain
+  elif [[ -x "/opt/macports/bin/keychain" ]]; then
+    declare -x KEYCHAIN=/opt/macports/bin/keychain
+  elif [[ -x "/usr/local/bin/keychain" ]]; then
+    declare -x KEYCHAIN=/usr/local/bin/keychain
+  else
+    echo "Unable to find keychain!"
+    return
+  fi
 fi
 
 # If the file $HOME/.nokeychain exists, don't run keychain
 if [[ -e "${HOME}/.nokeychain" ]]; then
-    echo "Skipping keychain"
-    declare -x keychainON=1
+  echo "Skipping keychain"
+  declare -x keychainON=1
 fi
 
 # The 'keychainHOSTS' variable is a list of hostnames we really
 # want to run keychain agent on. The " _" is a placeholder to ensure
 # there is no empty variable.
-keychainHOSTS=" _"
+keychainHOSTS="lappy"
 echo "${keychainHOSTS}" | grep `echo ${HOSTNAME}` > /dev/null
 
 # Run it
 if [[ "${keychainON}" != 0 ]]; then
-    for ssh_key in "${ssh_keys[@]}"; do
-        if [ "${DEBUG}" ]; then
-            echo " ---> keychain add $ssh_key..."
-        fi
-        if [[ -f "$HOME/.ssh/$ssh_key" ]]; then
-            if [[ $OS_SYS = 'FreeBSD' ]]; then
-		    ${KEYCHAIN} -q --gpg2 $HOME/.ssh/$ssh_key > /dev/null
-	    else
-		    ${KEYCHAIN} -q --gpg2 --ssh-allow-gpg $HOME/.ssh/$ssh_key > /dev/null
-	    fi
-        fi
-    done
-    source ${HOME}/.keychain/${HOSTNAME}-sh
+  for ssh_key in "${ssh_keys[@]}"; do
+    if [ "${DEBUG}" ]; then
+      echo " ---> keychain add $ssh_key..."
+    fi
+    if [[ -f "$HOME/.ssh/$ssh_key" ]]; then
+      if [[ $OS_SYS = 'FreeBSD' ]]; then
+	    ${KEYCHAIN} -q --gpg2 $HOME/.ssh/$ssh_key > /dev/null
+	  else
+        ${KEYCHAIN} -q --gpg2 --ssh-allow-gpg $HOME/.ssh/$ssh_key > /dev/null
+	  fi
+    fi
+  done
+  source ${HOME}/.keychain/${HOSTNAME}-sh
 fi

@@ -30,14 +30,36 @@
 #
 
 # Scream over all the paths listed in the 'paths,' 'manpaths' and 'infopaths'
-# filses located in the $HOME/.files/lib/(man|info|paths) files. We are using
-# a modified version of the 'path_helper' command, see the my_path_helper.c 
+# filses located in the $HOME/.config/dotfiles/lib/(man|info|paths) files. We are using
+# a modified version of the 'path_helper' command, see the path_helper.c
 # source file in the dotfile repo to see how it works.
 if [ -x ${HOME}/bin/path_helper ]; then
   if [ "$DEBUG" ]; then
     echo "-------> setting up paths"
   fi
-	eval `${HOME}/bin/path_helper -s`
+  eval `${HOME}/bin/path_helper -s`
+else
+  if [ "$DEBUG" ]; then
+    echo "-------> path_helper not found, constructing path"
+  fi
+  # Set a default PATH
+  PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
+  # Iterate over candidate paths, and build the new PATH
+  new_path="$PATH"
+  for dir in `/bin/cat $HOME/.config/dotfiles/lib/paths`; do
+    # Expand variables like $HOME
+    eval expanded_dir="$dir"
+
+    # Check if directory exists and is not already in PATH
+    if [ -d "$expanded_dir" ] && ! echo ":$new_path:" | /usr/bin/grep -q ":$expanded_dir:"; then
+      new_path="${new_path}:${expanded_dir}"
+    fi
+  done
+
+  # Clean up any duplicate colons and trailing colons
+  new_path=$(echo "$new_path" | /usr/bin/sed 's/::*/:/g' | /usr/bin/sed 's/^://' | /usr/bin/sed 's/:$//')
+  PATH="$new_path"
+
 fi
 
 declare -x PATH

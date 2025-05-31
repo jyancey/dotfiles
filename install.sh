@@ -4,37 +4,35 @@
 # things to make it go.
 #
 
-function find_macports() {
+function find_macports(){
   printf "One second while I check things out...\n"
-  if [[ ${OS_SYS} == 'Darwin' ]]; then
-    if [[ -x /usr/local/bin/port ]]; then
-      printf " Install prefix '/usr/local' exists.\t\t[OK]\n"
-      PREFIX=/usr/local
-    elif [[ -x /opt/macports/bin/port ]]; then
-      printf " Install prefix '/opt/macports' exists.\t\t[OK]\n"
-      PREFIX=/opt/macports
-    else
-      printf " Missing the 'port' command.\t[FAIL]\n"
-      return 1
-    fi
+  if [[ -x /usr/local/bin/port ]]; then
+    printf " Install prefix '/usr/local' exists.\t\t[OK]\n"
+    PREFIX=/usr/local
+  elif [[ -x /opt/macports/bin/port ]]; then
+    printf " Install prefix '/opt/macports' exists.\t\t[OK]\n"
+    PREFIX=/opt/macports
+  else
+    printf " Missing the 'port' command.\t[FAIL]\n"
+    return 1
+  fi
 
-    local PHOME=$PREFIX/var/macports/sources/rsync.macports.org/macports/release/tarballs
-    if [[ -x ${PHOME} ]]; then
-      printf " MacPorts installation exists.\t\t\t[OK]\n"
-      declare -x MPHOME=$PREFIX
-    else
-      printf " MacPorts installation missing.\t\t\t[FAIL]\n"
-      exit
-    fi
+  local PHOME=$PREFIX/var/macports/sources/rsync.macports.org/macports/release/tarballs
+  if [[ -x ${PHOME} ]]; then
+    printf " MacPorts installation exists.\t\t\t[OK]\n"
+    declare -x MPHOME=$PREFIX
+  else
+    printf " MacPorts installation missing.\t\t\t[FAIL]\n"
+    exit
   fi
 }
 
 # Let's check to make sure everything is installed and we are ready to go. This
-# assumes that the MacPort system has been installed in '/usr/local' and the
-# base packages listed in '${pkg_base[@]}' have also been installed.
-function do_pkg_check(){
-  printf "Hang on, checking installed packages...\n"
-  pkg_base=(
+# assumes that the MacPort system has been installed and the base packages 
+# listed in '${port_base[@]}' have also been installed.
+function do_port_check(){
+  printf "Hang on, checking installed ports...\n"
+  port_base=(
     coreutils \
     cowsay \
     diffutils \
@@ -45,16 +43,44 @@ function do_pkg_check(){
     osxutils \
     tree \
   )
-  for pkg in "${pkg_base[@]}"; do
-    if [[ `port installed | grep ${pkg}` ]]; then
-      printf " MacPorts package %-15s installed.\t[OK]\n" "${pkg}"
+  for port in "${port_base[@]}"; do
+    if [[ `${MPHOME}/bin/port installed | grep ${port}` ]]; then
+      printf " MacPorts port %-15s installed.\t[OK]\n" "${port}"
     else
-      printf " MacPorts package %-15s missing.\t[FAIL]\n" "${pkg}"
+      printf " MacPorts port %-15s missing.\t[FAIL]\n" "${port}"
       exit
     fi
   done
 }
 
+# This is a FreeBSD system, so no ports, but there are pkg's, so are the
+# pkgs listed in '${pkg_base[@]}' been installed.
+function do_pkg_check(){
+  printf "Hang on, checking the installed pkgs...\n"
+  pkg_base=(
+    coreutils \
+    cowsay \
+    diffutils \
+    figlet \
+    findutils \
+    tree \
+  )
+  for pkg in "${pkg_base[@]}"; do
+    if [[ `pkg info | grep ${pkg}` ]]; then
+      printf " FreeBSD pkg %-15s installed.\t[OK]\n" "${pkg}"
+    else
+      printf " FreeBSD pkg %-15s missing.\t[FAIL]\n" "${pkg}"
+      exit
+    fi
+  done
+}
 
-find_macports
-do_pkg_check
+if [[ ${OS_SYS} == 'FreeBSD' ]]; then
+  printf " This seems to be a FreeBSD system.\n"
+  do_pkg_check
+elif [[ ${OS_SYS} == 'Darwin' ]]; then
+  printf " This seems to be a macOS system.\n"
+  find_macports
+  do_port_check
+fi
+

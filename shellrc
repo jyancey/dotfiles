@@ -29,7 +29,7 @@
 #------------------------------------------------------------------------------
 #
 # Uncomment to turn dotfile debug statements on.
-declare -x DEBUG=1
+#declare -x DEBUG=1
 declare -x POSIXLY_CORRECT=1
 
 if [[ "${DEBUG}" ]]; then

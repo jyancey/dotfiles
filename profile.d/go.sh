@@ -36,19 +36,21 @@ if [[ "${OS_PLATFORM}" == "x86_64" ]]; then
 else
   export GOARCH=amd64
 fi
+
 if [[ "${OS_SYS}" == "Darwin" ]]; then
   export GOOS=darwin
   export GOARCH=arm64
-fi
-
-if [ -x /usr/local/lib/go ]; then
-  export GOROOT=/usr/local/lib/go
-fi
-  
-if [ -x "${HOME}/src" ]; then
-  export GOPATH=${HOME}/src/go
-fi
-
-if [ -x "${HOME}/bin" ]; then
-  export GOBIN=${HOME}/bin
+  if [ -x /opt/macports/lib/go ]; then
+    export GOROOT=/opt/macports/lib/go
+  fi
+  if [ -x "${HOME}/lib/go" ]; then
+    export GOPATH=$HOME/lib/go
+  fi
+  if [ -x "${HOME}/bin" ]; then
+    export GOBIN=${HOME}/bin
+  fi
+  export PATH=$PATH:$GOBIN
+  export GO11MODULES=on  # Recommended for new projects
+  export GOPROXY=https://proxy.golang.org,direct
+  export GOCACHE='/Users/john/Library/Caches/go-build'
 fi

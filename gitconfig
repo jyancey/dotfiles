@@ -4,7 +4,7 @@
 
 [user]
 	name = John Yancey
-	email = john.yancey@mac.com
+	email = john.w.yancey@gmail.com
 
 [core]
 	excludesfile = /Users/john/.gitignore_global
@@ -89,7 +89,7 @@
 	process = git-lfs filter-process
 
 [commit]
-	template = /Users/john/.stCommitMsg
+	template = ~/.config/dotfiles/git-commit-template.txt
 	cleanup = strip
 
 [rerere]
@@ -97,3 +97,10 @@
 
 [pull]
 	rebase = true
+[safe]
+	directory = /Users/john/.cache/act/fe92dd4d260e5b9c/hostexecutor
+	directory = /Users/john/.cache/act/fe92dd4d260e5b9c/hostexecutor
+	directory = /Users/john/.cache/act/823aa9cc1e0fc2a3/hostexecutor
+	directory = /Users/john/.cache/act/823aa9cc1e0fc2a3/hostexecutor
+	directory = /Users/john/.cache/act/9376ea37a1513ac4/hostexecutor
+	directory = /Users/john/.cache/act/9376ea37a1513ac4/hostexecutor

@@ -30,6 +30,7 @@
 #
 dot_files=(
   bashrc \
+  bash_profile \
   bash_logout \
   dir_colors \
   hgignore_global \
@@ -60,6 +61,7 @@ function do_reset(){
 # $HOME/.config/dotfiles directory. This will create the following
 # symlinks and directories if they do not exist:
 #  $HOME/.config/dotfiles/shellrc          => ~/.bashrc
+#  $HOME/.config/dotfiles/bash_profile     => ~/.bash_profile
 #  $HOME/.config/dotfiles/bash_logout      => ~/.bash_logout
 #  $HOME/.config/dotfiles/dir_colors       => ~/.dir_colors
 #  $HOME/.config/dotfiles/hgignore_global  => ~/.hgignore_global

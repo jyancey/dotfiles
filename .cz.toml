@@ -1,0 +1,8 @@
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver"
+version = "5.0.0"
+update_changelog_on_bump = true
+changelog_incremental = true
+changelog_merge_prerelease = true

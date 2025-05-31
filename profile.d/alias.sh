@@ -63,7 +63,9 @@ if [[ "${OS_SYS}" == "Darwin" ]]; then
     fi
 fi
 if [[ "${OS_SYS}" == "FreeBSD" ]]; then
-    if [[ -x /usr/local/bin/gls ]]; then
+    if [[ -x /usr/local/bin/lsd ]]; then
+        alias ls='/usr/local/bin/lsd'
+    elif [[ -x /usr/local/bin/gls ]]; then
         alias ls='/usr/local/bin/gls --color=auto'
     else
         alias ls='ls -G'

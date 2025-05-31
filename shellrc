@@ -36,7 +36,7 @@ if [[ "${DEBUG}" ]]; then
   echo "Turning on debug"
 fi
 
-# Cheat a little to turn $SHELL into something with out the path.
+# Cheat a little to turn $SHELL into something without the path.
 if [[ $SHELL =~ "bash" ]]; then
   export MYSHELL="bash"
 elif [[ $SHELL =~ "zsh" ]]; then
@@ -69,12 +69,32 @@ if [[ -f /usr/local/etc/${MYSHELL}_completion ]]; then
 fi
 
 # Use zsh_completion, if completion exists
-if [[ -f /usr/local/etc/${MYSHELL}_completion ]]; then
+if [[ -f /opt/macports/etc/${MYSHELL}_completion ]]; then
   if [[ "${DEBUG}" ]]; then
-    echo "---> sourcing /usr/local/etc/${MYSHELL}_completion"
+    echo "---> sourcing /opt/macports/etc/${MYSHELL}_completion"
   fi
-  source /usr/local/etc/${MYSHELL}_completion
-  fpath=(/usr/local/share/zsh/site-functions $fpath)
+  source /opt/macports/etc/${MYSHELL}_completion
+fi
+
+# Tune up zsh function path
+if [[ -d /usr/share/zsh/site-functions ]]; then
+  if [[ "${DEBUG}" ]]; then
+    echo "---> adding /usr/share/zsh/site-functions to $FPATH"
+  fi
+  fpath=(
+    /usr/share/zsh/5.9/functions
+    /usr/share/zsh/site-functions
+    "$FPATH[@]"
+    )
+fi
+if [[ -d /opt/macports/share/zsh/site-functions ]]; then
+  if [[ "${DEBUG}" ]]; then
+    echo "---> adding /opt/macports/share/zsh/site-functions to $FPATH"
+  fi
+  fpath=(
+    /opt/macports/share/zsh/site-functions
+    "$FPATH[@]"
+    )
 fi
 
 # Set the basics and then fine-tune with items in the profile.d directory.
@@ -124,6 +144,18 @@ if [[ ${TERM_PROGRAM} == "iTerm.app" ]]; then
       fi
       source ${HOME}/.iterm2_shell_integration.${MYSHELL}
   fi
+fi
+
+# If the zsh-templates-osx MacPort is installed, we source its zshrc file before ours.
+# If it's the first time, you'll be prompted to configure the shell, which creates
+# a ${HOME}/.zsh directory with the configuration options.
+if [ -e /opt/macports/etc/zshrc ]; then
+  if [ "$DEBUG" ]; then
+    echo "---> sourcing /opt/macports/etc/zshrc"
+  fi
+  ZDOT=/opt/macports/etc/zsh
+  export ZDOT
+  source /opt/macports/etc/zshrc
 fi
 
 # Now for all the tricky stuff

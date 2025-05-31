@@ -53,17 +53,17 @@ if [[ "${OS_SYS}" == "Linux" ]]; then
        elif [ -f "/usr/lib/jvm/java-6-openjdk/bini/java" ]; then
            JAVA_HOME=/usr/lib/jvm/java-6-openjdk
        fi
-    fi 
+    fi
 fi
 
 if [[ "$OS_SYS" == "Darwin" ]]; then
     if [ -x "/usr/libexec/java_home" ]; then
-        JAVA_HOME=`eval /usr/libexec/java_home`
+        JAVA_HOME=`eval /usr/libexec/java_home -v 11`
     fi
     # JAVA_HOME not set, so we have to hunt for it.
     if [ ! -z "$JAVE_HOME" ]; then
-        if [ -d "/Library/Java/JavaVirtualMachines/jdk-20.jdk/Contents/Home" ]; then
-            JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-20.jdk/Contents/Home
+        if [ -d "/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home" ]; then
+            JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home
         fi
     fi
 fi
@@ -80,34 +80,28 @@ fi
 
 # Let's define a few other Java type things.
 # Maven build system
-if [ -d "/usr/local/share/java/maven3" ]; then
-    MAVEN_HOME=/usr/local/share/java/maven3
-elif [ -d "/usr/local/share/java/maven2" ]; then
-    MAVEN_HOME=/usr/local/share/java/maven2
+if [ -d "/opt/macports/share/java/maven3" ]; then
+    MAVEN_HOME=/opt/macports/share/java/maven3
 fi
 # Groovy: Java scripting language.
-if [ -d "/usr/local/share/java/groovy" ]; then
-    GROOVY_HOME=/usr/local/share/java/groovy
+if [ -d "/opt/macports/share/java/groovy" ]; then
+    GROOVY_HOME=/opt/macports/share/java/groovy
 fi
 # Griffon the groovy base desktop application framework.
-if [ -d "/usr/local/share/java/griffon" ]; then
-    GRIFFON_HOME=/usr/local/share/java/griffon
+if [ -d "/opt/macports/share/java/griffon" ]; then
+    GRIFFON_HOME=/opt/macports/share/java/griffon
 fi
 # Gradel is the build system based on groovy
-if [ -d "/usr/local/share/java/gradle" ]; then
-    GRADEL_HOME=/usr/local/share/java/gradle
+if [ -d "/opt/macports/share/java/gradle" ]; then
+    GRADEL_HOME=/opt/macports/share/java/gradle
 fi
 # Grails is like Rails, but on Groovy
-if [ -d "/usr/local/share/java/grails" ]; then
-    GRAILS_HOME=/usr/local/share/java/grails
+if [ -d "/opt/macports/share/java/grails" ]; then
+    GRAILS_HOME=/opt/macports/share/java/grails
 fi
-# Tomcat6
-if [ -d "/usr/local/share/java/tomcat6" ]; then
-    CATALINA_HOME=/usr/local/share/java/tomcat6
-elif [ -d "/usr/share/tomcat6" ]; then
-    CATALINA_HOME=/usr/share/tomcat6
-elif [ -d "/usr/appserv/tomcat6" ]; then
-    CATALINA_HOME=/usr/appserv/tomcat6
+
+if [ -d "/opt/macports/share/java/gant" ]; then
+	GANT_HOME=/opt/macports/share/java/gant
 fi
 
 declare -x JAVA_HOME
@@ -117,4 +111,4 @@ declare -x GROOVY_HOME
 declare -x GRIFFON_HOME
 declare -x GRADEL_HOME
 declare -x GRAILS_HOME
-declare -x CATALINA_HOME
+declare -x GANT_HOME

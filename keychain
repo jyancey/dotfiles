@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 #------------------------------------------------------------------------------
 # bashrc_keychain - Dotfiles.
 #
@@ -37,7 +37,7 @@ ssh_keys=(
   id_rsa \
   john-Gitea \
   john.yancey-Bitbucket \
-  jyancey-GitHub
+  jyancey-GitHub \
 )
 
 # Set a default keychain
@@ -107,8 +107,15 @@ echo "${keychainHOSTS}" | grep `echo ${HOSTNAME}` > /dev/null
 # Run it
 if [[ "${keychainON}" != 0 ]]; then
     for ssh_key in "${ssh_keys[@]}"; do
+        if [ "${DEBUG}" ]; then
+            echo " ---> keychain add $ssh_key..."
+        fi
         if [[ -f "$HOME/.ssh/$ssh_key" ]]; then
-            ${KEYCHAIN} -q --gpg2 --ssh-allow-gpg $HOME/.ssh/$ssh_key > /dev/null
+            if [[ $OS_SYS = 'FreeBSD' ]]; then
+		    ${KEYCHAIN} -q --gpg2 $HOME/.ssh/$ssh_key > /dev/null
+	    else
+		    ${KEYCHAIN} -q --gpg2 --ssh-allow-gpg $HOME/.ssh/$ssh_key > /dev/null
+	    fi
         fi
     done
     source ${HOME}/.keychain/${HOSTNAME}-sh

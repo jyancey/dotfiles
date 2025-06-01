@@ -87,6 +87,16 @@ if [[ -d /usr/share/zsh/site-functions ]]; then
     "$FPATH[@]"
     )
 fi
+if [[ -d /usr/local/share/zsh/site-functions ]]; then
+  if [[ "${DEBUG}" ]]; then
+    echo "---> adding /usr/local/share/zsh/site-functions to $FPATH"
+  fi
+  fpath=(
+    /usr/local/share/zsh/5.9/functions
+    /usr/local/share/zsh/site-functions
+    "$FPATH[@]"
+    )
+fi
 if [[ -d /opt/macports/share/zsh/site-functions ]]; then
   if [[ "${DEBUG}" ]]; then
     echo "---> adding /opt/macports/share/zsh/site-functions to $FPATH"
@@ -144,18 +154,6 @@ if [[ ${TERM_PROGRAM} == "iTerm.app" ]]; then
       fi
       source ${HOME}/.iterm2_shell_integration.${MYSHELL}
   fi
-fi
-
-# If the zsh-templates-osx MacPort is installed, we source its zshrc file before ours.
-# If it's the first time, you'll be prompted to configure the shell, which creates
-# a ${HOME}/.zsh directory with the configuration options.
-if [ -e /opt/macports/etc/zshrc ]; then
-  if [ "$DEBUG" ]; then
-    echo "---> sourcing /opt/macports/etc/zshrc"
-  fi
-  ZDOT=/opt/macports/etc/zsh
-  export ZDOT
-  source /opt/macports/etc/zshrc
 fi
 
 # Now for all the tricky stuff

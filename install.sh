@@ -48,7 +48,7 @@ function do_port_check(){
       printf " MacPorts port %-15s installed.\t[OK]\n" "${port}"
     else
       printf " MacPorts port %-15s missing.\t[FAIL]\n" "${port}"
-      exit
+      sudo ${MPHOME}/bin/port install ${port}
     fi
   done
 }
@@ -58,29 +58,35 @@ function do_port_check(){
 function do_pkg_check(){
   printf "Hang on, checking the installed pkgs...\n"
   pkg_base=(
+    bash \
     coreutils \
     cowsay \
     diffutils \
     figlet \
     findutils \
     tree \
+    zsh \
   )
   for pkg in "${pkg_base[@]}"; do
     if [[ `pkg info | grep ${pkg}` ]]; then
       printf " FreeBSD pkg %-15s installed.\t[OK]\n" "${pkg}"
     else
       printf " FreeBSD pkg %-15s missing.\t[FAIL]\n" "${pkg}"
-      exit
+      # Install missing 
+      sudo /usr/local/sbin/pkg install ${pkg}
     fi
   done
 }
 
-if [[ ${OS_SYS} == 'FreeBSD' ]]; then
-  printf " This seems to be a FreeBSD system.\n"
-  do_pkg_check
-elif [[ ${OS_SYS} == 'Darwin' ]]; then
-  printf " This seems to be a macOS system.\n"
+if [[ ${OS_SYS} == 'Darwin' ]]; then
+  printf "This seems to be a macOS system.\n"
   find_macports
   do_port_check
+elif [[ ${OS_SYS} == 'FreeBSD' ]]; then
+  printf "This seems to be a FreeBSD system.\n"
+  do_pkg_check
 fi
+
+printf "Installation check completed. Runing setup.\n"
+${SHELL} ${HOME}/.config/dotfiles/setup.sh
 

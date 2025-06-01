@@ -44,11 +44,11 @@ function do_port_check(){
     tree \
   )
   for port in "${port_base[@]}"; do
-    if [[ `${MPHOME}/bin/port installed | grep ${port}` ]]; then
+    if [[ `$MPHOME/bin/port installed | grep ${port}` ]]; then
       printf " MacPorts port %-15s installed.\t[OK]\n" "${port}"
     else
       printf " MacPorts port %-15s missing.\t[FAIL]\n" "${port}"
-      sudo ${MPHOME}/bin/port install ${port}
+      sudo $MPHOME/bin/port install ${port}
     fi
   done
 }

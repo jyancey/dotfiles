@@ -37,15 +37,12 @@ Accept all the additional dependent packages that are pulled in from these basic
 
 There are a few optional packages that make things pleasant. You should `port install oh-my-posh` to make your prompt all nice; this setup is skipped if `oh-my-posh` is not installed. Additionally, you might want to add `port install lsd` and install some [Powerline Nerd fonts](https://www.nerdfonts.com) to complete the terminal set-up. Additionally, download [iTerm2](https://iterm2.com/downloads.html), but note that this setup also works with the built-in Terminal application on macOS.
 
-# FreeBSD #
+# FreeBSD Basics #
 
 When installing these dotfiles on FreeBSD, you’ll have to do a little groundwork first. FreeBSD doesn’t ship with zsh as a system shell, so that needs to be installed first. Luckily, this is pretty easy.
 
-`$ sudo pkg install zsh`
-
-Then change your login shell to zsh, which should be `/usr/local/bin/zsh`.
-
-`$ chsh`
+1. `$ sudo pkg install zsh`
+2. Then change your login shell to zsh, which should be `/usr/local/bin/zsh` with `chsh`.
 
 There is also a minimum set of packages that must be installed first:
 
@@ -58,6 +55,12 @@ There is also a minimum set of packages that must be installed first:
 * tree
 
 It's important to keep the system updated. Read over the [FreeBSD Handbook](https://docs.freebsd.org/en/books/handbook/cutting-edge/) on updating and upgrading a live system.
+
+# GNU/Linux Basics #
+
+I've all but given up on the various GNU/Linux distrabutions, mostly becuase there's no clear standard when it comes to system shells, and packaging tooling. Back in the good old days it was `rpm`, or `apt-get` but now, with layered packaging and flatpack, or no flatpack, it's hard to keep up.
+
+In general, the out of the box skel files from the various distrabutions should work just fine. But it's getting harder and harder to validate this dotfile becuase I've reduced my interaction with GNU/Linux distros.
 
 # Setting Up the Dotfiles #
 
@@ -96,7 +99,7 @@ One second while I test things out...
 Done!
  ```
 
-Next is to compile and install the modified `path_helper` command that is in the `path_helper` repo on GitHub. A simple `make && make install && make clean` should do the trick.
+Next is to compile and install the modified `path_helper` command that is in the `path_helper` repo on [Gitea](http://localhost:3000/C_Programming/path_helper). A simple `make && make install && make clean` should do the trick.
 
 # License #
 

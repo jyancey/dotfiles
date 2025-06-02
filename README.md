@@ -57,6 +57,8 @@ There is also a minimum set of packages that must be installed first:
 * findutils
 * tree
 
+It's important to keep the system updated. Read over the [FreeBSD Handbook](https://docs.freebsd.org/en/books/handbook/cutting-edge/) on updating and upgrading a live system.
+
 # Setting Up the Dotfiles #
 
 Now comes the easy part, assuming you've checked out this repository in to `$HOME/.config/dotfiles` with `git clone https://github.com/jyancey/dotfiles.git ~/.config/dotfiles` run the `$HOME/.config/dotfiles/setup.sh` script that exists in your new `~/.config/dotfiles` directory. This will create all the needed `.${files}` in your `$HOME` directory, but as symbolic links to the source files in your `~/.config/dotfiles` directory. The setup script performs a quick check to ensure you have the necessary basics installed for everything to work correctly. You should see:

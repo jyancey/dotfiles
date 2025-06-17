@@ -54,7 +54,7 @@ if [[ "${OS_SYS}" == "SunOS" ]]; then
     declare -x KEYCHAIN=/usr/local/bin/keychain
   fi
 fi
-if [[ "${OS_SYS}" == "FreeBSD" ]]; then
+if [[ "${OS_SYS}" == "FreeBSD" || "${OS_SYS}" == "OpenBSD" ]]; then
   if [[ "${DEBUG}" ]]; then
     echo "Looking for keychain..."
   fi
@@ -111,11 +111,11 @@ if [[ "${keychainON}" != 0 ]]; then
       echo " ---> keychain add $ssh_key..."
     fi
     if [[ -f "$HOME/.ssh/$ssh_key" ]]; then
-      if [[ $OS_SYS = 'FreeBSD' ]]; then
-	    ${KEYCHAIN} -q --gpg2 $HOME/.ssh/$ssh_key > /dev/null
-	  else
+      if [[ "${OS_SYS}" == "FreeBSD" || "${OS_SYS}" == "OpenBSD" ]]; then
+        ${KEYCHAIN} -q --gpg2 $HOME/.ssh/$ssh_key > /dev/null
+      else
         ${KEYCHAIN} -q --gpg2 --ssh-allow-gpg $HOME/.ssh/$ssh_key > /dev/null
-	  fi
+      fi
     fi
   done
   source ${HOME}/.keychain/${HOSTNAME}-sh

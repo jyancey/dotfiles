@@ -4,7 +4,7 @@
 
 [user]
 	name = John Yancey
-	email = john.w.yancey@gmail.com
+	email = john.yancey@mac.com
 
 [core]
 	excludesfile = /Users/john/.gitignore_global

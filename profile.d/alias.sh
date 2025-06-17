@@ -62,7 +62,7 @@ if [[ "${OS_SYS}" == "Darwin" ]]; then
         alias svn=/usr/local/bin/svn
     fi
 fi
-if [[ "${OS_SYS}" == "FreeBSD" ]]; then
+if [[ "${OS_SYS}" == "FreeBSD" || "${OS_SYS}" == "OpenBSD" ]]; then
     if [[ -x /usr/local/bin/lsd ]]; then
         alias ls='/usr/local/bin/lsd'
     elif [[ -x /usr/local/bin/gls ]]; then
@@ -97,13 +97,13 @@ alias wdiff='diff -bituNr ${1:+"$@"}'
 alias java16=/Library/Java/JavaVirtualMachines/1.6.0_41-b02-445.jdk/Contents/Home/bin/java
 alias java17=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home/bin/java
 alias java18=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home/bin/java
-#alias mvn='mvn3'
-#alias mc='mvn clean'
-#alias mcd='mvn clean deploy'
-#alias mci='mvn clean install'
-#alias mcp='mvn clean package'
-#alias mep='mvn help:effective-pom'
-#alias mp='mvn package'
+alias mvn='mvn3'
+alias mc='mvn clean'
+alias mcd='mvn clean deploy'
+alias mci='mvn clean install'
+alias mcp='mvn clean package'
+alias mep='mvn help:effective-pom'
+alias mp='mvn package'
 #
 # Golang
 #
@@ -131,10 +131,10 @@ alias gtc='git commit -v'
 alias gtca='git commit -v -a'
 alias gtd='git diff | bbedit'
 alias gthst='history | gr ${1:+"$@"}' 2>/dev/null
-alias gtl='git pull'
+alias gtpl='git pull'
 alias gtlogs='git log --graph --full-history --all --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
 alias gtlog='git log --graph --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
-alias gtp='git push'
+alias gtph='git push'
 alias gtsvn='git svn ${1:+"$@"}'
 alias gtst='git status -s'
 #

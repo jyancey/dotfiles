@@ -183,3 +183,19 @@ if [[ ! -f "${HOME}/.nokeychain" ]]; then
 fi
 
 umask 022
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/john/.cache/lm-studio/bin"
+# End of LM Studio CLI section
+
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/john/.cache/lm-studio/bin"
+# End of LM Studio CLI section
+
+
+# Created by `userpath` on 2025-06-09 20:02:08
+export PATH="$PATH:/Users/john/.local/bin"
+
+# Created by `userpath` on 2025-06-09 20:02:39
+export PATH="$PATH:/Users/john/Library/Python/3.13/bin"

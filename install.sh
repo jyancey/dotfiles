@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /usr/bin/env zsh
 #
 # Quick and dirty install script for personal dots files, and all the needed
 # things to make it go.

@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /usr/bin/env zsh
 #------------------------------------------------------------------------------
 # setup.sh - Create|Remove symlink to dot files in home dir.
 #

@@ -58,23 +58,27 @@ fi
 
 if [[ "$OS_SYS" == "Darwin" ]]; then
     if [ -x "/usr/libexec/java_home" ]; then
-        JAVA_HOME=`eval /usr/libexec/java_home -v 11`
+        export JAVA_HOME=`eval /usr/libexec/java_home -v 25`
+        if [ "${DEBUG}" ]; then
+            echo $JAVA_HOME
+        fi
     fi
     # JAVA_HOME not set, so we have to hunt for it.
     if [ ! -z "$JAVE_HOME" ]; then
-        if [ -d "/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home" ]; then
-            JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home
+        if [ -d "/Library/Java/JavaVirtualMachines/jdk-25-microsoft.jdk/Contents/Home" ]; then
+            export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-25-microsoft.jdk/Contents/Home
         fi
     fi
 fi
+
 # FreeBSD can have Sun Java, or the Diablo version
 if [[ "$OS_SYS" == "FreeBSD" ]]; then
     if [ -f "/usr/local/bin/java" ]; then
-        JAVA_HOME=/usr/local
+        export JAVA_HOME=/usr/local
     elif [ -f "/usr/local/jdk1.5.0/bin/java" ]; then
-        JAVA_HOME=/usr/local/jdk1.5.0
+        export JAVA_HOME=/usr/local/jdk1.5.0
     elif [ -f "/usr/local/diablo-jdk1.5.0/bin/java" ]; then
-        JAVA_HOME=/usr/local/diablo-jdk1.5.0
+        export JAVA_HOME=/usr/local/diablo-jdk1.5.0
     fi
 fi
 

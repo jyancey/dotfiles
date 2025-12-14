@@ -182,6 +182,21 @@ if [[ ! -f "${HOME}/.nokeychain" ]]; then
   source ${HOME}/.config/dotfiles/keychain
 fi
 
+# Added by Docker Desktop
+fpath=(/Users/john/.docker/completions $fpath)
+autoload -Uz compinit
+# End of Docker Desktop section
+
+# Added by LM Studio
+export PATH="$PATH:/Users/john/.cache/lm-studio/bin"
+# End of LM Studio section
+
+# Add path to home bins
+export PATH="$PATH:/Users/john/.local/bin"
+export PATH="$PATH:/Users/john/Library/Python/3.13/bin"
+export PATH="$PATH:/Users/john/bin"
+# End of home section
+
 umask 022
 
 # Added by LM Studio CLI (lms)

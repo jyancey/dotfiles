@@ -87,6 +87,7 @@ alias l.='ls -dh .*' 2>/dev/null
 alias l='ls -F' 2>/dev/null
 alias lf='ls -lFAh' 2>/dev/null
 alias ll='ls -lFh' 2>/dev/null
+alias lt='ls --tree' 2>/dev/null
 alias rrm='rm -fr ${1:+"$@"}'
 alias sed='gsed'
 alias wdiff='diff -bituNr ${1:+"$@"}'

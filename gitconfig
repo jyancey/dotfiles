@@ -13,7 +13,7 @@
 
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path =
+	path = 
 
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
@@ -100,4 +100,16 @@
 
 [safe]
 	directory = /Users/john/.cache/act/*
+	directory = /Users/john/.cache/act/f611e6f84a43f368/hostexecutor
+	directory = /Users/john/.cache/act/f611e6f84a43f368/hostexecutor
+	directory = /Users/john/.cache/act/cbf04f6a0b37bc19/hostexecutor
+	directory = /Users/john/.cache/act/cbf04f6a0b37bc19/hostexecutor
+	directory = /Users/john/.cache/act/62f77eff100397c5/hostexecutor
+	directory = /Users/john/.cache/act/62f77eff100397c5/hostexecutor
+	directory = /Users/john/.cache/act/0ccdc813233db7d6/hostexecutor
+	directory = /Users/john/.cache/act/0ccdc813233db7d6/hostexecutor
+	directory = /Users/john/.cache/act/e447573d620d3e92/hostexecutor
+	directory = /Users/john/.cache/act/e447573d620d3e92/hostexecutor
+	directory = /Users/john/.cache/act/e1a1812215844665/hostexecutor
+	directory = /Users/john/.cache/act/e1a1812215844665/hostexecutor
 

@@ -187,30 +187,12 @@ fpath=(/Users/john/.docker/completions $fpath)
 autoload -Uz compinit
 # End of Docker Desktop section
 
-# Added by LM Studio
-export PATH="$PATH:/Users/john/.cache/lm-studio/bin"
-# End of LM Studio section
-
 # Add path to home bins
-export PATH="$PATH:/Users/john/.local/bin"
-export PATH="$PATH:/Users/john/Library/Python/3.13/bin"
-export PATH="$PATH:/Users/john/bin"
+export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/.cache/lm-studio/bin"
+export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/Library/Python/3.13/bin"
+export PATH="$PATH:$HOME/.npm-packages/bin"
 # End of home section
 
 umask 022
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/john/.cache/lm-studio/bin"
-# End of LM Studio CLI section
-
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/john/.cache/lm-studio/bin"
-# End of LM Studio CLI section
-
-
-# Created by `userpath` on 2025-06-09 20:02:08
-export PATH="$PATH:/Users/john/.local/bin"
-
-# Created by `userpath` on 2025-06-09 20:02:39
-export PATH="$PATH:/Users/john/Library/Python/3.13/bin"

@@ -4,51 +4,51 @@
 # things to make it go.
 #
 
-function find_macports(){
+function find_homebrew(){
   printf "One second while I check things out...\n"
-  if [[ -x /usr/local/bin/port ]]; then
+  if [[ -x /usr/local/bin/brew ]]; then
     printf " Install prefix '/usr/local' exists.\t\t[OK]\n"
     PREFIX=/usr/local
-  elif [[ -x /opt/macports/bin/port ]]; then
-    printf " Install prefix '/opt/macports' exists.\t\t[OK]\n"
-    PREFIX=/opt/macports
+  elif [[ -x /opt/homebrew/bin/brew ]]; then
+    printf " Install prefix '/opt/homebrew' exists.\t\t[OK]\n"
+    PREFIX=/opt/homebrew
   else
-    printf " Missing the 'port' command.\t[FAIL]\n"
+    printf " Missing the 'brew' command.\t[FAIL]\n"
     return 1
   fi
 
-  local PHOME=$PREFIX/var/macports/sources/rsync.macports.org/macports/release/tarballs
-  if [[ -x ${PHOME} ]]; then
-    printf " MacPorts installation exists.\t\t\t[OK]\n"
-    declare -x MPHOME=$PREFIX
+  local BHOME=$PREFIX/bin/brew
+  if [[ -x ${BHOME} ]]; then
+    printf " HomeBrew installation exists.\t\t\t[OK]\n"
+    declare -x HBHOME=$PREFIX
   else
-    printf " MacPorts installation missing.\t\t\t[FAIL]\n"
+    printf " HomeBrew installation missing.\t\t\t[FAIL]\n"
     exit
   fi
 }
 
 # Let's check to make sure everything is installed and we are ready to go. This
-# assumes that the MacPort system has been installed and the base packages 
-# listed in '${port_base[@]}' have also been installed.
-function do_port_check(){
-  printf "Hang on, checking installed ports...\n"
-  port_base=(
+# assumes that the HomeBrew system has been installed and the base packages
+# listed in '${pour_base[@]}' have also been installed.
+function do_pour_check(){
+  printf "Hang on, checking installed pours...\n"
+  pour_base=(
     coreutils \
     cowsay \
     diffutils \
     figlet \
     findutils \
     fortune \
-    macportsscripts \
     osxutils \
     tree \
+    zsh
   )
-  for port in "${port_base[@]}"; do
-    if [[ `$MPHOME/bin/port installed | grep ${port}` ]]; then
-      printf " MacPorts port %-15s installed.\t[OK]\n" "${port}"
+  for pour in "${pour_base[@]}"; do
+    if [[ `$HBHOME/bin/brew list ${pour}` ]]; then
+      printf " HomeBrew pour %-15s installed.\t[OK]\n" "${pour}"
     else
-      printf " MacPorts port %-15s missing.\t[FAIL]\n" "${port}"
-      sudo $MPHOME/bin/port install ${port}
+      printf " HomeBrew pour %-15s missing.\t[FAIL]\n" "${pour}"
+      $HBHOME/bin/brew install ${pour}
     fi
   done
 }
@@ -65,14 +65,14 @@ function do_pkg_check(){
     figlet \
     findutils \
     tree \
-    zsh \
+    zsh
   )
   for pkg in "${pkg_base[@]}"; do
     if [[ `pkg info | grep ${pkg}` ]]; then
       printf " FreeBSD pkg %-15s installed.\t[OK]\n" "${pkg}"
     else
       printf " FreeBSD pkg %-15s missing.\t[FAIL]\n" "${pkg}"
-      # Install missing 
+      # Install missing
       sudo /usr/local/sbin/pkg install ${pkg}
     fi
   done
@@ -80,8 +80,8 @@ function do_pkg_check(){
 
 if [[ ${OS_SYS} == 'Darwin' ]]; then
   printf "This seems to be a macOS system.\n"
-  find_macports
-  do_port_check
+  find_homebrew
+  do_pour_check
 elif [[ ${OS_SYS} == 'FreeBSD' ]]; then
   printf "This seems to be a FreeBSD system.\n"
   do_pkg_check

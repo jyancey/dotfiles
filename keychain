@@ -82,8 +82,6 @@ if [[ "${OS_SYS}" == "Darwin" ]]; then
   fi
   if [[ -x "/opt/homebrew/bin/keychain" ]]; then
     declare -x KEYCHAIN=/opt/homebrew/bin/keychain
-  elif [[ -x "/opt/macports/bin/keychain" ]]; then
-    declare -x KEYCHAIN=/opt/macports/bin/keychain
   elif [[ -x "/usr/local/bin/keychain" ]]; then
     declare -x KEYCHAIN=/usr/local/bin/keychain
   else
@@ -112,9 +110,9 @@ if [[ "${keychainON}" != 0 ]]; then
     fi
     if [[ -f "$HOME/.ssh/$ssh_key" ]]; then
       if [[ "${OS_SYS}" == "FreeBSD" || "${OS_SYS}" == "OpenBSD" ]]; then
-        ${KEYCHAIN} -q --gpg2 $HOME/.ssh/$ssh_key > /dev/null
+        ${KEYCHAIN} -q --gpg2 add $HOME/.ssh/$ssh_key > /dev/null
       else
-        ${KEYCHAIN} -q --gpg2 --ssh-allow-gpg $HOME/.ssh/$ssh_key > /dev/null
+        ${KEYCHAIN} -q add $HOME/.ssh/$ssh_key > /dev/null
       fi
     fi
   done

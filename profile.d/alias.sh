@@ -50,8 +50,6 @@ fi
 if [[ "${OS_SYS}" == "Darwin" ]]; then
     if [[ -x /opt/homebrew/bin/lsd ]]; then
         alias ls='/opt/homebrew/bin/lsd'
-    elif [[ -x /opt/macports/bin/lsd ]]; then
-        alias ls='/opt/macports/bin/lsd'
     elif [[ -x /usr/local/bin/gls ]]; then
         alias ls='/usr/local/bin/gls --color=auto'
     else
@@ -98,7 +96,7 @@ alias wdiff='diff -bituNr ${1:+"$@"}'
 alias java16=/Library/Java/JavaVirtualMachines/1.6.0_41-b02-445.jdk/Contents/Home/bin/java
 alias java17=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home/bin/java
 alias java18=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home/bin/java
-alias mvn='mvn3'
+alias mvn='mvn4'
 alias mc='mvn clean'
 alias mcd='mvn clean deploy'
 alias mci='mvn clean install'
@@ -134,7 +132,7 @@ alias gtd='git diff | $EDITOR'
 alias gthst='history | gr ${1:+"$@"}' 2>/dev/null
 alias gtpl='git pull'
 alias gtlogs='git log --graph --full-history --all --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
-alias gtlog='git log --graph --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
+alias gtlog='git log --oneline --decorate --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m"'
 alias gtph='git push'
 alias gtsvn='git svn ${1:+"$@"}'
 alias gtst='git status -s'

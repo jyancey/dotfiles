@@ -32,4 +32,12 @@ if [ "$DEBUG" ]; then
   echo "-------> setting up npm"
 fi
 
+export NVM_DIR="$HOME/.nvm"
 NPM_PACKAGES="${HOME}/.npm-packages"
+
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    "$NVM_DIR/nvm.sh"  # This loads nvm
+fi
+if [ -s "$NVM_DIR/bash_completion" ]; then
+    source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+fi

@@ -10,6 +10,8 @@
 	excludesfile = /Users/john/.gitignore_global
 	editor = vim
 	quotepath = false
+	logallrefupdates = true
+	commitGraph = true
 
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"

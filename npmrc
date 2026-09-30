@@ -1,6 +1,6 @@
 # Default npm registry.
-registry = https://registry.npmjs.org/
+#registry = https://registry.npmjs.org/
 
 # Install npm packages in this location.
-prefix=${HOME}/.npm-packages
+#prefix=${HOME}/.npm-packages
 

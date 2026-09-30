@@ -29,9 +29,3 @@
 #------------------------------------------------------------------------------
 #
 # echo "Nothing in zprofile."
-
-# Created by `userpath` on 2025-06-09 20:02:08
-export PATH="$PATH:/Users/john/.local/bin"
-
-# Created by `userpath` on 2025-06-09 20:02:39
-export PATH="$PATH:/Users/john/Library/Python/3.13/bin"

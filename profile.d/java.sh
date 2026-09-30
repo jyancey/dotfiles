@@ -58,15 +58,15 @@ fi
 
 if [[ "$OS_SYS" == "Darwin" ]]; then
     if [ -x "/usr/libexec/java_home" ]; then
-        export JAVA_HOME=`eval /usr/libexec/java_home -v 25`
+        export JAVA_HOME=`eval /usr/libexec/java_home -v 27`
         if [ "${DEBUG}" ]; then
             echo $JAVA_HOME
         fi
     fi
     # JAVA_HOME not set, so we have to hunt for it.
     if [ ! -z "$JAVE_HOME" ]; then
-        if [ -d "/Library/Java/JavaVirtualMachines/jdk-25-microsoft.jdk/Contents/Home" ]; then
-            export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-25-microsoft.jdk/Contents/Home
+        if [ -d "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home" ]; then
+            export /opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home
         fi
     fi
 fi

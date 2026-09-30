@@ -69,11 +69,10 @@ if [[ -f /usr/local/etc/${MYSHELL}_completion ]]; then
 fi
 
 # Use zsh_completion, if completion exists
-if [[ -f /opt/macports/etc/${MYSHELL}_completion ]]; then
-  if [[ "${DEBUG}" ]]; then
-    echo "---> sourcing /opt/macports/etc/${MYSHELL}_completion"
-  fi
-  source /opt/macports/etc/${MYSHELL}_completion
+if type brew &>/dev/null; then
+    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+    autoload -Uz compinit
+    compinit
 fi
 
 # Tune up zsh function path
@@ -99,10 +98,10 @@ if [[ -d /usr/local/share/zsh/site-functions ]]; then
 fi
 if [[ -d /opt/macports/share/zsh/site-functions ]]; then
   if [[ "${DEBUG}" ]]; then
-    echo "---> adding /opt/macports/share/zsh/site-functions to $FPATH"
+    echo "---> adding /opt/homebrew/share/zsh/site-functions to $FPATH"
   fi
   fpath=(
-    /opt/macports/share/zsh/site-functions
+    /opt/homebrew/share/zsh/site-functions
     "${fpath[@]}"
     )
 fi
@@ -193,6 +192,7 @@ export PATH="$PATH:$HOME/.cache/lm-studio/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/Library/Python/3.13/bin"
 export PATH="$PATH:$HOME/.npm-packages/bin"
+export PATH="$BUN_INSTALL/bin:$PATH"
 # End of home section
 
 umask 022

@@ -8,20 +8,20 @@ A few things to remember: the default shell for macOS is zsh now, not bash, but 
 
 # macOS Basics #
 
-I use [MacPorts](https://www.macports.org), and build the package from source to locate the installed packages in the `/opt/macports` directory. Back in the good old days, this is where one would find all the "extra" tooling that the systems administrator had installed, because the standard OS install lacked valuable items like a compiler (you had to pay extra for the developer tool kits).
+I use [HomeBrew](https://brew.sh), and build the package from source to locate the installed packages in the `/opt/homebrew` directory. Back in the good old days, this is where one would find all the "extra" tooling that the systems administrator had installed, because the standard OS install lacked valuable items like a compiler (you had to pay extra for the developer tool kits).
 
-This is unsupported for [MacPorts](https://www.macports.org), note the build from source, but I like `/opt/macports` to look like what you'd see in the system `/usr` directory. Why? Well, if you are used to developing where `*.h` files are in `/usr/include`, you then expect that they would also exist in `/opt/macports/include`, see nice.
+This is unsupported for [HomeBrew](https://brew.sh), note the build from source, but I like `/opt/homebrew` to look like what you'd see in the system `/usr` directory. Why? Well, if you are used to developing where `*.h` files are in `/usr/include`, you then expect that they would also exist in `/opt/homebrew/include`, see nice.
 
-Also, [MacPorts](https://www.macports.org) has moved the installation location around, which was mainly driven by the x86 to arm64 swaps, and I’d have to “touch up” my installation all the time for the standard package install. One big downside is that with any major OS upgrade, you have to do this all over, since you can’t use the `sudo port migrate` command. 
+Also, [HomeBrew](https://brew.sh) has moved the installation location around, which was mainly driven by the x86 to arm64 swaps, and I’d have to “touch up” my installation all the time for the standard package install. One big downside is that with any major OS upgrade, you have to do this all over, since you can’t use the `brew migrate` command. 
 
-## MacPorts Source Installation ##
+## HomeBrew Source Installation ##
 
-Download the source packages from the [MacPorts Downloads](https://www.macports.org/install.php) website, then:
+Download the source packages from the [HomeBrew](https://brew.sh) website, then:
 
 1. `cd`into the directory where you've downloaded the source package and unpack it.
-2. `./configure --prefix=/opt/macport --with-unsupported-prefix && make && sudo make install`
+2. `./configure --prefix=/opt/homebrew --with-unsupported-prefix && make && sudo make install`
 
-Once the [MacPorts](https://www.macports.org) package manager is installed, you'll need to add the following ports as a minimum:
+Once the [HomeBrew](https://brew.sh) package manager is installed, you'll need to add the following ports as a minimum:
 
  * coreutils
  * cowsay
@@ -29,13 +29,13 @@ Once the [MacPorts](https://www.macports.org) package manager is installed, you'
  * figlet
  * findutils
  * fortune
- * macportsscripts
+ * homebrewscripts
  * osxutils
  * tree
 
-Accept all the additional dependent packages that are pulled in from these basic ports by using `port -N install ${package}`.
+Accept all the additional dependent packages that are pulled in from these basic ports by using `brew install ${package}`.
 
-There are a few optional packages that make things pleasant. You should `port install oh-my-posh` to make your prompt all nice; this setup is skipped if `oh-my-posh` is not installed. Additionally, you might want to add `port install lsd` and install some [Powerline Nerd fonts](https://www.nerdfonts.com) to complete the terminal set-up. Additionally, download [iTerm2](https://iterm2.com/downloads.html), but note that this setup also works with the built-in Terminal application on macOS.
+There are a few optional packages that make things pleasant. You should `brew install oh-my-posh` to make your prompt all nice; this setup is skipped if `oh-my-posh` is not installed. Additionally, you might want to add `brew install lsd` and install some [Powerline Nerd fonts](https://www.nerdfonts.com) to complete the terminal set-up. Additionally, download [iTerm2](https://iterm2.com/downloads.html), but note that this setup also works with the built-in Terminal application on macOS.
 
 # FreeBSD Basics #
 
@@ -69,18 +69,18 @@ Now comes the easy part, assuming you've checked out this repository in to `$HOM
 ```
 $ ~/.config/dotfiles/install.sh
 One second while I test things out...
- Install prefix '/usr/local' exists.          [OK]
- MacPorts instalation exists.                 [OK]
- MacPorts port command exists.                [OK]
- MacPorts package coreutils       installed.  [OK]
- MacPorts package cowsay          installed.  [OK]
- MacPorts package diffutils       installed.  [OK]
- MacPorts package figlet          installed.  [OK]
- MacPorts package findutils       installed.  [OK]
- MacPorts package fortune         installed.  [OK]
- MacPorts package macportsscripts installed.  [OK]
- MacPorts package osxutils        installed.  [OK]
- MacPorts package tree            installed.  [OK]
+ Install prefix '/opt/homebrew' exists.    [OK]
+ HomeBrew instalation exists.              [OK]
+ HomeBrew brew command exists.             [OK]
+ HomeBrew pour coreutils       installed.  [OK]
+ HomeBrew pour cowsay          installed.  [OK]
+ HomeBrew pour diffutils       installed.  [OK]
+ HomeBrew pour figlet          installed.  [OK]
+ HomeBrew pour findutils       installed.  [OK]
+ HomeBrew pour fortune         installed.  [OK]
+ HomeBrew pour homebrewscripts installed.  [OK]
+ HomeBrew pour osxutils        installed.  [OK]
+ HomeBrew pour tree            installed.  [OK]
  Setting up symlinks in /Users/john
  linking bashrc
  linking bash_logout

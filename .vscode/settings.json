@@ -1,8 +1,8 @@
 {
     "editor.fontSize": 16,
     "workbench.colorTheme": "Visual Studio 2017 Light - C++",
-    "workbench.preferredHighContrastColorTheme": "Default Light+",
-    "workbench.preferredDarkColorTheme": "Default Light+",
+    "workbench.preferredHighContrastColorTheme": "Light+",
+    "workbench.preferredDarkColorTheme": "Light+",
     "markdown-preview-github-styles.darkTheme": "light",
     "gitflow.path": "/usr/local/bin/git-flow",
     "gitflow.showAllCommands": true,

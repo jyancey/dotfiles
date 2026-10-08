@@ -1,16 +1,19 @@
+# -----------------------------------------------------------------------------
+# Git Commit Message Template
+# -----------------------------------------------------------------------------
 # Title: Summary, imperative, start upper case, don't end with a period
-# No more than 50 characters which is here ---->|
+# No more than 50 characters which is here ----->|
 
 
 # Remember blank line between title and body.
 # Body: Explain *what* and *why* (not *how*).
-# Wrap at 72 characters which is here ------------------------------->|
+# Wrap at 72 characters which is here -------------------------------->|
 
-
+# -----------------------------------------------------------------------------
 # Provide links or keys to any relevant tickets, articles or other resources
-# Example: Github issue #23
+# Example: Jira Issue #23
 #
-# Type can be
+# Type can be:
 #  feat     - new feature
 #  fix      - bug fix
 #  refactor - refactoring production code
@@ -31,4 +34,4 @@
 # 5. Use the imperative mood in the subject line
 # 6. Wrap the body at 72 characters
 # 7. Use the body to explain what and why vs. how
-#
+# -----------------------------------------------------------------------------

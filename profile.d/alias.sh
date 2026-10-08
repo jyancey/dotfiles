@@ -21,7 +21,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2000-2020 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2026 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.w.yancey@gmail.com>
 #
@@ -85,24 +85,27 @@ alias l.='ls -dh .*' 2>/dev/null
 alias l='ls -F' 2>/dev/null
 alias lf='ls -lFAh' 2>/dev/null
 alias ll='ls -lFh' 2>/dev/null
-alias lt='ls --tree' 2>/dev/null
+lt() {
+    if command -v lsd >/dev/null 2>&1; then
+        lsd --tree "$@"
+    else
+        ls -R "$@"
+    fi
+}
 alias rrm='rm -fr ${1:+"$@"}'
-alias sed='gsed'
+if command -v gsed >/dev/null 2>&1; then
+    alias sed='gsed'
+fi
 alias wdiff='diff -bituNr ${1:+"$@"}'
-
 #
-# Java, and Java tools
+# Java tools
 #
-alias java16=/Library/Java/JavaVirtualMachines/1.6.0_41-b02-445.jdk/Contents/Home/bin/java
-alias java17=/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk/Contents/Home/bin/java
-alias java18=/Library/Java/JavaVirtualMachines/jdk1.8.0_66.jdk/Contents/Home/bin/java
-alias mvn='mvn4'
-alias mc='mvn clean'
-alias mcd='mvn clean deploy'
-alias mci='mvn clean install'
-alias mcp='mvn clean package'
-alias mep='mvn help:effective-pom'
-alias mp='mvn package'
+alias mvnc='mvn clean'
+alias mvncd='mvn clean deploy'
+alias mvnci='mvn clean install'
+alias mvncp='mvn clean package'
+alias mvnep='mvn help:effective-pom'
+alias mvnp='mvn package'
 #
 # Golang
 #

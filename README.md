@@ -4,19 +4,15 @@ This repository contains my personal dotfiles, which are intended to work primar
 
 There are numerous assumptions about where directories are located and how development environments are set up. These dot files have lasted for twenty years, through four different companies, and work for my personal laptop and desktop, so they can't be all that bad.
 
-A few things to remember: the default shell for macOS is zsh now, not bash, but these dot files have been developed to work with both shells. But if you see a bunch of errors, maybe temporarily turn off POSIX with `declare -x POSIXLY_CORRECT=0` or comment it out. However, you should leave it enabled, as it helps with things getting things working in both shells.
+A few things to remember: the default shell for macOS is zsh now, not bash, but these dotfiles are intended to work with both shells. The shared startup file sets `POSIXLY_CORRECT`; to temporarily test whether that setting is causing a problem, run `unset POSIXLY_CORRECT` in the current shell. Setting it to `0` does not disable it. The setting is restored in a new shell.
 
 ## macOS Basics
 
-I use [HomeBrew](https://brew.sh), and build the package from source to locate the installed packages in the `/opt/homebrew` directory. Back in the good old days, this is where one would find all the "extra" tooling that the systems administrator had installed, because the standard OS install lacked valuable items like a compiler (you had to pay extra for the developer tool kits).
+The macOS installer supports Homebrew at `/usr/local` or `/opt/homebrew`. Some profile modules also account for MacPorts at `/opt/macports`. The setup does not install Homebrew itself.
 
-This is unsupported for [HomeBrew](https://brew.sh), note the build from source, but I like `/opt/homebrew` to look like what you'd see in the system `/usr` directory. Why? Well, if you are used to developing where `*.h` files are in `/usr/include`, you then expect that they would also exist in `/opt/homebrew/include`, see nice.
+### macOS Dependencies
 
-Also, [HomeBrew](https://brew.sh) has moved the installation location around, which was mainly driven by the x86 to arm64 swaps, and I’d have to “touch up” my installation all the time for the standard package install. One big downside is that with any major OS upgrade, you have to do this all over, since you can’t use the `brew migrate` command.
-
-### HomeBrew Source Installation
-
-Download the source packages from the [HomeBrew](https://brew.sh) website. Once the [HomeBrew](https://brew.sh) package manager is installed, you'll need to add the following ports as a minimum:
+Run `zsh install.sh` to check for and install missing Homebrew packages. The installer checks for:
 
 - coreutils
 - cowsay
@@ -24,13 +20,11 @@ Download the source packages from the [HomeBrew](https://brew.sh) website. Once 
 - figlet
 - findutils
 - fortune
-- homebrewscripts
 - osxutils
 - tree
+- zsh
 
-Accept all the additional dependent packages that are pulled in from these basic ports by using `brew install ${package}`.
-
-There are a few optional packages that make things pleasant. You should `brew install oh-my-posh` to make your prompt all nice; this setup is skipped if `oh-my-posh` is not installed. Additionally, you might want to add `brew install lsd` and install some [Powerline Nerd fonts](https://www.nerdfonts.com) to complete the terminal set-up. Additionally, download [iTerm2](https://iterm2.com/downloads.html), but note that this setup also works with the built-in Terminal application on macOS.
+The `lsd` package is optional; when found in the configured locations it is used for the `ls` alias and tree listing. The prompt is configured by the repository's `prompt` file and does not require oh-my-posh. [iTerm2](https://iterm2.com/downloads.html) is also optional; the setup works with the built-in Terminal.
 
 ## FreeBSD Basics
 
@@ -39,7 +33,7 @@ When installing these dotfiles on FreeBSD, you’ll have to do a little groundwo
 1. `$ sudo pkg install zsh`
 2. Then change your login shell to zsh, which should be `/usr/local/bin/zsh` with `chsh`.
 
-There is also a minimum set of packages that must be installed first:
+The `install.sh` helper checks for and installs these packages:
 
 - bash
 - coreutils
@@ -48,6 +42,7 @@ There is also a minimum set of packages that must be installed first:
 - figlet
 - findutils
 - tree
+- zsh
 
 It's important to keep the system updated. Read over the [FreeBSD Handbook](https://docs.freebsd.org/en/books/handbook/cutting-edge/) on updating and upgrading a live system.
 
@@ -59,32 +54,18 @@ In general, the default shell configuration files provided by distributions shou
 
 ## Setting Up the Dotfiles
 
-After cloning this repository to `$HOME/.config/dotfiles`, run `zsh install.sh` to check and install the platform dependencies and create the symlinks. To create symlinks only, run `zsh setup.sh`. Both commands preserve existing regular files; Bash startup files `.bash_profile` and `.bashrc`, Zsh's `.zshrc`, and `.profile` point to the shared `shellrc`.
+Clone the repository to `$HOME/.config/dotfiles`, then run:
 
-```console
-$ zsh setup.sh
-Setting up symlinks in /Users/john if needed...
- linking .bashrc           => /Users/john/.config/dotfiles/shellrc
- linking .bash_profile     => /Users/john/.config/dotfiles/shellrc
- linking .bash_logout      => /Users/john/.config/dotfiles/bash_logout
- linking .dir_colors       => /Users/john/.config/dotfiles/dir_colors
- linking .hgignore_global  => /Users/john/.config/dotfiles/hgignore_global
- linking .indent.pro       => /Users/john/.config/dotfiles/indent.pro
- linking .gitconfig        => /Users/john/.config/dotfiles/gitconfig
- linking .gitignore_global => /Users/john/.config/dotfiles/gitignore_global
- linking .npmrc            => /Users/john/.config/dotfiles/npmrc
- linking .profile          => /Users/john/.config/dotfiles/shellrc
- linking .zshrc            => /Users/john/.config/dotfiles/shellrc
- linking .zprofile         => /Users/john/.config/dotfiles/zprofile
-Done!
+```sh
+zsh install.sh
 ```
 
-Both Bash login and interactive shells load `shellrc` directly through
-`.bash_profile` and `.bashrc`, respectively. `.zprofile` remains separate;
-Zsh login shells load the shared configuration through `.zshrc`.
+This checks or installs the platform dependencies supported by the helper, then runs `setup.sh`. To create or update symlinks without the dependency check, run `zsh setup.sh`. Existing regular files are preserved; existing symlinks at the managed paths are updated to their expected targets. Run `zsh setup.sh -r` to remove symlinks at those managed paths.
+
+The setup links `.bash_profile`, `.bashrc`, `.profile`, and `.zshrc` to the shared `shellrc`. It links `.zprofile` to the repository's separate `zprofile` file; interactive Zsh login shells also read `.zshrc`, which loads the shared configuration.
 
 The path configuration uses `$HOME/bin/path_helper` when available and falls
-back to building `PATH` from the entries in `lib/paths` if it is not installed.
+back to building `PATH` from existing directories listed in `lib/paths`.
 
 ## License
 

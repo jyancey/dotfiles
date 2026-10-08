@@ -21,7 +21,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2000-2011 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2026 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.w.yancey@gmail.com>
 #
@@ -81,8 +81,7 @@ function dm {
         # unrecognized option. echo error message and usage [ bm -X ]
         echo "Unknown option '$1'"
         _echo_usage
-        kill -SIGINT $$
-        exit 1
+        return 2
       elif [[ $1 == "" ]]; then
         # no args supplied - echo usage [ bm ]
         _echo_usage
@@ -107,39 +106,43 @@ function _echo_usage {
 
 # save current directory to bookmarks
 function _save_bookmark {
-  _bookmark_name_valid "$@"
-  if [ -z "$exit_message" ]; then
-    _purge_line "$DMKRS" "export DIR_$1="
-    CURDIR=$(echo $PWD| sed "s#^$HOME#\$HOME#g")
-    echo "export DIR_$1=\"$CURDIR\"" >> $DMKRS
+  if ! _bookmark_name_valid "$1"; then
+    return 2
   fi
+  _purge_line "$DMKRS" "export DIR_$1=" || return
+  printf 'export DIR_%s=%q\n' "$1" "$PWD" >> "$DMKRS"
 }
 
 # delete bookmark
 function _delete_bookmark {
-  _bookmark_name_valid "$@"
-  if [ -z "$exit_message" ]; then
-    _purge_line "$DMKRS" "export DIR_$1="
-    unset "DIR_$1"
+  if ! _bookmark_name_valid "$1"; then
+    return 2
   fi
+  _purge_line "$DMKRS" "export DIR_$1=" || return
+  unset "DIR_$1"
 }
 
 # jump to bookmark
 function _goto_bookmark {
-    source $DMKRS
-    target="$(eval $(echo echo $(echo \$DIR_$1)))"
-    if [ -d "$target" ]; then
-        cd "$target"
-    elif [ ! -n "$target" ]; then
-        printf '%s\n' "WARNING: '${1}' dirmark does not exist"
-    else
-        printf '%s\n' "WARNING: '${target}' does not exist"
-    fi
+  if ! _bookmark_name_valid "$1"; then
+    return 2
+  fi
+  source "$DMKRS" || return
+  target=$(printenv "DIR_$1")
+  if [ -d "$target" ]; then
+    cd "$target"
+  elif [ -z "$target" ]; then
+    printf '%s\n' "WARNING: '${1}' dirmark does not exist"
+    return 1
+  else
+    printf '%s\n' "WARNING: '${target}' does not exist"
+    return 1
+  fi
 }
 
 # list bookmarks with dirname
 function _list_bookmark {
-    source $DMKRS
+    source "$DMKRS"
     # if color output is not working for you, comment out the line below '\033[1;32m' == "red"
     env | sort | awk '/DIR_.+/{split(substr($0,5),parts,"="); printf("\033[0;33m%-20s\033[0m %s\n", parts[1], parts[2]);}'
     # uncomment this line if color output is not working with the line above
@@ -148,42 +151,45 @@ function _list_bookmark {
 
 # print bookmark
 function _print_bookmark {
-    source $DMKRS
-    echo "$(eval $(echo echo $(echo \$DIR_$1)))"
+  if ! _bookmark_name_valid "$1"; then
+    return 2
+  fi
+  source "$DMKRS" || return
+  printenv "DIR_$1"
 }
 
 # list bookmarks without dirname
 function _l {
-    source $DMKRS
+    source "$DMKRS"
     env | grep "^DIR_" | cut -c5- | sort | grep "^.*=" | cut -f1 -d "="
 }
 
 # validate bookmark name
 function _bookmark_name_valid {
-    exit_message=""
-    if [ -z $1 ]; then
-        exit_message="dirmark name required"
-        echo $exit_message
-    elif [ "$1" != "$(echo $1 | sed 's/[^A-Za-z0-9_]//g')" ]; then
-        exit_message="dirmark name is not valid"
-        echo $exit_message
-    fi
+  if [[ -z "$1" ]]; then
+    printf '%s\n' "dirmark name required" >&2
+    return 1
+  elif [[ ! "$1" =~ ^[A-Za-z0-9_]+$ ]]; then
+    printf '%s\n' "dirmark name is not valid" >&2
+    return 1
+  fi
 }
 
 # safe delete line from sdirs
 function _purge_line {
   if [ -s "$1" ]; then
     # safely create a temp file
-    t=$(mktemp -t dirmarks.XXXXXX) || exit 1
-    trap "/bin/rm -f -- '$t'" EXIT
+    t=$(mktemp -t dirmarks.XXXXXX) || return 1
 
     # purge line
-    sed "/$2/d" "$1" >| "$t"
-    /bin/mv "$t" "$1"
-
-    # cleanup temp file
-    /bin/rm -f -- "$t"
-    trap - EXIT
+    if ! sed "/$2/d" "$1" >| "$t"; then
+      /bin/rm -f -- "$t"
+      return 1
+    fi
+    if ! /bin/mv "$t" "$1"; then
+      /bin/rm -f -- "$t"
+      return 1
+    fi
   fi
 }
 

@@ -21,7 +21,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2000-2023 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2026 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.w.yancey@gmail.com>
 #
@@ -57,17 +57,17 @@ if [[ "${OS_SYS}" == "Linux" ]]; then
 fi
 
 if [[ "$OS_SYS" == "Darwin" ]]; then
-    if [ -x "/usr/libexec/java_home" ]; then
-        export JAVA_HOME=`eval /usr/libexec/java_home -v 27`
-        if [ "${DEBUG}" ]; then
-            echo $JAVA_HOME
+    if [[ -z "${JAVA_HOME:-}" ]]; then
+        if [ -x "/usr/libexec/java_home" ]; then
+            JAVA_HOME=$(/usr/libexec/java_home)
+        fi
+        if [[ -z "${JAVA_HOME:-}" ]] &&
+           [ -d "/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home" ]; then
+            JAVA_HOME="/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home"
         fi
     fi
-    # JAVA_HOME not set, so we have to hunt for it.
-    if [ ! -z "$JAVE_HOME" ]; then
-        if [ -d "/opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home" ]; then
-            export /opt/homebrew/Cellar/openjdk/27/libexec/openjdk.jdk/Contents/Home
-        fi
+    if [ "${DEBUG}" ]; then
+        echo "${JAVA_HOME}"
     fi
 fi
 
@@ -84,28 +84,28 @@ fi
 
 # Let's define a few other Java type things.
 # Maven build system
-if [ -d "/opt/macports/share/java/maven3" ]; then
-    MAVEN_HOME=/opt/macports/share/java/maven3
+if [ -d "/opt/homebrew/bin/maven3" ]; then
+    MAVEN_HOME=/opt/homebrew/bin/maven3
 fi
 # Groovy: Java scripting language.
-if [ -d "/opt/macports/share/java/groovy" ]; then
-    GROOVY_HOME=/opt/macports/share/java/groovy
+if [ -d "/opt/homebrew/bin/groovy" ]; then
+    GROOVY_HOME=/opt/homebrew/bin/groovy
 fi
 # Griffon the groovy base desktop application framework.
-if [ -d "/opt/macports/share/java/griffon" ]; then
-    GRIFFON_HOME=/opt/macports/share/java/griffon
+if [ -d "/opt/homebrew/bin/griffon" ]; then
+    GRIFFON_HOME=/opt/homebrew/bin/griffon
 fi
-# Gradel is the build system based on groovy
-if [ -d "/opt/macports/share/java/gradle" ]; then
-    GRADEL_HOME=/opt/macports/share/java/gradle
+# Gradle is the build system based on Groovy.
+if [ -d "/opt/homebrew/bin/gradle" ]; then
+    GRADLE_HOME=/opt/homebrew/bin/gradle
 fi
 # Grails is like Rails, but on Groovy
-if [ -d "/opt/macports/share/java/grails" ]; then
-    GRAILS_HOME=/opt/macports/share/java/grails
+if [ -d "/opt/homebrew/bin/grails" ]; then
+    GRAILS_HOME=/opt/homebrew/bin/grails
 fi
 
-if [ -d "/opt/macports/share/java/gant" ]; then
-	GANT_HOME=/opt/macports/share/java/gant
+if [ -d "/opt/homebrew/bin/gant" ]; then
+	GANT_HOME=/opt/homebrew/bin/gant
 fi
 
 declare -x JAVA_HOME
@@ -113,6 +113,6 @@ declare -x MAVEN_HOME
 declare -x MAVEN_OPTS='-Xmx4096m -Xms2048m'
 declare -x GROOVY_HOME
 declare -x GRIFFON_HOME
-declare -x GRADEL_HOME
+declare -x GRADLE_HOME
 declare -x GRAILS_HOME
 declare -x GANT_HOME

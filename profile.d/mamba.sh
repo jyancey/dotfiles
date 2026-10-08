@@ -1,11 +1,43 @@
-# mamba initialize
+#! /bin/bash
+#------------------------------------------------------------------------------
+# mamba.sh - Dotfiles.
 #
-#export MAMBA_EXE='/opt/homebrew/opt/micromamba/bin/mamba';
-#export MAMBA_ROOT_PREFIX='/Users/john/lib/mamba';
-#__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
-#if [ $? -eq 0 ]; then
-#    eval "$__mamba_setup"
-#else
-#    alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
-#fi
-#unset __mamba_setup
+# CDDL HEADER START
+#
+# The contents of this file are subject to the terms of the
+# Common Development and Distribution License (the "License").
+# You may not use this file except in compliance with the License.
+#
+# You can obtain a copy of the license in  the LICENSE file
+# or https://opensource.org/license/cddl-1-0/
+# See the License for the specific language governing permissions
+# and limitations under the License.
+#
+# When distributing Covered Code, include this CDDL HEADER in each
+# file and include the License file at LICENSE.
+# If applicable, add the following below this CDDL HEADER, with the
+# fields enclosed by brackets "[]" replaced with your own identifying
+# information: Portions Copyright [yyyy] [name of copyright owner]
+#
+# CDDL HEADER END
+#
+# Copyright (c) 2000-2026 by John Yancey, All rights reserved.
+#
+# October 2026 John Yancey <john.w.yancey@gmail.com>
+#
+# $Id$
+#------------------------------------------------------------------------------
+#
+# !! Contents within this block are managed by 'mamba shell init' !!
+export MAMBA_EXE='/opt/homebrew/bin/mamba';
+export MAMBA_ROOT_PREFIX='/Users/john/.mamba';
+
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+fi
+
+unset __mamba_setup

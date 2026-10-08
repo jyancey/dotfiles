@@ -1,6 +1,0 @@
-syntax: glob
-
-*~
-.DS_Store
-cd1.iso
-386bsd00-3.img

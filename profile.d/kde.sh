@@ -34,16 +34,21 @@ fi
 
 # KDE initialization
 #
-#if [ -z "$KDEDIR"  -o  "$KDEDIR" != "/usr/local/kde" ] ; then
-#  KDEDIR=/usr/local/kde
-#  KDEPATH=$KDEDIR/bin
-#  KDELIB=$KDEDIR/lib
-#  if [ ! `echo $PATH | grep "$KDEPATH"` ]; then
-#    PATH=$PATH:$KDEPATH
-#  fi
-#  if [ ! `echo $LD_LIBRARY_PATH | grep "$KDELIB"` ]; then
-#    LD_LIBRARY_PATH=$KDELIB:$LD_LIBRARY_PATH
-#  fi
-#fi
-#------------------------------------------------------------------------------
+if [[ -z "${KDEDIR:-}" && -d /usr/local/kde ]]; then
+  KDEDIR=/usr/local/kde
+fi
 
+if [[ -n "${KDEDIR:-}" && -d "${KDEDIR}" ]]; then
+  KDEPATH="${KDEDIR}/bin"
+  KDELIB="${KDEDIR}/lib"
+
+  if [[ -d "${KDEPATH}" && ":${PATH}:" != *":${KDEPATH}:"* ]]; then
+    PATH="${PATH}:${KDEPATH}"
+  fi
+  if [[ -d "${KDELIB}" && ":${LD_LIBRARY_PATH:-}:" != *":${KDELIB}:"* ]]; then
+    LD_LIBRARY_PATH="${KDELIB}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+  fi
+
+  declare -x KDEDIR KDEPATH KDELIB PATH LD_LIBRARY_PATH
+fi
+#------------------------------------------------------------------------------

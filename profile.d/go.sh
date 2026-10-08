@@ -21,7 +21,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2015-2018 by John Yancey, All rights reserved.
+# Copyright (c) 2015-2026 by John Yancey, All rights reserved.
 #
 # August 2015 John Yancey <john.w.yancey@gmail.com>
 #
@@ -31,15 +31,14 @@ if [ "$DEBUG" ]; then
   echo "-------> setting up golang"
 fi
 
-if [[ "${OS_PLATFORM}" == "x86_64" ]]; then
-  export GOARCH=x86_64
-else
-  export GOARCH=amd64
-fi
+case "${OS_MACHINE:-${OS_PLATFORM}}" in
+  x86_64|amd64) export GOARCH=amd64 ;;
+  aarch64|arm64) export GOARCH=arm64 ;;
+  i386|i486|i586|i686) export GOARCH=386 ;;
+esac
 
 if [[ "${OS_SYS}" == "Darwin" ]]; then
   export GOOS=darwin
-  export GOARCH=arm64
   if [ -x /opt/macports/lib/go ]; then
     export GOROOT=/opt/macports/lib/go
   fi
@@ -49,8 +48,10 @@ if [[ "${OS_SYS}" == "Darwin" ]]; then
   if [ -x "${HOME}/bin" ]; then
     export GOBIN=${HOME}/bin
   fi
-  export PATH=$PATH:$GOBIN
+  if [[ -n "${GOBIN:-}" ]]; then
+    export PATH="${PATH}:${GOBIN}"
+  fi
   export GO11MODULES=on  # Recommended for new projects
   export GOPROXY=https://proxy.golang.org,direct
-  export GOCACHE='/Users/john/Library/Caches/go-build'
+  export GOCACHE="${HOME}/Library/Caches/go-build"
 fi

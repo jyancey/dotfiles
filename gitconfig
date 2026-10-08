@@ -123,3 +123,30 @@
 	directory = /Users/john/.cache/act/fcd63040abc8a3c1/hostexecutor
 	directory = /Users/john/.cache/act/fcd63040abc8a3c1/hostexecutor
 
+[receive]
+	advertisePushOptions = true
+	procReceiveRefs = refs/for
+[transfer]
+	fsckObjects = true
+[fsck]
+	badTimezone = ignore
+	missingSpaceBeforeDate = ignore
+	zeroPaddedFilemode = ignore
+[fetch "fsck"]
+	badTimezone = ignore
+	missingSpaceBeforeDate = ignore
+	zeroPaddedFilemode = ignore
+[receive "fsck"]
+	badTimezone = ignore
+	missingSpaceBeforeDate = ignore
+	zeroPaddedFilemode = ignore
+[gc]
+	writeCommitGraph = true
+	reflogexpire = 90
+[fetch]
+	writeCommitGraph = true
+[uploadpack]
+	allowfilter = true
+	allowAnySHA1InWant = true
+[diff]
+	algorithm = histogram

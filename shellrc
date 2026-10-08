@@ -1,4 +1,3 @@
-#! /bin/env ${SHELL}
 #------------------------------------------------------------------------------
 # bashrc & zshrc - Dotfiles bash & zsh shell resource file.
 #
@@ -36,11 +35,15 @@ if [[ "${DEBUG}" ]]; then
   echo "Turning on debug"
 fi
 
-# Cheat a little to turn $SHELL into something without the path.
-if [[ $SHELL =~ "bash" ]]; then
-  export MYSHELL="bash"
-elif [[ $SHELL =~ "zsh" ]]; then
-  export MYSHELL="zsh"
+# Detect the shell that is actually reading this file rather than relying on
+# $SHELL, which records the user's login shell and may differ from this shell.
+if [[ -n "${BASH_VERSION:-}" ]]; then
+  declare -x MYSHELL=bash
+elif [[ -n "${ZSH_VERSION:-}" ]]; then
+  declare -x MYSHELL=zsh
+else
+  printf 'Unsupported shell for dotfiles: %s\n' "${SHELL:-unknown}" >&2
+  return 1
 fi
 
 # Running as a non-login shell! We have already picked up the path-setting
@@ -60,50 +63,56 @@ if [[ -f /etc/${MYSHELL}rc_Apple_Terminal ]]; then
     source /etc/${MYSHELL}rc_Apple_Terminal
 fi
 
-# Use bash_completion, if completion exists
-if [[ -f /usr/local/etc/${MYSHELL}_completion ]]; then
-  if [[ "${DEBUG}" ]]; then
-    echo "---> sourcing /usr/local/etc/${MYSHELL}_completion"
-  fi
-  source /usr/local/etc/${MYSHELL}_completion
+# Load Bash completions from common package-manager locations when available.
+if [[ "${MYSHELL}" == "bash" ]]; then
+  for completion_file in \
+    /usr/local/etc/bash_completion \
+    /opt/homebrew/etc/bash_completion \
+    /usr/share/bash-completion/bash_completion \
+    /etc/bash_completion; do
+    if [[ -r "${completion_file}" ]]; then
+      if [[ "${DEBUG}" ]]; then
+        echo "---> sourcing ${completion_file}"
+      fi
+      source "${completion_file}"
+      break
+    fi
+  done
+  unset completion_file
 fi
 
-# Use zsh_completion, if completion exists
-if type brew &>/dev/null; then
-    FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-    autoload -Uz compinit
-    compinit
-fi
-
-# Tune up zsh function path
-if [[ -d /usr/share/zsh/site-functions ]]; then
-  if [[ "${DEBUG}" ]]; then
-    echo "---> adding /usr/share/zsh/site-functions to $FPATH"
-  fi
-  fpath=(
-    /usr/share/zsh/5.9/functions
+# Zsh completion
+if [[ "${MYSHELL}" == "zsh" ]]; then
+  completion_dirs=(
+    /opt/macports/share/zsh/site-functions
     /usr/share/zsh/site-functions
-    "${fpath[@]}"
-    )
-fi
-if [[ -d /usr/local/share/zsh/site-functions ]]; then
-  if [[ "${DEBUG}" ]]; then
-    echo "---> adding /usr/local/share/zsh/site-functions to $FPATH"
-  fi
-  fpath=(
-    /usr/local/share/zsh/5.9/functions
     /usr/local/share/zsh/site-functions
-    "${fpath[@]}"
-    )
-fi
-if [[ -d /opt/macports/share/zsh/site-functions ]]; then
-  if [[ "${DEBUG}" ]]; then
-    echo "---> adding /opt/homebrew/share/zsh/site-functions to $FPATH"
+    "$HOME/.docker/completions"
+  )
+
+  for dir in "${completion_dirs[@]}"; do
+    if [[ -d "$dir" ]]; then
+      (( DEBUG )) && print -r -- "---> adding $dir to fpath"
+      fpath=("$dir" "${fpath[@]}")
+    fi
+  done
+
+  unset completion_dirs dir
+
+  if (( $+commands[brew] )); then
+    brew_prefix="$(brew --prefix)"
+
+    [[ -d "$brew_prefix/share/zsh-completions" ]] &&
+      fpath=("$brew_prefix/share/zsh-completions" "${fpath[@]}")
+
+    autocomplete="$brew_prefix/share/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
+    [[ -r "$autocomplete" ]] && source "$autocomplete"
+
+    unset brew_prefix autocomplete
   fi
-  fpath=(
-    /opt/homebrew/share/zsh/site-functions
-    "${fpath[@]}"
-    )
+
+  autoload -Uz compinit
+  compinit
 fi
 
 # Set the basics and then fine-tune with items in the profile.d directory.
@@ -114,29 +123,47 @@ declare -x LC_CTYPE=C
 declare -x LANG=en_US.ISO-8859-1
 
 # Export out all the system information
-export OS_SYS=`uname -s`
-export OS_REL=`uname -r`
-export OS_PLATFORM=`uname -p`
-export OS_MACHINE=`uname -m`
+OS_SYS="$(uname -s)"
+OS_REL="$(uname -r)"
+OS_PLATFORM="$(uname -p)"
+OS_MACHINE="$(uname -m)"
+export OS_SYS OS_REL OS_PLATFORM OS_MACHINE
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 if [ "${DEBUG}" ]; then
   echo "---> setting system $OS_SYS"
   echo "---> setting release $OS_REL"
   echo "---> setting platform $OS_PLATFORM"
   echo "---> setting arch $OS_MACHINE"
+  echo "---> setting xdg config home $XDG_CONFIG_HOME"
+  echo "---> setting xdg data home $XDG_DATA_HOME"
+  echo "---> setting xdg cache home $XDG_CACHE_HOME"
+  echo "---> setting xdg state home $XDG_STATE_HOME"
 fi
 
 # What system are we really running on? The BSDes are better at this, so...
 # Figure out which Linux distribution we are on
 if [[ ${OS_SYS} == "Linux" ]]; then
-  OS_DIST=`/usr/bin/lsb_release -d | sed -e 's/Description:.//'`
-  OS_DIST_NAME=`/usr/bin/lsb_release -i | sed -e 's/Distributor ID:.//'`
+  if [[ -r /etc/os-release ]]; then
+    . /etc/os-release
+    OS_DIST="${PRETTY_NAME:-${NAME:-Linux}}"
+    OS_DIST_NAME="${NAME:-Linux}"
+  elif [[ -x /usr/bin/lsb_release ]]; then
+    OS_DIST="$(/usr/bin/lsb_release -d | sed -e 's/Description:.//')"
+    OS_DIST_NAME="$(/usr/bin/lsb_release -i | sed -e 's/Distributor ID:.//')"
+  else
+    OS_DIST=Linux
+    OS_DIST_NAME=Linux
+  fi
   declare -x OS_DIST
   declare -x OS_DIST_NAME
 fi
 # Figure out which macOSX distribution we are on
 if [[ ${OS_SYS} == "Darwin" ]]; then
-  OS_DIST=`/usr/bin/sw_vers -productVersion`
-  OS_DIST_NAME=`/usr/bin/sw_vers -productName`
+  OS_DIST="$(/usr/bin/sw_vers -productVersion)"
+  OS_DIST_NAME="$(/usr/bin/sw_vers -productName)"
   export OS_DIST
   export OS_DIST_NAME
   if [[ "${DEBUG}" ]]; then
@@ -148,20 +175,26 @@ fi
 # Some terminal sorting to add in goodness from iTerm2
 if [[ ${TERM_PROGRAM} == "iTerm.app" ]]; then
   if [ -e "${HOME}/.iterm2_shell_integration.${MYSHELL}" ]; then
-      if [ "$DEBUG" ]; then
-        echo "---> sourcing ${HOME}/.iterm2_shell_integration.${MYSHELL}"
-      fi
-      source ${HOME}/.iterm2_shell_integration.${MYSHELL}
+    if [ "$DEBUG" ]; then
+      echo "---> sourcing ${HOME}/.iterm2_shell_integration.${MYSHELL}"
+    fi
+      source "${HOME}/.iterm2_shell_integration.${MYSHELL}"
   fi
 fi
 
-# Now for all the tricky stuff
-for EXTRAS in ${HOME}/.config/dotfiles/profile.d/*.sh ; do
+# Bun's completion module uses Zsh-only syntax.
+declare -x BUN_INSTALL="${BUN_INSTALL:-$HOME/.bun}"
+
+# Load tool-specific configuration modules.
+for EXTRAS in "${HOME}"/.config/dotfiles/profile.d/*.sh; do
+  if [[ "${MYSHELL}" == "bash" && "${EXTRAS##*/}" == "bun.sh" ]]; then
+    continue
+  fi
   if [[ -r "${EXTRAS}" ]]; then
     if [[ "${DEBUG}" ]]; then
-      echo "---> sourcing $EXTRAS"
+      echo "---> sourcing ${EXTRAS}"
     fi
-    source ${EXTRAS}
+    source "${EXTRAS}"
   fi
 done
 
@@ -170,21 +203,16 @@ if [ -e "${HOME}/.config/dotfiles/prompt" ]; then
   if [ "${DEBUG}" ]; then
     echo "---> sourcing ${HOME}/.config/dotfiles/prompt"
   fi
-  source ${HOME}/.config/dotfiles/prompt
+  source "${HOME}/.config/dotfiles/prompt"
 fi
 
-# Start up keychain server
-if [[ ! -f "${HOME}/.nokeychain" ]]; then
+# The configured keychain implementation is Zsh-specific.
+if [[ "${MYSHELL}" == "zsh" && ! -f "${HOME}/.nokeychain" ]]; then
   if [[ "${DEBUG}" ]]; then
     echo "---> sourcing ${HOME}/.config/dotfiles/keychain"
   fi
-  source ${HOME}/.config/dotfiles/keychain
+  source "${HOME}/.config/dotfiles/keychain"
 fi
-
-# Added by Docker Desktop
-fpath=(/Users/john/.docker/completions $fpath)
-autoload -Uz compinit
-# End of Docker Desktop section
 
 # Add path to home bins
 export PATH="$PATH:$HOME/bin"
@@ -192,7 +220,8 @@ export PATH="$PATH:$HOME/.cache/lm-studio/bin"
 export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/Library/Python/3.13/bin"
 export PATH="$PATH:$HOME/.npm-packages/bin"
-export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$PATH:$HOME/.docker/bin"
+export PATH="$PATH:$BUN_INSTALL/bin"
 # End of home section
 
 umask 022

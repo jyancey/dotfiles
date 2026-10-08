@@ -1,5 +1,5 @@
 # bun
-export BUN_INSTALL="$HOME/.bun"
+export BUN_INSTALL="${BUN_INSTALL:-$HOME/.bun}"
 
 _bun_add_completion() {
     _arguments -s -C \

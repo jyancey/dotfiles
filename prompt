@@ -1,4 +1,3 @@
-#! /bin/env {$SHELL}
 #------------------------------------------------------------------------------
 # prompt - Dotfiles login prompt file.
 #
@@ -30,15 +29,8 @@
 #
 # Define ANSI color sequences for bash, zsh has this built-in.
 NO='\[\033[0m\]'      # Normal
-WH='\[\033[0;37m\]'   # White
-MA='\[\033[0;35m\]'   # Magenta
-LY='\[\033[0;33m\]'   # Yellow
-LR='\[\033[0;31m\]'   # Red
-CN='\[\033[0;36m\]'   # Cyan
 BR='\[\033[1;31m\]'   # Bright Red
 BB='\[\033[1;34m\]'   # Bright Blue
-BW='\[\033[1;37m\]'   # Bright White
-BM='\[\033[1;35m\]'   # Bright Magenta
 BY='\[\033[1;33m\]'   # Bright Yellow
 
 # Define the actual prompt, which will look like:
@@ -49,7 +41,7 @@ if [[ "${MYSHELL}" == "bash" ]]; then
   if [[ ${DEBUG} ]]; then
     echo "---> setting prompt for $MYSHELL"
   fi
-  declare -x PS1="$BB[\w]$NO\n$BY<\u@\h>$BR\$$NO "
+  declare -x PS1="${BB}[\w]${NO}\n${BY}<\u@\h>${BR}\$${NO} "
 fi
 if [[ "${MYSHELL}" == "zsh" ]]; then
   if [[ ${DEBUG} ]]; then

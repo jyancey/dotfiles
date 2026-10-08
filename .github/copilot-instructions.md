@@ -2,7 +2,7 @@
 
 ## What This Repo Is
 
-Personal dotfiles managed via symlinks. The repo lives at `~/.config/dotfiles` and `setup.sh` creates symlinks in `$HOME` pointing back into it. Both `.bashrc` and `.zshrc` symlink to the single `shellrc` file; `.profile` and `.zprofile` do the same.
+Personal dotfiles managed via symlinks. The repo lives at `~/.config/dotfiles` and `setup.sh` creates symlinks in `$HOME` pointing back into it. `.bash_profile`, `.bashrc`, `.zshrc`, and `.profile` symlink to the shared `shellrc`; `.zprofile` remains a separate login-shell file so Zsh does not run the shared interactive setup twice.
 
 ## Setup Commands
 
@@ -24,18 +24,18 @@ There are no build, test, or lint commands — this is a configuration-only repo
 ### Shell Initialization Flow
 
 ```
-~/.bashrc or ~/.zshrc
+~/.bash_profile or ~/.bashrc or ~/.zshrc
   → shellrc (unified entry point)
       → /etc/${MYSHELL}rc (system defaults)
       → profile.d/*.sh (tool-specific modules, sourced in glob order)
       → prompt (custom shell prompt)
-      → keychain (SSH key caching, skipped if ~/.nokeychain exists)
+      → keychain (Zsh only; skipped if ~/.nokeychain exists)
 ```
 
 ### Directory Layout
 
-- **`shellrc`** — Unified bashrc/zshrc. Sets `$MYSHELL`, `$OS_SYS`, `$OS_DIST`, core env vars (`EDITOR`, `PAGER`, `LC_ALL`), and sources `profile.d/`.
-- **`profile.d/`** — One `.sh` file per tool/concern (e.g., `alias.sh`, `paths.sh`, `go.sh`, `java.sh`). Add new tool configs here.
+- **`shellrc`** — Shared Bash/Zsh startup. Sets `$MYSHELL`, `$OS_SYS`, `$OS_DIST`, core env vars (`EDITOR`, `PAGER`, `LC_ALL`), and sources shell-compatible modules in `profile.d/`.
+- **`profile.d/`** — One `.sh` file per tool/concern (e.g., `alias.sh`, `paths.sh`, `go.sh`, `java.sh`). Keep modules parseable in both shells or explicitly gate shell-specific syntax.
 - **`lib/`** — Static data files: `paths`, `manpaths`, `infopaths` (one directory per line), and `base.sh` (shell utility functions).
 - **`build_env/`** — Environment setup scripts for specific build contexts (sourced manually via aliases).
 - **`oh-my-posh/`** — oh-my-posh theme files.

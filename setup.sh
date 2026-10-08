@@ -21,13 +21,15 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2000-2023 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2026 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.w.yancey@gmail.org>
 #
 # $Id$
 #------------------------------------------------------------------------------
 #
+dotfiles_dir="$(cd "$(dirname "$0")" && pwd -P)"
+
 dot_files=(
   bashrc \
   bash_profile \
@@ -39,52 +41,56 @@ dot_files=(
   gitignore_global \
   npmrc \
   profile \
-  zprofile \
   zshrc \
-  zlogout
+  zprofile
 )
 
 # Small cheat to clean all the dotfiles up if you want to do a hard
 # reset of the symlinks.
 function do_reset(){
-  printf "Removing symlinks in ${HOME}\n"
+  printf "Removing symlinks in %s\n" "${HOME}"
   for file in "${dot_files[@]}"; do
-    if [[ -L "$HOME/.$file" ]]; then
-	  printf " removing ${HOME}/.%s \n" "$file"
-      rm ${HOME}/.${file}
-	fi
+    link_path="${HOME}/.${file}"
+    if [[ -L "${link_path}" ]]; then
+      printf " removing %s\n" "${link_path}"
+      command rm "${link_path}"
+    fi
   done
   return
 }
 
-# This assumes that the dotfiles repo is checked out into the
-# $HOME/.config/dotfiles directory. This will create the following
-# symlinks and directories if they do not exist:
-#  $HOME/.config/dotfiles/shellrc          => ~/.bashrc
-#  $HOME/.config/dotfiles/bash_profile     => ~/.bash_profile
-#  $HOME/.config/dotfiles/bash_logout      => ~/.bash_logout
-#  $HOME/.config/dotfiles/dir_colors       => ~/.dir_colors
-#  $HOME/.config/dotfiles/hgignore_global  => ~/.hgignore_global
-#  $HOME/.config/dotfiles/ident.pro        => ~/.ident.pro
-#  $HOME/.config/dotfiles/gitconfig        => ~/.gitconfig
-#  $HOME/.config/dotfiles/gitignore_global => ~/.gitignore_global
-#  $HOME/.config/dotfiles/npmrc            => ~/.npmrc
-#  $HOME/.config/dotfiles/profile          => ~/.profile
-#  $HOME/.config/dotfiles/zprofile         => ~/.zprofile
-#  $HOME/.config/dotfiles/shellrc          => ~/.zshrc
-#  $HOME/.config/dotfiles/zsh_logout       => ~/.zlogout
+# Link shell startup files to the shared configuration and other dotfiles to
+# their matching repository files. Existing regular files are preserved.
 function do_file_link(){
-  printf "Setting up symlinks in ${HOME} if needed...\n"
+  printf "Setting up symlinks in %s if needed...\n" "${HOME}"
   for file in "${dot_files[@]}"; do
-    if [[ ! -L "$HOME/.$file" ]]; then
-      if [[ ${file} == "profile" || ${file} == "zshrc" ]];then
-        printf " linking .%-16s => $HOME/.config/dotfiles/shellrc\n" "$file"
-        ln -fs ${HOME}/.config/dotfiles/shellrc ${HOME}/.${file}
-      else
-        printf " linking .%-16s => $HOME/.config/dotfiles/%s\n" "$file" "$file"
-        ln -fs ${HOME}/.config/dotfiles/${file} ${HOME}/.${file}
+    link_path="${HOME}/.${file}"
+    case "${file}" in
+      bash_profile|bashrc|profile|zshrc)
+        source_path="${dotfiles_dir}/shellrc"
+        ;;
+      *)
+        source_path="${dotfiles_dir}/${file}"
+        ;;
+    esac
+
+    if [[ ! -e "${source_path}" ]]; then
+      printf " missing source for .%s: %s\n" "${file}" "${source_path}" >&2
+      continue
+    fi
+
+    if [[ -L "${link_path}" ]]; then
+      if [[ "$(readlink "${link_path}")" == "${source_path}" ]]; then
+        continue
       fi
-	fi
+      printf " updating .%s => %s\n" "${file}" "${source_path}"
+      command ln -sfn "${source_path}" "${link_path}"
+    elif [[ -e "${link_path}" ]]; then
+      printf " preserving existing file %s\n" "${link_path}"
+    else
+      printf " linking .%-16s => %s\n" "${file}" "${source_path}"
+      command ln -s "${source_path}" "${link_path}"
+    fi
   done
   return
 }

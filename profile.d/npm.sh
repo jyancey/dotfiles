@@ -33,11 +33,10 @@ if [ "$DEBUG" ]; then
 fi
 
 export NVM_DIR="$HOME/.nvm"
-NPM_PACKAGES="${HOME}/.npm-packages"
 
 if [ -s "$NVM_DIR/nvm.sh" ]; then
-    "$NVM_DIR/nvm.sh"  # This loads nvm
+    source "$NVM_DIR/nvm.sh"
 fi
-if [ -s "$NVM_DIR/bash_completion" ]; then
+if [ "${MYSHELL}" = "bash" ] && [ -s "$NVM_DIR/bash_completion" ]; then
     source "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi

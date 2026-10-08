@@ -21,7 +21,7 @@
 #
 # CDDL HEADER END
 #
-# Copyright (c) 2000-2023 by John Yancey, All rights reserved.
+# Copyright (c) 2000-2026 by John Yancey, All rights reserved.
 #
 # August 2000 John Yancey <john.w.yancey@gmail.org>
 #

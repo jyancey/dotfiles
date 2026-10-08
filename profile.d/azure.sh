@@ -31,6 +31,7 @@ if [ "$DEBUG" ]; then
   echo "-------> setting up azure-cli"
 fi
 
-if [ -f '${HOME}/lib/azure-cli/az.completion' ]; then
-    source '${HOME}/lib/azure-cli/az.completion'
+if [ "${MYSHELL}" = "bash" ] &&
+   [ -f "${HOME}/lib/azure-cli/az.completion" ]; then
+    source "${HOME}/lib/azure-cli/az.completion"
 fi

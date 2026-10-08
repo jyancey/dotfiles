@@ -1,120 +1,540 @@
-#! /bin/sh
+#!/usr/bin/env zsh
 #------------------------------------------------------------------------------
-# bashrc_keychain - Dotfiles.
+# SSH Agent & Key Management
 #
-# CDDL HEADER START
+# Copyright (c) 2000-2026 by John Yancey. All rights reserved.
 #
-# The contents of this file are subject to the terms of the
-# Common Development and Distribution License (the "License").
-# You may not use this file except in compliance with the License.
-#
-# You can obtain a copy of the license in  the LICENSE file
-# or https://opensource.org/license/cddl-1-0/
-# See the License for the specific language governing permissions
-# and limitations under the License.
-#
-# When distributing Covered Code, include this CDDL HEADER in each
-# file and include the License file at LICENSE.
-# If applicable, add the following below this CDDL HEADER, with the
-# fields enclosed by brackets "[]" replaced with your own identifying
-# information: Portions Copyright [yyyy] [name of copyright owner]
-#
-# CDDL HEADER END
-#
-# Copyright (c) 2000-2023 by John Yancey, All rights reserved.
-#
-# August 2000 John Yancey <john.w.yancey@gmail.org>
-#
-# $Id$
+# Licensed under the Common Development and Distribution License (CDDL).
+# See the LICENSE file distributed with these dotfiles.
 #------------------------------------------------------------------------------
 #
-# Start up a keychain agent to avoid crazy password challenges all the time
+# Platforms:
+#   macOS                Native launchd-managed SSH agent
+#   Linux/BSD/Solaris    Funtoo keychain
 #
-# Keys to add to agent:
-ssh_keys=(
-  aws.pem \
-  id_ed25519 \
-  id_rsa \
-  john-Gitea \
-  john.yancey-Bitbucket \
-  jyancey-GitHub
+# Commands:
+#   ssh_keys_init        Initialize or reconnect to the SSH agent
+#   ssh_keys_status      Display configured SSH identities and their status
+#   ssh_keys_reload      Interactively load missing SSH identities
+#   ssh_keys_selftest    Verify script functions and SSH configuration
+#
+# Configuration:
+#   DEBUG=1              Enable diagnostic output
+#   ~/.nokeychain        Disable automatic initialization
+#
+# Behavior:
+#   - Never starts a separate SSH agent on macOS.
+#   - Never prompts for passphrases during shell startup.
+#   - Does not attempt to reload identities already in the agent.
+#   - Verifies loaded identities using SHA256 fingerprints.
+#   - Continues loading other keys if an individual key fails.
+#   - Supports SSH private keys with or without .pub sidecar files.
+#
+# This script must be sourced by Zsh.
+#------------------------------------------------------------------------------
+
+# Configuration
+typeset -ga SSH_KEYCHAIN_KEYS=(
+    id_rsa
+    id_ed25519
+    id_ed25519_server
+    aws.pem
+    aws-2020.pem
+    john-Gitea
+    john.yancey-Bitbucket
+    jyancey-GitHub
+    johnyancey-DreamHost
 )
 
-# Set a default keychain
-declare -x HOSTNAME=`hostname -s`
+typeset -g SSH_KEYCHAIN_DIR="${HOME}/.ssh"
 
-if [[ "${OS_SYS}" == "SunOS" ]]; then
-  if [[ "${DEBUG}" ]]; then
-    echo "Looking for keychain..."
-  fi
-  if [[ ! -x "/usr/local/bin/keychain" ]]; then
-    echo "Unable to find keychain!"
-    return
-  else
-    declare -x KEYCHAIN=/usr/local/bin/keychain
-  fi
-fi
-if [[ "${OS_SYS}" == "FreeBSD" || "${OS_SYS}" == "OpenBSD" ]]; then
-  if [[ "${DEBUG}" ]]; then
-    echo "Looking for keychain..."
-  fi
-  if [[ ! -x "/usr/local/bin/keychain" ]]; then
-    echo "Unable to find keychain!"
-    return
-  else
-    declare -x KEYCHAIN=/usr/local/bin/keychain
-  fi
-fi
-if [[ "${OS_SYS}" == "Linux" ]]; then
-  if [[ "${DEBUG}" ]]; then
-    echo "Looking for keychain..."
-  fi
-  if [[ ! -x "/usr/bin/keychain" ]]; then
-    echo "Unable to find keychain!"
-    return
-  else
-    declare -x KEYCHAIN=/usr/bin/keychain
-  fi
-fi
-if [[ "${OS_SYS}" == "Darwin" ]]; then
-  if [ "${DEBUG}" ]; then
-    echo "Looking for keychain..."
-  fi
-  if [[ -x "/opt/homebrew/bin/keychain" ]]; then
-    declare -x KEYCHAIN=/opt/homebrew/bin/keychain
-  elif [[ -x "/usr/local/bin/keychain" ]]; then
-    declare -x KEYCHAIN=/usr/local/bin/keychain
-  else
-    echo "Unable to find keychain!"
-    return
-  fi
-fi
+# Diagnostic output
+function _ssh_debug() {
+    emulate -L zsh
 
-# If the file $HOME/.nokeychain exists, don't run keychain
-if [[ -e "${HOME}/.nokeychain" ]]; then
-  echo "Skipping keychain"
-  declare -x keychainON=1
-fi
-
-# The 'keychainHOSTS' variable is a list of hostnames we really
-# want to run keychain agent on. The " _" is a placeholder to ensure
-# there is no empty variable.
-keychainHOSTS="lappy"
-echo "${keychainHOSTS}" | grep `echo ${HOSTNAME}` > /dev/null
-
-# Run it
-if [[ "${keychainON}" != 0 ]]; then
-  for ssh_key in "${ssh_keys[@]}"; do
-    if [ "${DEBUG}" ]; then
-      echo " ---> keychain add $ssh_key..."
+    if [[ "${DEBUG:-0}" == "1" ]]; then
+        print -r -- "---> $*"
     fi
-    if [[ -f "$HOME/.ssh/$ssh_key" ]]; then
-      if [[ "${OS_SYS}" == "FreeBSD" || "${OS_SYS}" == "OpenBSD" ]]; then
-        ${KEYCHAIN} -q --gpg2 add $HOME/.ssh/$ssh_key > /dev/null
-      else
-        ${KEYCHAIN} -q add $HOME/.ssh/$ssh_key > /dev/null
-      fi
+
+    return 0
+}
+
+# SSH agent connectivity
+# ssh-add -l exit codes:
+#
+#   0 = Agent connected, identities loaded
+#   1 = Agent connected, no identities
+#   2 = Agent unavailable or communication error
+function _ssh_agent_available() {
+    emulate -L zsh
+
+    local agent_exit_code
+
+    ssh-add -l >/dev/null 2>&1
+    agent_exit_code=$?
+
+    (( agent_exit_code == 0 || agent_exit_code == 1 ))
+}
+
+# Public-key fingerprints
+# Obtain a SHA256 fingerprint from the public-key sidecar.
+#
+# The private key is never decrypted by this function.
+#
+# Arguments:
+#   $1 = Full path to private key
+#
+# Output:
+#   SHA256 fingerprint
+#
+# Return:
+#   0 = Fingerprint obtained
+#   1 = Public key missing or invalid
+function _ssh_key_fingerprint() {
+    emulate -L zsh
+
+    local keyfile="$1"
+    local pubfile="${keyfile}.pub"
+    local fingerprint
+
+    [[ -r "$pubfile" ]] || return 1
+
+    fingerprint="$(
+        ssh-keygen -lf "$pubfile" -E sha256 2>/dev/null |
+            awk 'NR == 1 { print $2 }'
+    )"
+
+    [[ "$fingerprint" == SHA256:* ]] || return 1
+
+    print -r -- "$fingerprint"
+}
+
+# Loaded agent identities
+# Determine whether an exact SHA256 fingerprint is present in the agent.
+#
+# Arguments:
+#   $1 = SHA256 fingerprint
+#
+# Return:
+#   0 = Identity loaded
+#   1 = Identity not loaded or agent unavailable
+function _ssh_fingerprint_loaded() {
+    emulate -L zsh
+
+    local fingerprint="$1"
+    local agent_output
+
+    [[ -n "$fingerprint" ]] || return 1
+
+    agent_output="$(ssh-add -l -E sha256 2>/dev/null)" || return 1
+
+    print -r -- "$agent_output" |
+        awk -v expected="$fingerprint" '
+            $2 == expected {
+                found = 1
+                exit
+            }
+
+            END {
+                exit !found
+            }
+        '
+}
+
+# macOS agent initialization
+function _ssh_agent_init_macos() {
+    emulate -L zsh
+
+    local launchd_socket=""
+    local previous_socket="${SSH_AUTH_SOCK:-}"
+
+    _ssh_debug "Using native macOS SSH agent"
+
+    # First, preserve an already functioning agent connection.
+    # A valid existing socket is preferable to blindly replacing it.
+    if _ssh_agent_available; then
+        _ssh_debug "SSH agent already connected"
+        return 0
     fi
-  done
-  source ${HOME}/.keychain/${HOSTNAME}-sh
+
+    # Attempt to recover the socket from launchd.
+    if (( $+commands[launchctl] )); then
+        launchd_socket="$(
+            launchctl getenv SSH_AUTH_SOCK 2>/dev/null
+        )"
+    fi
+
+    if [[ -n "$launchd_socket" && -S "$launchd_socket" ]]; then
+        export SSH_AUTH_SOCK="$launchd_socket"
+        unset SSH_AGENT_PID
+        if _ssh_agent_available; then
+            _ssh_debug "Recovered SSH agent from launchd"
+            return 0
+        fi
+    fi
+
+    # Restore the original environment if recovery failed.
+    if [[ -n "$previous_socket" ]]; then
+        export SSH_AUTH_SOCK="$previous_socket"
+    else
+        unset SSH_AUTH_SOCK
+    fi
+
+    print -u2 -- "ERROR: Unable to connect to the macOS SSH agent."
+    print -u2 -- "Check SSH_AUTH_SOCK and launchd agent configuration."
+
+    return 1
+}
+
+# Funtoo keychain initialization
+function _ssh_agent_init_unix() {
+    emulate -L zsh
+
+    local host_name
+    local agent_env
+    local keychain_exit_code
+
+    if (( ! $+commands[keychain] )); then
+        print -u2 -- \
+            "ERROR: Funtoo keychain is not installed."
+        return 1
+    fi
+
+    _ssh_debug "Initializing Funtoo keychain"
+
+    # Start or reconnect to a persistent SSH agent.
+    # Do not pass private keys during shell startup.
+    keychain --quiet
+    keychain_exit_code=$?
+
+    if (( keychain_exit_code != 0 )); then
+        print -u2 -- \
+            "ERROR: keychain failed ($keychain_exit_code)."
+        return 1
+    fi
+
+    host_name="$(hostname -s)"
+    agent_env="${HOME}/.keychain/${host_name}-sh"
+
+    if [[ ! -r "$agent_env" ]]; then
+        print -u2 -- \
+            "ERROR: Missing keychain environment: $agent_env"
+        return 1
+    fi
+
+    source "$agent_env" || return 1
+
+    if ! _ssh_agent_available; then
+        print -u2 -- \
+            "ERROR: Funtoo keychain agent is unavailable."
+        return 1
+    fi
+
+    _ssh_debug "Funtoo keychain agent connected"
+
+    return 0
+}
+
+# Initialize SSH agent
+function ssh_keys_init() {
+    emulate -L zsh
+
+    if [[ -e "${HOME}/.nokeychain" ]]; then
+        _ssh_debug "SSH key management disabled"
+        return 0
+    fi
+
+    case "$OSTYPE" in
+        darwin*)
+            _ssh_agent_init_macos
+            ;;
+
+        linux*|freebsd*|openbsd*|solaris*|sunos*)
+            _ssh_agent_init_unix
+            ;;
+
+        *)
+            print -u2 -- \
+                "ERROR: Unsupported operating system: $OSTYPE"
+            return 1
+            ;;
+    esac
+}
+
+# Load missing identities
+# Interactive loading only.
+#
+# On macOS, --apple-use-keychain allows passphrases to be
+# stored in Apple Keychain.
+#
+# On other Unix systems, ssh-add is used normally.
+#
+# Missing .pub files are reported as unverifiable, even
+# if ssh-add successfully loads the private key.
+function _ssh_keys_load() {
+    emulate -L zsh
+
+    local key
+    local keyfile
+    local fingerprint
+    local add_exit_code
+
+    local -i loaded=0
+    local -i already_loaded=0
+    local -i failed=0
+    local -i missing=0
+    local -i unverified=0
+
+    if ! _ssh_agent_available; then
+        print -u2 -- "ERROR: SSH agent unavailable."
+        return 1
+    fi
+
+    for key in "${SSH_KEYCHAIN_KEYS[@]}"; do
+        keyfile="${SSH_KEYCHAIN_DIR}/${key}"
+        if [[ ! -f "$keyfile" ]]; then
+            _ssh_debug "Missing private key: $key"
+            (( ++missing ))
+            continue
+        fi
+
+        fingerprint="$(
+            _ssh_key_fingerprint "$keyfile"
+        )" || fingerprint=""
+
+        # Skip identities already present in the agent.
+        if [[ -n "$fingerprint" ]] &&
+           _ssh_fingerprint_loaded "$fingerprint"; then
+            _ssh_debug "Already loaded: $key"
+            (( ++already_loaded ))
+            continue
+        fi
+
+        _ssh_debug "Loading SSH identity: $key"
+
+        # Add the private key.
+        if [[ "$OSTYPE" == darwin* ]]; then
+            /usr/bin/ssh-add --apple-use-keychain "$keyfile"
+            add_exit_code=$?
+        else
+            ssh-add "$keyfile"
+            add_exit_code=$?
+        fi
+
+        # Check the actual ssh-add exit status.
+        if (( add_exit_code != 0 )); then
+            _ssh_debug "Failed to load: $key"
+            (( ++failed ))
+            continue
+        fi
+
+        # Verify the key was actually loaded.
+        if [[ -n "$fingerprint" ]]; then
+            if _ssh_fingerprint_loaded "$fingerprint"; then
+                _ssh_debug "Verified: $key"
+                (( ++loaded ))
+            else
+                _ssh_debug "Verification failed: $key"
+                (( ++failed ))
+            fi
+        else
+            _ssh_debug "Added, but no .pub file for verification: $key"
+            (( ++unverified ))
+        fi
+    done
+
+    print
+    print -r -- "SSH Key Loading Summary"
+    print -r -- "------------------------------------------------------------"
+
+    printf "  Already loaded: %d\n" "$already_loaded"
+    printf "  Newly loaded:   %d\n" "$loaded"
+    printf "  Unverified:     %d\n" "$unverified"
+    printf "  Missing:        %d\n" "$missing"
+    printf "  Failed:         %d\n" "$failed"
+
+    print -r -- "------------------------------------------------------------"
+    print
+
+    (( failed == 0 ))
+}
+
+# Interactive reload
+function ssh_keys_reload() {
+    emulate -L zsh
+
+    local load_exit_code
+
+    if [[ -e "${HOME}/.nokeychain" ]]; then
+        print -u2 -- \
+            "SSH key management disabled by ~/.nokeychain"
+        return 1
+    fi
+
+    if ! _ssh_agent_available; then
+        ssh_keys_init || return 1
+    fi
+
+    print
+    print -r -- "Loading missing SSH identities..."
+    print
+
+    _ssh_keys_load
+    load_exit_code=$?
+
+    ssh_keys_status
+
+    return "$load_exit_code"
+}
+
+# Display SSH key status
+function ssh_keys_status() {
+    emulate -L zsh
+
+    local key
+    local keyfile
+    local fingerprint
+    local agent_output
+    local agent_exit_code
+    local -i loaded=0
+    local -i missing=0
+    local -i not_loaded=0
+    local -i unknown=0
+
+    agent_output="$(ssh-add -l -E sha256 2>&1)"
+    agent_exit_code=$?
+
+    print
+    print -r -- "SSH Keychain Status"
+    print -r -- "------------------------------------------------------------"
+
+    case "$agent_exit_code" in
+        0)
+            print -r -- "Agent: CONNECTED (identities loaded)"
+            ;;
+        1)
+            print -r -- "Agent: CONNECTED (empty)"
+            ;;
+        2)
+            print -r -- "Agent: DISCONNECTED"
+            print -r -- "Error: $agent_output"
+            ;;
+        *)
+            print -r -- "Agent: ERROR ($agent_exit_code)"
+            print -r -- "$agent_output"
+            ;;
+    esac
+
+    print -r -- "------------------------------------------------------------"
+
+    # Do not misreport keys as unloaded when the agent
+    # itself is unavailable.
+    if (( agent_exit_code > 1 )); then
+        print -r -- "Cannot verify identities without an SSH agent."
+        print
+        return 1
+    fi
+
+    for key in "${SSH_KEYCHAIN_KEYS[@]}"; do
+        keyfile="${SSH_KEYCHAIN_DIR}/${key}"
+        if [[ ! -f "$keyfile" ]]; then
+            printf "  %-12s %s\n" "MISSING" "$key"
+            (( ++missing ))
+            continue
+        fi
+
+        fingerprint="$(
+            _ssh_key_fingerprint "$keyfile"
+        )" || fingerprint=""
+
+        if [[ -z "$fingerprint" ]]; then
+            printf "  %-12s %s\n" "UNKNOWN" "$key"
+            (( ++unknown ))
+            continue
+        fi
+
+        if _ssh_fingerprint_loaded "$fingerprint"; then
+            printf "  %-12s %s\n" "LOADED" "$key"
+            (( ++loaded ))
+        else
+            printf "  %-12s %s\n" "NOT LOADED" "$key"
+            (( ++not_loaded ))
+        fi
+    done
+
+    print -r -- "------------------------------------------------------------"
+
+    printf \
+        "  Loaded: %d  Not loaded: %d  Missing: %d  Unknown: %d\n" \
+        "$loaded" "$not_loaded" "$missing" "$unknown"
+
+    print
+}
+
+# Self-test
+function ssh_keys_selftest() {
+    emulate -L zsh
+
+    local fn
+    local -i failures=0
+
+    local -a required_functions=(
+        _ssh_debug
+        _ssh_agent_available
+        _ssh_agent_init_macos
+        _ssh_agent_init_unix
+        _ssh_key_fingerprint
+        _ssh_fingerprint_loaded
+        _ssh_keys_load
+        ssh_keys_init
+        ssh_keys_reload
+        ssh_keys_status
+        ssh_keys_selftest
+    )
+
+    print
+    print -r -- "SSH Keychain Self-Test"
+    print -r -- "------------------------------------------------------------"
+
+    for fn in "${required_functions[@]}"; do
+        if (( $+functions[$fn] )); then
+            printf "  %-8s %s\n" "OK" "$fn"
+        else
+            printf "  %-8s %s\n" "MISSING" "$fn"
+            (( ++failures ))
+        fi
+    done
+
+    print -r -- "------------------------------------------------------------"
+
+    if _ssh_agent_available; then
+        print -r -- "  SSH Agent: CONNECTED"
+    else
+        print -r -- "  SSH Agent: DISCONNECTED"
+        (( ++failures ))
+    fi
+
+    printf "  Failures: %d\n" "$failures"
+    print
+
+    (( failures == 0 ))
+}
+
+# Automatic startup
+# Initialize the agent in interactive shells.
+#
+# Do not automatically add private keys.
+#
+# This avoids:
+#   - Repeated passphrase prompts
+#   - Unnecessary SSH agent operations
+#   - Loading keys that are not needed
+#
+# Use ssh_keys_reload to load missing identities.
+if [[ -o interactive && ! -e "${HOME}/.nokeychain" ]]; then
+    if ssh_keys_init; then
+        if [[ "${DEBUG:-0}" == "1" ]]; then
+            ssh_keys_status
+        fi
+    fi
 fi
